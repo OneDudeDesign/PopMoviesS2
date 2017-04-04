@@ -59,9 +59,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MainActivity.MovieViewHol
 
     //method to set the movie list and let the adapter know if the data has changed
 
-    public void setMovieList (List<Movie> movieList) {
+    public void setMovieList(List<Movie> movies) {
         this.mMovieList.clear();
-        this.mMovieList.addAll(movieList);
+        this.mMovieList.addAll(movies);
         notifyDataSetChanged();
     }
 }
