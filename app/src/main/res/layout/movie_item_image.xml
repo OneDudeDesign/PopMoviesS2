@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/moviePosterImageView"
+        android:adjustViewBounds="true" />
+    <!-- adjust view bounds is used to preserve the aspect ration of the movie poster-->
+    <!-- TODO look into content description for accessibity -->
+
+</LinearLayout>
