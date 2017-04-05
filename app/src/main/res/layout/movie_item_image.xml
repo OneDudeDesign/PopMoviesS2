@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/moviePosterImageView"
-        android:adjustViewBounds="true" />
+        android:scaleType="fitXY"/>
     <!-- adjust view bounds is used to preserve the aspect ration of the movie poster-->
     <!-- TODO look into content description for accessibity -->
 

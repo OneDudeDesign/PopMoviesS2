@@ -25,7 +25,9 @@ public class Movie {
 
     //method to get the string location of the movie poster
     public String getMoviePoster () {
-        return moviePoster;
+        return "http://t2.gstatic.com/images?q=tbn:ANd9GcQW3LbpT94mtUG1PZIIzJNxmFX399wr_NcvoppJ82k7z99Hx6in";
+        //todo: fix this later but for now return an http string to set an image
+        //return moviePoster;
     }
 
     //method to set the poster string
