@@ -1,11 +1,16 @@
 package com.onedudedesign.popularmoviess1;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.onedudedesign.popularmoviess1.utils.MovieApiService;
 
@@ -31,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         //set the Gridview Layout Manager with 2 columns
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
         mAdapter = new MovieAdapter(this);
@@ -39,15 +44,16 @@ public class MainActivity extends AppCompatActivity {
 
         List<Movie> movies = new ArrayList<>();
 
-        for (int i = 0; i < 25; i++) {
-            movies.add(new Movie());
-        }
         mAdapter.setMovieList(movies);
 
-        initRetrofit();
+        //check if the network is connected, if not fire intent to network message
+        if (isNetworkConnected()) {
+            initRetrofit();
+        } else {
+            noNetwork();
+        }
 
     }
-
 
 
     //The MovieViewHolder Class extending recyyclerview viewholder to hold
@@ -57,12 +63,14 @@ public class MainActivity extends AppCompatActivity {
         public ImageView imageView;
 
         //the constructor
-        public MovieViewHolder (View itemView) {
+        public MovieViewHolder(View itemView) {
             super(itemView);
+
             imageView = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
 
         }
     }
+
     private void initRetrofit() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3")
@@ -78,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         MovieApiService service = restAdapter.create(MovieApiService.class);
         service.getPopularMovies(new Callback<Movie.MovieResult>() {
             @Override
-            public void success (Movie.MovieResult movieResult, Response response) {
+            public void success(Movie.MovieResult movieResult, Response response) {
                 mAdapter.setMovieList(movieResult.getResults());
             }
 
@@ -87,5 +95,22 @@ public class MainActivity extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
+    }
+
+    //Check for network connection method goes here
+    public boolean isNetworkConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    //intent method for no network launches network warning activity
+    public void noNetwork() {
+        Toast.makeText(this, "No Network", Toast.LENGTH_LONG).show();
+        Context context = MainActivity.this;
+        Class destinationActivity = NoNetwork.class;
+        Intent intent = new Intent(context, destinationActivity);
+        startActivity(intent);
     }
 }
