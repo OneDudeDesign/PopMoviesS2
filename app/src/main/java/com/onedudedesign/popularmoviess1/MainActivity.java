@@ -23,7 +23,9 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         //set the Gridview Layout Manager with 2 columns
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
+
+        mRecyclerView.setLayoutManager(gridLayoutManager);
         mAdapter = new MovieAdapter(this);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             movies.add(new Movie());
         }
         mAdapter.setMovieList(movies);
+
     }
 
     //The MovieViewHolder Class extending recyyclerview viewholder to hold
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         public MovieViewHolder (View itemView) {
             super(itemView);
             imageView = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
+
         }
     }
 }
