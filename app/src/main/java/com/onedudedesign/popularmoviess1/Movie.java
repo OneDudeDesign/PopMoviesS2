@@ -1,17 +1,36 @@
 package com.onedudedesign.popularmoviess1;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 /**
  * Created by clucier on 4/4/17.
  * This is the class to define a Movie Object to be used by the Adapter
  */
 
 public class Movie {
+
+    public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
+
     //Setup the data variables
+    @SerializedName("title")
     private String movieTitle;
+
+    @SerializedName("poster_path")
     private String moviePoster;
+
+    @SerializedName("overview")
     private String movieSynopsis;
+
+    @SerializedName("vote_average")
     private String movieTmdbRating;
+
+    @SerializedName("release_date")
     private String movieReleaseDate;
+
+    @SerializedName("backdrop_path")
+    private String movieBackdrop;
 
     //method to get the movie title
     public String getMovieTitle () {
@@ -25,9 +44,8 @@ public class Movie {
 
     //method to get the string location of the movie poster
     public String getMoviePoster () {
-        return "http://t2.gstatic.com/images?q=tbn:ANd9GcQW3LbpT94mtUG1PZIIzJNxmFX399wr_NcvoppJ82k7z99Hx6in";
-        //todo: fix this later but for now return an http string to set an image
-        //return moviePoster;
+        return TMDB_IMAGE_PATH + moviePoster;
+
     }
 
     //method to set the poster string
@@ -63,6 +81,24 @@ public class Movie {
     //method to set the release date from the TMDB.org DB
     public void setMovieReleaseDate (String releaseDate) {
         this.movieReleaseDate = releaseDate;
+    }
+
+    //method to get the backdrop image
+    public String getMovieBackdrop() {
+        return TMDB_IMAGE_PATH + movieBackdrop;
+    }
+
+    //method to set the movie backdrop
+    public void setMovieBackdrop(String movieBackdrop) {
+        this.movieBackdrop = movieBackdrop;
+    }
+
+    public static class MovieResult {
+        private List<Movie> results;
+
+        public List<Movie> getResults() {
+            return results;
+        }
     }
 
 }
