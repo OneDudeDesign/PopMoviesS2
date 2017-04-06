@@ -25,11 +25,18 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener{
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
     private static final String tmdbApiKey = "fd66dfefac539c5f745200aadb175e4d";
+
+    /*
+     * If we hold a reference to our Toast, we can cancel it (if it's showing)
+     * to display a new Toast. If we didn't do this, Toasts would be delayed
+     * in showing up if you clicked many list items in quick succession.
+     */
+    private Toast mToast;
 
 
     @Override
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
 
         mRecyclerView.setLayoutManager(gridLayoutManager);
-        mAdapter = new MovieAdapter(this);
+        mAdapter = new MovieAdapter(this,this);
         mRecyclerView.setAdapter(mAdapter);
 
         List<Movie> movies = new ArrayList<>();
@@ -80,6 +87,39 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    /**
+     * This is where we receive our callback from
+     * {@link com.onedudedesign.popularmoviess1.MovieAdapter.ListItemClickListener}
+     *
+     * This callback is invoked when you click on an item in the list.
+     *
+     * @param clickedItemIndex Index in the list of the item that was clicked.
+     */
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+        /*
+         * Even if a Toast isn't showing, it's okay to cancel it. Doing so
+         * ensures that our new Toast will show immediately, rather than
+         * being delayed while other pending Toasts are shown.
+         *
+         * Comment out these three lines, run the app, and click on a bunch of
+         * different items if you're not sure what I'm talking about.
+         */
+        if (mToast != null) {
+            mToast.cancel();
+        }
+
+        /*
+         * Create a Toast and store it in our Toast field.
+         * The Toast that shows up will have a message similar to the following:
+         *
+         *                     Item #42 clicked.
+         */
+        String toastMessage = "Item #" + clickedItemIndex + " clicked.";
+        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+
+        mToast.show();
     }
 
     private void initRetrofitPopular() {

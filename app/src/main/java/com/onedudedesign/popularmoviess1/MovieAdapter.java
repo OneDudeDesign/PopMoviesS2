@@ -25,10 +25,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private List<Movie> mMovieList;
     private LayoutInflater mInflater;
     private Context mContext;
+    private ListItemClickListener mOnClickListener;
 
-    public MovieAdapter (Context context) {
+    /**
+     * The interface that receives onClick messages.
+     */
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
+
+    public MovieAdapter (Context context, ListItemClickListener listener) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
+        mOnClickListener = listener;
         this.mMovieList = new ArrayList<>();
     }
 
@@ -52,7 +61,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .into(holder.imageView);
 
     }
-    public static class MovieViewHolder extends RecyclerView.ViewHolder {
+    public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imageView;
 
         //the constructor
@@ -60,7 +69,17 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             super(itemView);
 
             imageView = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
+            itemView.setOnClickListener(this);
 
+        }
+        /**
+         * Called whenever a user clicks on an item in the list.
+         * @param v The View that was clicked
+         */
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            mOnClickListener.onListItemClick(clickedPosition);
         }
 
     }
