@@ -11,8 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.onedudedesign.popularmoviess1.utils.PopularMovieApiService;
@@ -84,11 +82,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //The MovieViewHolder Class extending recyyclerview viewholder to hold
-    // references to the image views in the layout
-
-
-
     private void initRetrofitPopular() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3/")
@@ -140,18 +133,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-    public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        public ImageView imageView;
 
-        //the constructor
-        public MovieViewHolder(View itemView) {
-            super(itemView);
-
-            imageView = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
-
-        }
-
-    }
 
     //Check for network connection method goes here
     public boolean isNetworkConnected() {

@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
@@ -19,7 +20,7 @@ import static android.os.Build.VERSION_CODES.M;
  * Adapter to feed the movie information to the Recyclerview
  */
 
-public class MovieAdapter extends RecyclerView.Adapter<MainActivity.MovieViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private List<Movie> mMovieList;
     private LayoutInflater mInflater;
@@ -32,14 +33,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MainActivity.MovieViewHol
     }
 
     @Override
-    public MainActivity.MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MovieViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = mInflater.inflate(R.layout.movie_item_image, parent, false);
-        MainActivity.MovieViewHolder viewHolder = new MainActivity.MovieViewHolder(view);
+        MovieViewHolder viewHolder = new MovieViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MainActivity.MovieViewHolder holder, int position) {
+    public void onBindViewHolder(MovieViewHolder holder, int position) {
         Movie movie = mMovieList.get(position);
 
         //use Picasso to deal with loading and caching of the images
@@ -49,6 +50,18 @@ public class MovieAdapter extends RecyclerView.Adapter<MainActivity.MovieViewHol
                 .load(movie.getMoviePoster())
                 .placeholder(R.color.greenScreenPlaceholder)
                 .into(holder.imageView);
+
+    }
+    public static class MovieViewHolder extends RecyclerView.ViewHolder {
+        public ImageView imageView;
+
+        //the constructor
+        public MovieViewHolder(View itemView) {
+            super(itemView);
+
+            imageView = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
+
+        }
 
     }
 
