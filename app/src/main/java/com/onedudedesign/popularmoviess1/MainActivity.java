@@ -1,5 +1,6 @@
 package com.onedudedesign.popularmoviess1;
 
+import android.app.LauncherActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -24,6 +25,7 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener{
 
@@ -116,7 +118,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
          *
          *                     Item #42 clicked.
          */
-        String toastMessage = "Item #" + clickedItemIndex + " clicked.";
+        String s = mAdapter.fetchMovieTitle(clickedItemIndex);
+
+        String toastMessage = "Item #" + clickedItemIndex + " clicked." + s;
         mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
         mToast.show();

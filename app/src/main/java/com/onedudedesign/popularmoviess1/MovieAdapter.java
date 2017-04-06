@@ -99,4 +99,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         this.mMovieList.addAll(movies);
         notifyDataSetChanged();
     }
+
+    public String fetchMovieTitle(int index) {
+        Movie movie = this.mMovieList.get(index);
+        String fetchedTitle = movie.getMovieTitle();
+        return fetchedTitle;
+    }
 }
