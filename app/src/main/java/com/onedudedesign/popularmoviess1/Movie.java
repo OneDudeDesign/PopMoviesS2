@@ -32,6 +32,9 @@ public class Movie {
     @SerializedName("backdrop_path")
     private String movieBackdrop;
 
+    @SerializedName("id")
+    private int movieID;
+
     //method to get the movie title
     public String getMovieTitle () {
         return movieTitle;
@@ -91,6 +94,14 @@ public class Movie {
     //method to set the movie backdrop
     public void setMovieBackdrop(String movieBackdrop) {
         this.movieBackdrop = movieBackdrop;
+    }
+
+    public int getMovieID() {
+        return movieID;
+    }
+
+    public void setMovieID(int movieID) {
+        this.movieID = movieID;
     }
 
     public static class MovieResult {

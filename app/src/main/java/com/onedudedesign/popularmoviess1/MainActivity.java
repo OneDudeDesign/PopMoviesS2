@@ -119,8 +119,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
          *                     Item #42 clicked.
          */
         String s = mAdapter.fetchMovieTitle(clickedItemIndex);
+        int i = mAdapter.fetchMovieID(clickedItemIndex);
 
-        String toastMessage = "Item #" + clickedItemIndex + " clicked." + s;
+        String toastMessage = "Item #" + clickedItemIndex + " clicked. " + "Name: " + s + "TMDB.org ID: " + String.valueOf(i);
         mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
         mToast.show();

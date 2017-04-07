@@ -105,4 +105,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         String fetchedTitle = movie.getMovieTitle();
         return fetchedTitle;
     }
+    public int fetchMovieID(int index) {
+        Movie movie = this.mMovieList.get(index);
+        int fetchedID = movie.getMovieID();
+        return fetchedID;
+    }
 }
