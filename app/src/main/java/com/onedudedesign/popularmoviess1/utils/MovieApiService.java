@@ -19,7 +19,7 @@ public interface MovieApiService {
         @GET("/movie/top_rated")
         void getTopRatedMovies(Callback<Movie.MovieResult> cb);
 
-        @GET("/movie/330459")
+        @GET("/movie/{movie_id}")
         void getMovie(Callback<MovieDetail> cb);
     }
 

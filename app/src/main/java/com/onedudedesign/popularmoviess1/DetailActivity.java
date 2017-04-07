@@ -8,8 +8,6 @@ import android.widget.TextView;
 import com.onedudedesign.popularmoviess1.Models.MovieDetail;
 import com.onedudedesign.popularmoviess1.utils.MovieApiService;
 
-import org.w3c.dom.Text;
-
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -19,7 +17,7 @@ import retrofit.client.Response;
 public class DetailActivity extends AppCompatActivity {
 
     private static final String TMDB_API_KEY = "fd66dfefac539c5f745200aadb175e4d";
-    MovieDetail mDetail = new MovieDetail();
+    private MovieDetail mDetail = new MovieDetail();
     private String movieID;
 
     @Override
@@ -30,6 +28,9 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         movieID = intent.getStringExtra("movieID");
 
+        //Test for int in path param
+        final int intMovieID = 315837;
+
         //Test to see if I get the correct ID from the intent
         TextView sentID = (TextView) findViewById(R.id.movieIDSent);
         sentID.setText("Movie ID Sent : " + movieID);
@@ -39,6 +40,7 @@ public class DetailActivity extends AppCompatActivity {
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
+                        request.addPathParam("movie_id", movieID);
                         request.addEncodedQueryParam("api_key", TMDB_API_KEY);
                     }
                 })
