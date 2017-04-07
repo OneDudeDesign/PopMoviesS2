@@ -1,6 +1,7 @@
 package com.onedudedesign.popularmoviess1.utils;
 
 import com.onedudedesign.popularmoviess1.Models.Movie;
+import com.onedudedesign.popularmoviess1.Models.MovieDetail;
 
 import retrofit.Callback;
 import retrofit.http.GET;
@@ -17,5 +18,8 @@ public interface MovieApiService {
 
         @GET("/movie/top_rated")
         void getTopRatedMovies(Callback<Movie.MovieResult> cb);
+
+        @GET("/movie/330459")
+        void getMovie(Callback<MovieDetail> cb);
     }
 
