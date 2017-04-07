@@ -1,6 +1,6 @@
 package com.onedudedesign.popularmoviess1.utils;
 
-import com.onedudedesign.popularmoviess1.Movie;
+import com.onedudedesign.popularmoviess1.Models.Movie;
 
 import retrofit.Callback;
 import retrofit.http.GET;
