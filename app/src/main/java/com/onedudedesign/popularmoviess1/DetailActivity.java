@@ -1,11 +1,14 @@
 package com.onedudedesign.popularmoviess1;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.onedudedesign.popularmoviess1.Models.MovieDetail;
 import com.onedudedesign.popularmoviess1.utils.MovieApiService;
+
+import org.w3c.dom.Text;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -17,11 +20,19 @@ public class DetailActivity extends AppCompatActivity {
 
     private static final String TMDB_API_KEY = "fd66dfefac539c5f745200aadb175e4d";
     MovieDetail mDetail = new MovieDetail();
+    private String movieID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        Intent intent = this.getIntent();
+        movieID = intent.getStringExtra("movieID");
+
+        //Test to see if I get the correct ID from the intent
+        TextView sentID = (TextView) findViewById(R.id.movieIDSent);
+        sentID.setText("Movie ID Sent : " + movieID);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3/")
