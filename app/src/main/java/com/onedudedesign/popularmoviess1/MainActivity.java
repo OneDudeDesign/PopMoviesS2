@@ -1,6 +1,6 @@
 package com.onedudedesign.popularmoviess1;
 
-import android.app.LauncherActivity;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -14,8 +14,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.onedudedesign.popularmoviess1.utils.PopularMovieApiService;
-import com.onedudedesign.popularmoviess1.utils.TopRatedMovieApiService;
+import com.onedudedesign.popularmoviess1.utils.MovieApiService;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
-    private static final String tmdbApiKey = "fd66dfefac539c5f745200aadb175e4d";
+    private static final String TMDB_API_KEY = "fd66dfefac539c5f745200aadb175e4d";
+    private static final int POPULAR = 0;
+    private static final int TOP_RATED = 1;
 
     /*
      * If we hold a reference to our Toast, we can cancel it (if it's showing)
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
         //check if the network is connected, if not fire intent to network message
         if (isNetworkConnected()) {
-            initRetrofitPopular();
+            initRetrofit(POPULAR);
         } else {
             noNetwork();
         }
@@ -80,11 +82,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         switch (item.getItemId()) {
             case R.id.menuPopular:
                 Toast.makeText(this,"Selected Popular", Toast.LENGTH_LONG).show();
-                initRetrofitPopular();
+                initRetrofit(POPULAR);
                 return true;
             case R.id.menuTopRated:
                 Toast.makeText(this,"Selected Top Rated",Toast.LENGTH_LONG).show();
-                initRetrofitTopRated();
+                initRetrofit(TOP_RATED);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -127,56 +129,47 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mToast.show();
     }
 
-    private void initRetrofitPopular() {
+    private void initRetrofit (int key) {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3/")
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key", "fd66dfefac539c5f745200aadb175e4d");
+                        request.addEncodedQueryParam("api_key", TMDB_API_KEY);
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
-        PopularMovieApiService service = restAdapter.create(PopularMovieApiService.class);
-        service.getPopularMovies(new Callback<Movie.MovieResult>() {
-            @Override
-            public void success(Movie.MovieResult movieResult, Response response) {
-                mAdapter.setMovieList(movieResult.getResults());
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
-            }
-        });
-    }
 
-    private void initRetrofitTopRated() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://api.themoviedb.org/3/")
-                .setRequestInterceptor(new RequestInterceptor() {
-                    @Override
-                    public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key", tmdbApiKey);
-                    }
-                })
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .build();
+        MovieApiService service = restAdapter.create(MovieApiService.class);
 
-        TopRatedMovieApiService service = restAdapter.create(TopRatedMovieApiService.class);
-        service.getTopRatedMovies(new Callback<Movie.MovieResult>() {
-            @Override
-            public void success(Movie.MovieResult movieResult, Response response) {
-                mAdapter.setMovieList(movieResult.getResults());
-            }
+        if (key == 1) {
+            service.getTopRatedMovies(new Callback<Movie.MovieResult>() {
+                @Override
+                public void success(Movie.MovieResult movieResult, Response response) {
+                    mAdapter.setMovieList(movieResult.getResults());
+                }
 
-            @Override
-            public void failure(RetrofitError error) {
-                error.printStackTrace();
-            }
-        });
+                @Override
+                public void failure(RetrofitError error) {
+                    error.printStackTrace();
+                }
+            });
+        } else {
+            service.getPopularMovies(new Callback<Movie.MovieResult>() {
+                @Override
+                public void success(Movie.MovieResult movieResult, Response response) {
+                    mAdapter.setMovieList(movieResult.getResults());
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    error.printStackTrace();
+                }
+            });
+        }
     }
 
 
