@@ -130,6 +130,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
         mToast.show();
+
+        //Intent to fire the detailed activity, need to figure out how to send the id later :)
+        Intent intent = new Intent(this, DetailActivity.class);
+        startActivity(intent);
     }
 
     private void initRetrofit (int key) {
