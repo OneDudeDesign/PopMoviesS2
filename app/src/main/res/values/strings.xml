@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Top 20 Movies</string>
     <string name="TMDB_API_KEY" translatable="false">fd66dfefac539c5f745200aadb175e4d</string>
+    <string name="detail_movie_title">Movie Title</string>
+    <string name="detail_overview">Whole bunch of gibberish stuff that fills a couple of lines on the screen by wrapping and tells you about the movie before you watch it</string>
+    <string name="detail_year_placeholder">2017</string>
+    <string name="detail_runtime_placeholder">120 min</string>
+    <string name="detail_rating_placeholder">8.1/10</string>
+    <string name="detail_act_minute_format">Minutes</string>
+    <string name="detail_act_rating_format">/10</string>
 </resources>
