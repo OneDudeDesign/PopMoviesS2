@@ -8,4 +8,10 @@
     <string name="detail_rating_placeholder">8.1/10</string>
     <string name="detail_act_minute_format">Minutes</string>
     <string name="detail_act_rating_format">/10</string>
+    <string name="sort_by_popular">Sort by Popular</string>
+    <string name="sort_by_top_rated">Sort by Top Rated</string>
+    <string name="no_network_message">A Network Connection is required to retrieve Movie information. Please check your connection and reload the application.</string>
 </resources>
+
+<!--INSERT TMDB.org API Key int String resource TMDB_API_KEY above^^^
+Application will not work without this set -->

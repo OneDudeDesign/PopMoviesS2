@@ -12,13 +12,15 @@ import retrofit.http.GET;
 
 public interface MovieApiService {
 
-
+        //GET statement to fetch popular movies
         @GET("/movie/popular")
         void getPopularMovies(Callback<Movie.MovieResult> cb);
 
+        //GET statement to fetch top rated movies
         @GET("/movie/top_rated")
         void getTopRatedMovies(Callback<Movie.MovieResult> cb);
 
+        //GET statement to fetch movie details note use of Path_Param requires its name in braces
         @GET("/movie/{movie_id}")
         void getMovie(Callback<MovieDetail> cb);
     }

@@ -10,5 +10,5 @@
         android:textAlignment="center"
         android:textSize="34sp"
         android:textStyle="bold"
-        android:text="A Network Connection is required to retrieve Movie information. Please check your connection and reload the application." />
+        android:text="@string/no_network_message" />
 </LinearLayout>

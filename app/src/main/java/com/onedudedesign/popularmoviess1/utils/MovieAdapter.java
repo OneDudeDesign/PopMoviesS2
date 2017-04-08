@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
+/*
  * Created by clucier on 4/4/17.
  * Adapter to feed the movie information to the Recyclerview
  */
@@ -26,7 +26,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     private Context mContext;
     private ListItemClickListener mOnClickListener;
 
-    /**
+    /*
      * The interface that receives onClick messages.
      */
     public interface ListItemClickListener {
@@ -71,10 +71,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
             itemView.setOnClickListener(this);
 
         }
-        /**
-         * Called whenever a user clicks on an item in the list.
-         * @param v The View that was clicked
-         */
+
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
@@ -99,11 +96,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
-    public String fetchMovieTitle(int index) {
-        Movie movie = this.mMovieList.get(index);
-        String fetchedTitle = movie.getMovieTitle();
-        return fetchedTitle;
-    }
     public int fetchMovieID(int index) {
         Movie movie = this.mMovieList.get(index);
         int fetchedID = movie.getMovieID();
