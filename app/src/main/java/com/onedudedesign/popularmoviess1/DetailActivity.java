@@ -3,10 +3,14 @@ package com.onedudedesign.popularmoviess1;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.onedudedesign.popularmoviess1.Models.MovieDetail;
 import com.onedudedesign.popularmoviess1.utils.MovieApiService;
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -27,13 +31,6 @@ public class DetailActivity extends AppCompatActivity {
 
         Intent intent = this.getIntent();
         movieID = intent.getStringExtra("movieID");
-
-        //Test for int in path param
-        final int intMovieID = 315837;
-
-        //Test to see if I get the correct ID from the intent
-        TextView sentID = (TextView) findViewById(R.id.movieIDSent);
-        sentID.setText("Movie ID Sent : " + movieID);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3/")
@@ -64,25 +61,31 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateData () {
-        TextView title = (TextView) findViewById(R.id.movieTitle);
-        title.setText("Movie Title : " + mDetail.getMovieTitle());
+        //add new populate activitiesbased on the new design
 
-        TextView id = (TextView) findViewById(R.id.movieID);
-        id.setText("Movie ID : " + mDetail.getMovieID());
+        TextView title = (TextView) findViewById(R.id.detailMovieTitle);
+        title.setText(mDetail.getMovieTitle());
 
-        TextView poster = (TextView) findViewById(R.id.moviePosterPath);
-        poster.setText("Movie Poster Path : " + mDetail.getMoviePoster());
+        TextView year = (TextView) findViewById(R.id.detailYearReleased);
+        String base = mDetail.getMovieReleaseDate();
+        String yearString = base.substring(0,4);
+        year.setText(yearString);
 
-        TextView overview = (TextView) findViewById(R.id.movieOverview);
-        overview.setText("Movie Overview : " + mDetail.getMovieSynopsis());
+        TextView runtime = (TextView) findViewById(R.id.detailRunTime);
+        runtime.setText(mDetail.getMovieRunTime() + " Minutes");
 
-        TextView vote = (TextView) findViewById(R.id.movieVoteAverage);
-        vote.setText("Movie Vote Average : " + mDetail.getMovieTmdbRating());
+        TextView rating = (TextView) findViewById(R.id.detailRating);
+        rating.setText(mDetail.getMovieTmdbRating() + "/10");
 
-        TextView release = (TextView) findViewById(R.id.movieReleaseDate);
-        release.setText("Movie Release Date : " + mDetail.getMovieReleaseDate());
+        TextView overview = (TextView) findViewById(R.id.detailSynopsis);
+        overview.setText(mDetail.getMovieSynopsis());
 
-        TextView runtime = (TextView) findViewById(R.id.movieRuntime);
-        runtime.setText("Movie Runtime : " + mDetail.getMovieRunTime());
-    }
+        ImageView poster = (ImageView) findViewById(R.id.detailPosterImage);
+
+        Picasso.with(this)
+                .load("http://image.tmdb.org/t/p/w300/" + mDetail.getMoviePoster())
+                .placeholder(R.drawable.placeholder) //this is optional the image to display while the url image is downloading
+                .error(R.drawable.error)         //this is also optional if some error has occurred in downloading the image this image would be displayed
+                .into(poster);
+     }
 }
