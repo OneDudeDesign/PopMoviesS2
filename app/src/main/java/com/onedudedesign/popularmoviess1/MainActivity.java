@@ -29,23 +29,13 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-
-
-public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener{
+//Extending ListItemClick listener to handle clicks in the Grid for going to movie detail
+public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener {
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
-    private static final String TMDB_API_KEY = "fd66dfefac539c5f745200aadb175e4d";
     private static final int POPULAR = 0;
     private static final int TOP_RATED = 1;
-
-    /*
-     * If we hold a reference to our Toast, we can cancel it (if it's showing)
-     * to display a new Toast. If we didn't do this, Toasts would be delayed
-     * in showing up if you clicked many list items in quick succession.
-     */
-    private Toast mToast;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,15 +47,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         //set the Gridview Layout Manager with 2 columns
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
 
+        //Set the gridlayout manager and connect it with the adapter
         mRecyclerView.setLayoutManager(gridLayoutManager);
-        mAdapter = new MovieAdapter(this,this);
+        mAdapter = new MovieAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
+        //create the Movie list for the main screen and set it on the adapter
         List<Movie> movies = new ArrayList<>();
-
         mAdapter.setMovieList(movies);
 
-        //check if the network is connected, if not fire intent to network message
+        /* make the call to retrofit method to get query the TMDB api unless there is no network
+        then display a message that the network is disconnected.
+        Using the Static POPULAR int type to force the loading of Popular movies endpoint
+        by default (used also in the case statement on the spinner to toggle between endpoints */
+
         if (isNetworkConnected()) {
             initRetrofit(POPULAR);
         } else {
@@ -85,74 +80,67 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuPopular:
-                Toast.makeText(this,"Selected Popular", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Popular Movies Loaded", Toast.LENGTH_LONG).show();
                 initRetrofit(POPULAR);
+                mRecyclerView.scrollToPosition(0);
                 return true;
             case R.id.menuTopRated:
-                Toast.makeText(this,"Selected Top Rated",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Top Rated Movies Loaded", Toast.LENGTH_LONG).show();
                 initRetrofit(TOP_RATED);
+                //used to reset the grid back to the top otherwise it loads and displays where
+                //the view was currently scrolled and maybe confusing
+                mRecyclerView.scrollToPosition(0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
-    /**
-     * This is where we receive our callback from
-     * {@link MovieAdapter.ListItemClickListener}
-     *
-     * This callback is invoked when you click on an item in the list.
-     *
-     * @param clickedItemIndex Index in the list of the item that was clicked.
-     */
+
+    //receive callback from clicks in the Grid
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        /*
-         * Even if a Toast isn't showing, it's okay to cancel it. Doing so
-         * ensures that our new Toast will show immediately, rather than
-         * being delayed while other pending Toasts are shown.
-         *
-         * Comment out these three lines, run the app, and click on a bunch of
-         * different items if you're not sure what I'm talking about.
-         */
-        //if (mToast != null) {
-        //    mToast.cancel();
-        //}
 
-        /*
-         * Create a Toast and store it in our Toast field.
-         * The Toast that shows up will have a message similar to the following:
-         *
-         *                     Item #42 clicked.
-         */
-        //String s = mAdapter.fetchMovieTitle(clickedItemIndex);
+        //store the TMDB ID of the movie clicked
         int id = mAdapter.fetchMovieID(clickedItemIndex);
 
-        //String toastMessage = "Item #" + clickedItemIndex + " clicked. " + "Name: " + s + "TMDB.org ID: " + String.valueOf(id);
-        //mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
-
-        //mToast.show();
-
-        //Intent to fire the detailed activity, need to figure out how to send the id later :)
+        //fire the intent to the detailed activity passing the movie ID in EXTRA
         Intent intent = new Intent(this, DetailActivity.class);
         intent.putExtra("movieID", String.valueOf(id));
         startActivity(intent);
     }
 
-    private void initRetrofit (int key) {
+    private void initRetrofit(int key) {
+
+        /* using squareup's retrofit to simplify the fetching and parsing of the JSON
+        using the Callback method allows cleaner code as it handles the background threading
+        keeping the networrk calls off the main thread without having to code in Async tasks
+
+        pull the api key from the String resource file keeping it there as it is used in
+        multiple places and needs to be pulled out (legally) when sharing the code and replaced
+        by the reviewers own API key or permission to use a key if the app where to be deployed
+        commercially needs to be obtained */
+
+        final String api_key = getResources().getString(R.string.TMDB_API_KEY);
+
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://api.themoviedb.org/3/")
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key", TMDB_API_KEY);
+                        request.addEncodedQueryParam("api_key", api_key);
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
 
 
-
         MovieApiService service = restAdapter.create(MovieApiService.class);
+
+        /* using the passed in key that comes from the static POPULAR and TOPRATED variables to
+        select which service call to make depending on the typoe of movies the user wants to see
+        from the settings menu selection (look to clean this up later with a class for the service
+        call in Stage 2 when i understand more regarding Retrofit
+        (also look at going to v2 from 1.9) */
 
         if (key == 1) {
             service.getTopRatedMovies(new Callback<Movie.MovieResult>() {
@@ -164,6 +152,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 @Override
                 public void failure(RetrofitError error) {
                     error.printStackTrace();
+                    //TODO put in a message screen that the data grab failed
                 }
             });
         } else {
@@ -176,13 +165,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 @Override
                 public void failure(RetrofitError error) {
                     error.printStackTrace();
+                    //TODO put in a message screen that the data grab failed
                 }
             });
         }
     }
 
 
-    //Check for network connection method goes here
+    //Check for network connection and warn the user if not available
     public boolean isNetworkConnected() {
         ConnectivityManager cm =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -192,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     //intent method for no network launches network warning activity
     public void noNetwork() {
-        Toast.makeText(this, "No Network", Toast.LENGTH_LONG).show();
         Context context = MainActivity.this;
         Class destinationActivity = NoNetwork.class;
         Intent intent = new Intent(context, destinationActivity);

@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Top 20 Movies</string>
+    <string name="TMDB_API_KEY" translatable="false">fd66dfefac539c5f745200aadb175e4d</string>
 </resources>
