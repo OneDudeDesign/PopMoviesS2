@@ -61,7 +61,6 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void populateData () {
-        //add new populate activitiesbased on the new design
 
         TextView title = (TextView) findViewById(R.id.detailMovieTitle);
         title.setText(mDetail.getMovieTitle());
