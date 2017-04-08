@@ -29,7 +29,6 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static android.R.attr.id;
 
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener{

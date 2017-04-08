@@ -83,9 +83,10 @@ public class DetailActivity extends AppCompatActivity {
         ImageView poster = (ImageView) findViewById(R.id.detailPosterImage);
 
         Picasso.with(this)
-                .load("http://image.tmdb.org/t/p/w300/" + mDetail.getMoviePoster())
+                .load("http://image.tmdb.org/t/p/w500/" + mDetail.getMoviePoster())
                 .placeholder(R.drawable.placeholder) //this is optional the image to display while the url image is downloading
                 .error(R.drawable.error)         //this is also optional if some error has occurred in downloading the image this image would be displayed
                 .into(poster);
      }
 }
+//todo fix scrolling as overview off some screens and landscape
