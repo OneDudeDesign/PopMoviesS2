@@ -26,11 +26,11 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        getSupportActionBar().setTitle("Movie Details");
+        getSupportActionBar().setTitle(R.string.detail_activity_title);
 
         //receiving the Movie ID from the clicked item from MainActivity
         Intent intent = this.getIntent();
-        movieID = intent.getStringExtra("movieID");
+        movieID = intent.getStringExtra(getString(R.string.intent_movie_id));
 
         final String api_key = getResources().getString(R.string.TMDB_API_KEY);
 
@@ -38,12 +38,12 @@ public class DetailActivity extends AppCompatActivity {
         because we will need additional information not returned in the Popular and Toprated
         queries */
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://api.themoviedb.org/3/")
+                .setEndpoint(getString(R.string.tmdb_api_endpoint))
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addPathParam("movie_id", movieID);
-                        request.addEncodedQueryParam("api_key", api_key);
+                        request.addPathParam(getString(R.string.tmdb_movie_id_path_param), movieID);
+                        request.addEncodedQueryParam(getString(R.string.tmdb_api_key_query_param), api_key);
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -89,7 +89,7 @@ public class DetailActivity extends AppCompatActivity {
         ImageView poster = (ImageView) findViewById(R.id.detailPosterImage);
         //using Picasso to deal with image retrieval and caching in background thread
         Picasso.with(this)
-                .load("http://image.tmdb.org/t/p/w500/" + mDetail.getMoviePoster())
+                .load(getString(R.string.detail_tmdb_image_path) + mDetail.getMoviePoster())
                 .placeholder(R.drawable.placeholder) //displays temop image while loading
                 .error(R.drawable.error) //displays an error image if the load fails
                 .into(poster);

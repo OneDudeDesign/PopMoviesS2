@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuPopular:
-                Toast.makeText(this, "Popular Movies Loaded", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.pop_movies_loaded_toast, Toast.LENGTH_LONG).show();
                 initRetrofit(POPULAR);
                 mRecyclerView.scrollToPosition(0);
                 return true;
             case R.id.menuTopRated:
-                Toast.makeText(this, "Top Rated Movies Loaded", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.top_movies_loaded_toast, Toast.LENGTH_LONG).show();
                 initRetrofit(TOP_RATED);
                 //used to reset the grid back to the top otherwise it loads and displays where
                 //the view was currently scrolled and maybe confusing
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
         //fire the intent to the detailed activity passing the movie ID in EXTRA
         Intent intent = new Intent(this, DetailActivity.class);
-        intent.putExtra("movieID", String.valueOf(id));
+        intent.putExtra(getString(R.string.intent_movie_id), String.valueOf(id));
         startActivity(intent);
     }
 
@@ -123,11 +123,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         final String api_key = getResources().getString(R.string.TMDB_API_KEY);
 
         RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://api.themoviedb.org/3/")
+                .setEndpoint(getString(R.string.tmdb_api_endpoint_v3))
                 .setRequestInterceptor(new RequestInterceptor() {
                     @Override
                     public void intercept(RequestFacade request) {
-                        request.addEncodedQueryParam("api_key", api_key);
+                        request.addEncodedQueryParam(getString(R.string.tmdb_api_key_query_param), api_key);
                     }
                 })
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 @Override
                 public void failure(RetrofitError error) {
                     error.printStackTrace();
-                    //TODO put in a message screen that the data grab failed
                 }
             });
         } else {
@@ -165,7 +164,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 @Override
                 public void failure(RetrofitError error) {
                     error.printStackTrace();
-                    //TODO put in a message screen that the data grab failed
                 }
             });
         }

@@ -2,13 +2,7 @@ package com.onedudedesign.popularmoviess1.Models;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by clucier on 4/7/17.
- */
-
 public class MovieDetail {
-
-    public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
 
     //Setup the data variables
     @SerializedName("title")
