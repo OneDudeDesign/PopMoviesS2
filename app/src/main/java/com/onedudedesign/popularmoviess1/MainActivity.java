@@ -29,6 +29,8 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static android.R.attr.id;
+
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener{
 
@@ -113,9 +115,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
          * Comment out these three lines, run the app, and click on a bunch of
          * different items if you're not sure what I'm talking about.
          */
-        if (mToast != null) {
-            mToast.cancel();
-        }
+        //if (mToast != null) {
+        //    mToast.cancel();
+        //}
 
         /*
          * Create a Toast and store it in our Toast field.
@@ -123,13 +125,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
          *
          *                     Item #42 clicked.
          */
-        String s = mAdapter.fetchMovieTitle(clickedItemIndex);
+        //String s = mAdapter.fetchMovieTitle(clickedItemIndex);
         int id = mAdapter.fetchMovieID(clickedItemIndex);
 
-        String toastMessage = "Item #" + clickedItemIndex + " clicked. " + "Name: " + s + "TMDB.org ID: " + String.valueOf(id);
-        mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
+        //String toastMessage = "Item #" + clickedItemIndex + " clicked. " + "Name: " + s + "TMDB.org ID: " + String.valueOf(id);
+        //mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
-        mToast.show();
+        //mToast.show();
 
         //Intent to fire the detailed activity, need to figure out how to send the id later :)
         Intent intent = new Intent(this, DetailActivity.class);
