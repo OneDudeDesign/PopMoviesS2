@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="detailTitleVerticalPadding">32dp</dimen>
+    <dimen name="detailTitleHorizontalPadding">16dp</dimen>
+    <dimen name="view_line_height">2dp</dimen>
+    <dimen name="detailViewImagePosterWidthFixed">150dp</dimen>
+    <dimen name="detailViewImagePosterHeightFixed">200dp</dimen>
+    <dimen name="detailViewPosterPadding">8dp</dimen>
+    <dimen name="detailViewYearPadding">8dp</dimen>
+    <dimen name="detailviewTextSize_Year">24sp</dimen>
+    <dimen name="detailViewRuntimePadding">8dp</dimen>
+    <dimen name="detailViewTextSize_RunTime">20sp</dimen>
+    <dimen name="detailViewRatingPadding">8dp</dimen>
+    <dimen name="detailViewSynopsisPadding">8dp</dimen>
+</resources>

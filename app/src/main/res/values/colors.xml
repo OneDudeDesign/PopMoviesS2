@@ -3,5 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!-- Main Gridview Colors-->
     <color name="greenScreenPlaceholder">#66CD00</color>
+    <!-- DetailView Colors -->
+    <color name="detailTitleBarBackground">#005A66</color>
+    <color name="detailTitleTextColor">#ffffff</color>
+    <color name="viewLineColor">#000000</color>
 </resources>
