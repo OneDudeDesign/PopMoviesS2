@@ -1,7 +1,7 @@
-package com.onedudedesign.popularmoviess1.utils;
+package com.onedudedesign.popularmoviess2.utils;
 
-import com.onedudedesign.popularmoviess1.Models.Movie;
-import com.onedudedesign.popularmoviess1.Models.MovieDetail;
+import com.onedudedesign.popularmoviess2.Models.Movie;
+import com.onedudedesign.popularmoviess2.Models.MovieDetail;
 
 import retrofit.Callback;
 import retrofit.http.GET;

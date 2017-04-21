@@ -1,4 +1,4 @@
-package com.onedudedesign.popularmoviess1;
+package com.onedudedesign.popularmoviess2;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,8 +6,8 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.onedudedesign.popularmoviess1.Models.MovieDetail;
-import com.onedudedesign.popularmoviess1.utils.MovieApiService;
+import com.onedudedesign.popularmoviess2.Models.MovieDetail;
+import com.onedudedesign.popularmoviess2.utils.MovieApiService;
 import com.squareup.picasso.Picasso;
 
 import retrofit.Callback;

@@ -1,4 +1,4 @@
-package com.onedudedesign.popularmoviess1.Models;
+package com.onedudedesign.popularmoviess2.Models;
 
 import com.google.gson.annotations.SerializedName;
 

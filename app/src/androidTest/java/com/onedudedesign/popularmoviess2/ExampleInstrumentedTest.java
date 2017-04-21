@@ -1,4 +1,4 @@
-package com.onedudedesign.popularmoviess1;
+package com.onedudedesign.popularmoviess2;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

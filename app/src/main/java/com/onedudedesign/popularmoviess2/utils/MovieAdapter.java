@@ -1,4 +1,4 @@
-package com.onedudedesign.popularmoviess1.utils;
+package com.onedudedesign.popularmoviess2.utils;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -7,8 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.onedudedesign.popularmoviess1.Models.Movie;
-import com.onedudedesign.popularmoviess1.R;
+import com.onedudedesign.popularmoviess2.Models.Movie;
+import com.onedudedesign.popularmoviess2.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

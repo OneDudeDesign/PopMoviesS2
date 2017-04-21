@@ -1,4 +1,4 @@
-package com.onedudedesign.popularmoviess1;
+package com.onedudedesign.popularmoviess2;
 
 
 import android.content.Context;
@@ -14,10 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.onedudedesign.popularmoviess1.Models.Movie;
-import com.onedudedesign.popularmoviess1.utils.MovieAdapter;
-import com.onedudedesign.popularmoviess1.utils.MovieApiService;
-import com.onedudedesign.popularmoviess1.utils.NoNetwork;
+import com.onedudedesign.popularmoviess2.Models.Movie;
+import com.onedudedesign.popularmoviess2.utils.MovieAdapter;
+import com.onedudedesign.popularmoviess2.utils.MovieApiService;
+import com.onedudedesign.popularmoviess2.utils.NoNetwork;
 
 
 import java.util.ArrayList;
