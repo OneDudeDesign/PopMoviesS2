@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.onedudedesign.popularmoviess2.DetailActivity"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:context="com.onedudedesign.popularmoviess2.DetailActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/detailMovieTitle"
+            style="@style/TextAppearance.AppCompat.Display1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/detailTitleBarBackground"
@@ -20,9 +20,8 @@
             android:paddingEnd="@dimen/detailTitleHorizontalPadding"
             android:paddingStart="@dimen/detailTitleHorizontalPadding"
             android:paddingTop="@dimen/detailTitleVerticalPadding"
-            tools:text="@string/detail_movie_title"
             android:textColor="@color/detailTitleTextColor"
-            style="@style/TextAppearance.AppCompat.Display1"/>
+            tools:text="@string/detail_movie_title" />
 
 
         <View
@@ -55,25 +54,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/detailViewYearPadding"
-                    tools:text="@string/detail_year_placeholder"
-                    android:textSize="@dimen/detailviewTextSize_Year" />
+                    android:textSize="@dimen/detailviewTextSize_Year"
+                    tools:text="@string/detail_year_placeholder" />
 
                 <TextView
                     android:id="@+id/detailRunTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/detailViewRuntimePadding"
-                    tools:text="@string/detail_runtime_placeholder"
-                    android:textSize="@dimen/detailViewTextSize_RunTime" />
+                    android:textSize="@dimen/detailViewTextSize_RunTime"
+                    tools:text="@string/detail_runtime_placeholder" />
 
                 <TextView
                     android:id="@+id/detailRating"
+                    style="@style/Base.TextAppearance.AppCompat.Inverse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/detailViewRatingPadding"
-                    tools:text="@string/detail_rating_placeholder"
                     android:textColor="#000000"
-                    style="@style/Base.TextAppearance.AppCompat.Inverse"/>
+                    tools:text="@string/detail_rating_placeholder" />
 
             </LinearLayout>
 
@@ -86,13 +85,10 @@
 
         <TextView
             android:id="@+id/detailSynopsis"
+            style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/detailViewSynopsisPadding"
-            android:text="@string/detail_overview"
-             style="@style/TextAppearance.AppCompat.Medium"/>
-        <!--android:textSize="18sp" -->
-
-
+            android:text="@string/detail_overview" />
     </LinearLayout>
 </ScrollView>
