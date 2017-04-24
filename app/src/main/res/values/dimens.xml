@@ -14,5 +14,5 @@
     <dimen name="detailViewSynopsisPadding">8dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="constraintMatchParent0dp">0dp</dimen>
-    <dimen name="detailConstraintBackdropHeight">120dp</dimen>
+    <dimen name="detailConstraintBackdropHeight">220dp</dimen>
 </resources>

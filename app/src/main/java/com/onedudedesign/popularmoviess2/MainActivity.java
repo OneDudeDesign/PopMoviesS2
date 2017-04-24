@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         int id = mAdapter.fetchMovieID(clickedItemIndex);
 
         //fire the intent to the detailed activity passing the movie ID in EXTRA
-        Intent intent = new Intent(this, DetailActivity.class);
+        Intent intent = new Intent(this, DetailConstraint.class);
         intent.putExtra(getString(R.string.intent_movie_id), String.valueOf(id));
         startActivity(intent);
     }
