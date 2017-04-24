@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.onedudedesign.popularmoviess2.DetailConstraint">
+
+    <ImageView
+        android:id="@+id/detailConstraintImageViewBackdrop"
+        android:layout_width="@dimen/constraintMatchParent0dp"
+        android:layout_height="@dimen/detailConstraintBackdropHeight"
+        android:background="@color/greenScreenPlaceholder"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/placeholder" />
+
+    <TextView
+        android:id="@+id/detailConstraintTextViewMovieTitle"
+        style="@style/TextAppearance.AppCompat.Display1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/detailTitleHorizontalPadding"
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/detailConstraintImageViewBackdrop"
+        app:layout_constraintLeft_toLeftOf="@+id/detailConstraintImageViewBackdrop"
+        app:layout_constraintTop_toBottomOf="@+id/detailConstraintImageViewBackdrop"
+        tools:text="Movie Title" /> <!-- Replace with a good color to go over the backdrop images  -->
+
+    <View
+        android:id="@+id/dcview2"
+        android:layout_width="@dimen/constraintMatchParent0dp"
+        android:layout_height="@dimen/view_line_height"
+        android:background="@color/viewLineColor"
+        app:layout_constraintTop_toBottomOf="@+id/detailConstraintImageViewBackdrop" />
+
+    <ImageView
+        android:id="@+id/detailConstraintPosterImage"
+        android:layout_width="@dimen/detailViewImagePosterWidthFixed"
+        android:layout_height="@dimen/detailViewImagePosterHeightFixed"
+        android:background="@color/greenScreenPlaceholder"
+        android:paddingBottom="@dimen/detailViewPosterPadding"
+        android:paddingTop="@dimen/detailViewPosterPadding"
+        android:scaleType="centerInside"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dcview2"
+        app:srcCompat="@drawable/placeholder" />
+
+    <TextView
+        android:id="@+id/detailConstraintYearReleased"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:padding="@dimen/detailViewYearPadding"
+        android:textSize="@dimen/detailViewTextSize_Year"
+        app:layout_constraintHorizontal_bias="0.25"
+        app:layout_constraintLeft_toRightOf="@+id/detailConstraintPosterImage"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailConstraintImageViewBackdrop"
+        tools:text="@string/detail_year_placeholder" />
+
+    <TextView
+        android:id="@+id/detailConstraintRunTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/detailViewRuntimePadding"
+        android:textSize="@dimen/detailViewTextSize_RunTime"
+        app:layout_constraintLeft_toLeftOf="@+id/detailConstraintYearReleased"
+        app:layout_constraintTop_toBottomOf="@+id/detailConstraintYearReleased"
+        tools:text="@string/detail_runtime_placeholder" />
+
+    <TextView
+        android:id="@+id/detailConstraintRating"
+        style="@style/Base.TextAppearance.AppCompat.Inverse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/detailViewRatingPadding"
+        android:textColor="@color/viewLineColor"
+        app:layout_constraintLeft_toLeftOf="@+id/detailConstraintRunTime"
+        app:layout_constraintTop_toBottomOf="@+id/detailConstraintRunTime"
+        tools:text="@string/detail_rating_placeholder" />
+
+    <View
+        android:id="@+id/dcview1"
+        android:layout_width="@dimen/constraintMatchParent0dp"
+        android:layout_height="@dimen/view_line_height"
+        android:background="@color/viewLineColor"
+        app:layout_constraintTop_toBottomOf="@+id/detailConstraintPosterImage" />
+
+    <TextView
+        android:id="@+id/detailConstraintSynopsis"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="@dimen/constraintMatchParent0dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/detailViewSynopsisPadding"
+        android:text="@string/detail_overview"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/dcview1" />
+
+</android.support.constraint.ConstraintLayout>

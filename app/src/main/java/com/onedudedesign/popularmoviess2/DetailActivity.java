@@ -72,6 +72,7 @@ public class DetailActivity extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.detailMovieTitle);
         title.setText(mDetail.getMovieTitle());
 
+
         TextView year = (TextView) findViewById(R.id.detailYearReleased);
         String base = mDetail.getMovieReleaseDate();
         String yearString = base.substring(0,4);
