@@ -19,8 +19,11 @@
             android:layout_height="@dimen/detailConstraintBackdropHeight"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/placeholder" />
+            app:layout_constraintTop_toBottomOf="@+id/detailConstraintTextViewMovieTitle"
+            app:srcCompat="@drawable/placeholder"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
 
         <TextView
             android:id="@+id/detailConstraintTextViewMovieTitle"
@@ -30,18 +33,24 @@
             android:layout_marginStart="@dimen/detailTitleHorizontalPadding"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/detailConstraintImageViewBackdrop"
-            app:layout_constraintLeft_toLeftOf="@+id/detailConstraintImageViewBackdrop"
-            app:layout_constraintTop_toBottomOf="@+id/detailConstraintImageViewBackdrop"
             tools:text="Movie Title"
-            android:visibility="invisible"/> <!-- Replace with a good color to go over the backdrop images  -->
+            app:layout_constraintBottom_toTopOf="@+id/detailConstraintImageViewBackdrop"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_bias="0.5"
+            android:layout_marginBottom="8dp" />
 
         <View
             android:id="@+id/dcview2"
             android:layout_width="@dimen/constraintMatchParent0dp"
             android:layout_height="@dimen/view_line_height"
             android:background="@color/viewLineColor"
-            app:layout_constraintTop_toBottomOf="@+id/detailConstraintImageViewBackdrop" />
+            app:layout_constraintTop_toBottomOf="@+id/detailConstraintImageViewBackdrop"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp" />
 
         <ImageView
             android:id="@+id/detailConstraintPosterImage"
@@ -52,20 +61,22 @@
             android:scaleType="centerInside"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dcview2"
-            app:srcCompat="@drawable/placeholder" />
+            app:srcCompat="@drawable/placeholder"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/detailConstraintYearReleased"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:padding="@dimen/detailViewYearPadding"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detailViewTextSize_Year"
-            app:layout_constraintHorizontal_bias="0.25"
+            app:layout_constraintHorizontal_bias="0.255"
             app:layout_constraintLeft_toRightOf="@+id/detailConstraintPosterImage"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/detailConstraintImageViewBackdrop"
+            app:layout_constraintTop_toBottomOf="@+id/dcview2"
             tools:text="@string/detail_year_placeholder" />
 
         <TextView
@@ -77,7 +88,9 @@
             android:textSize="@dimen/detailViewTextSize_RunTime"
             app:layout_constraintLeft_toLeftOf="@+id/detailConstraintYearReleased"
             app:layout_constraintTop_toBottomOf="@+id/detailConstraintYearReleased"
-            tools:text="@string/detail_runtime_placeholder" />
+            tools:text="@string/detail_runtime_placeholder"
+            android:layout_marginLeft="1dp"
+            android:layout_marginTop="2dp" />
 
         <TextView
             android:id="@+id/detailConstraintRating"
@@ -88,14 +101,18 @@
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toLeftOf="@+id/detailConstraintRunTime"
             app:layout_constraintTop_toBottomOf="@+id/detailConstraintRunTime"
-            tools:text="@string/detail_rating_placeholder" />
-
+            tools:text="@string/detail_rating_placeholder"
+            android:layout_marginLeft="-1dp"
+            android:layout_marginTop="-1dp" />
         <View
             android:id="@+id/dcview1"
             android:layout_width="@dimen/constraintMatchParent0dp"
             android:layout_height="@dimen/view_line_height"
-            android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@+id/detailConstraintPosterImage" />
+            android:background="@color/viewLineColor"
+            app:layout_constraintTop_toBottomOf="@+id/detailConstraintPosterImage"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginTop="8dp" />
 
         <TextView
             android:id="@+id/detailConstraintSynopsis"
@@ -106,8 +123,12 @@
             android:textColor="@android:color/white"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dcview1"
-            tools:text="@string/detail_overview" />
+            tools:text="@string/detail_overview"
+            app:layout_constraintHorizontal_bias="0.0"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/detailConstraintPosterImage"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

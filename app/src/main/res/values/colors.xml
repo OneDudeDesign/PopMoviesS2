@@ -8,5 +8,5 @@
     <!-- DetailView Colors -->
     <color name="detailTitleBarBackground">#005A66</color>
     <color name="detailTitleTextColor">#ffffff</color>
-    <color name="viewLineColor">#000000</color>
+    <color name="viewLineColor">#FFFFFF</color>
 </resources>
