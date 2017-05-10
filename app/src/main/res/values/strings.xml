@@ -19,7 +19,7 @@
     <string name="tmdb_movie_id_path_param">movie_id</string>
     <string name="tmdb_api_key_query_param">api_key</string>
     <string name="detail_tmdb_image_path">http://image.tmdb.org/t/p/w342/</string>
-    <string name="detail_tmdb_backdrop_path">http://image.tmdb.org/t/p/w342</string>
+    <string name="detail_tmdb_backdrop_path">http://image.tmdb.org/t/p/w780</string>
     <string name="intent_movie_id">movieID</string>
     <string name="pop_movies_loaded_toast">Popular Movies Loaded</string>
     <string name="top_movies_loaded_toast">Top Rated Movies Loaded</string>
