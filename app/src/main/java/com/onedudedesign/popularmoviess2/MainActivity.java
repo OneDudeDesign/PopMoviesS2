@@ -3,6 +3,7 @@ package com.onedudedesign.popularmoviess2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,8 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
+import static android.R.id.message;
+
 //Extending ListItemClick listener to handle clicks in the Grid for going to movie detail
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener {
 
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private MovieAdapter mAdapter;
     private static final int POPULAR = 0;
     private static final int TOP_RATED = 1;
+    private int mSortOrder;
+    public static final String SORT_ORDER = "SortOrder";
+    public static final int sortThrowAway = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +65,14 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         /* make the call to retrofit method to get query the TMDB api unless there is no network
         then display a message that the network is disconnected.
         Using the Static POPULAR int type to force the loading of Popular movies endpoint
-        by default (used also in the case statement on the spinner to toggle between endpoints */
+        by default (used also in the case statement on the spinner to toggle between endpoints.
+         Fetch the sort order preference from the shared preferences file to make the call with the
+         users preferred sort order*/
+
+        mSortOrder = getSharedPreferenceSortOrder();
 
         if (isNetworkConnected()) {
-            initRetrofit(POPULAR);
+            initRetrofit(mSortOrder);
         } else {
             noNetwork();
         }
@@ -81,12 +91,18 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         switch (item.getItemId()) {
             case R.id.menuPopular:
                 Toast.makeText(this, R.string.pop_movies_loaded_toast, Toast.LENGTH_LONG).show();
-                initRetrofit(POPULAR);
+                //set the shared preferences to POPULAR and refresh the grid
+                setSharedPreferenceSortOrder(POPULAR);
+                mSortOrder = POPULAR;
+                initRetrofit(mSortOrder);
                 mRecyclerView.scrollToPosition(0);
                 return true;
             case R.id.menuTopRated:
                 Toast.makeText(this, R.string.top_movies_loaded_toast, Toast.LENGTH_LONG).show();
-                initRetrofit(TOP_RATED);
+                //set the Shared Preferences to TOP_RATED and refresh the grid
+                setSharedPreferenceSortOrder(TOP_RATED);
+                mSortOrder = TOP_RATED;
+                initRetrofit(mSortOrder);
                 //used to reset the grid back to the top otherwise it loads and displays where
                 //the view was currently scrolled and maybe confusing
                 mRecyclerView.scrollToPosition(0);
@@ -184,5 +200,29 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         Class destinationActivity = NoNetwork.class;
         Intent intent = new Intent(context, destinationActivity);
         startActivity(intent);
+    }
+
+    //bundle the sort order into the saved instance state
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //outState.putInt("sortOrder", mSortOrder);
+        super.onSaveInstanceState(outState);
+    }
+
+    //Set shared preferences method to save the sort order
+    public void setSharedPreferenceSortOrder (int sortOrder) {
+        SharedPreferences.Editor editor = getSharedPreferences(SORT_ORDER, MODE_PRIVATE).edit();
+        editor.putInt("sortOrder", sortOrder);
+        editor.commit();
+    }
+
+    //getter for the shared preferences for sort order
+    public int getSharedPreferenceSortOrder () {
+        SharedPreferences prefs = getSharedPreferences(SORT_ORDER, MODE_PRIVATE);
+        int restoredSortOrder = prefs.getInt("sortOrder", sortThrowAway);
+        if (restoredSortOrder != sortThrowAway) {
+            int sortOrder = prefs.getInt("sortOrder", POPULAR); //POPULAR is the default value.
+            return  sortOrder;
+        } else return POPULAR;
     }
 }

@@ -82,7 +82,7 @@ public class DetailConstraint extends AppCompatActivity {
         //using Picasso to deal with image retrieval and caching in background thread
         Picasso.with(this)
                 .load(getString(R.string.detail_tmdb_backdrop_path) + mDetail.getMovieBackdrop())
-                .placeholder(R.drawable.placeholder) //displays temop image while loading
+                .placeholder(R.drawable.placeholder) //displays temp image while loading
                 .error(R.drawable.error) //displays an error image if the load fails
                 .into(backdrop);
 
@@ -150,11 +150,6 @@ public class DetailConstraint extends AppCompatActivity {
 
         MovieApiService service = restAdapter.create(MovieApiService.class);
 
-        /* using the passed in key that comes from the static POPULAR and TOPRATED variables to
-        select which service call to make depending on the typoe of movies the user wants to see
-        from the settings menu selection (look to clean this up later with a class for the service
-        call in Stage 2 when i understand more regarding Retrofit
-        (also look at going to v2 from 1.9) */
 
         service.getMovieTrailers(new Callback<MovieTrailers.MovieTrailerResult>() {
             @Override
