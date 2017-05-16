@@ -25,6 +25,8 @@
     <string name="top_movies_loaded_toast">Top Rated Movies Loaded</string>
     <string name="tmdb_api_endpoint_v3">http://api.themoviedb.org/3/</string>
     <string name="title_activity_detail_scroll_constraint">DetailScrollConstraint</string>
+    <string name="detail_yt_trailerimage_httphead">http://i.ytimg.com/vi/</string>
+    <string name="detail_yt_trailerimage_quality">/hqdefault.jpg</string>
     <string name="large_text">
         "Material is the metaphor.\n\n"
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import retrofit.client.Response;
 
 import static android.R.attr.key;
 import static android.R.attr.privateImeOptions;
+import static com.onedudedesign.popularmoviess2.R.drawable.error;
 
 public class DetailConstraint extends AppCompatActivity {
 
@@ -83,7 +85,7 @@ public class DetailConstraint extends AppCompatActivity {
         Picasso.with(this)
                 .load(getString(R.string.detail_tmdb_backdrop_path) + mDetail.getMovieBackdrop())
                 .placeholder(R.drawable.placeholder) //displays temp image while loading
-                .error(R.drawable.error) //displays an error image if the load fails
+                .error(error) //displays an error image if the load fails
                 .into(backdrop);
 
         TextView title = (TextView) findViewById(R.id.detailConstraintTextViewMovieTitle);
@@ -109,12 +111,24 @@ public class DetailConstraint extends AppCompatActivity {
         Picasso.with(this)
                 .load(getString(R.string.detail_tmdb_image_path) + mDetail.getMoviePoster())
                 .placeholder(R.drawable.placeholder) //displays temop image while loading
-                .error(R.drawable.error) //displays an error image if the load fails
+                .error(error) //displays an error image if the load fails
                 .into(poster);
 
+        //fetch the trailer data nd put it into an array
         fetchTrailers();
 
-        //try getting data from the arraylist
+        /*set the two trailer image and text views
+
+        if (mMovieTrailerList.size() > 0) {
+            int size = mMovieTrailerList.size();
+            switch(size) {
+                case 1: populateTrailer1(); break;
+                default:
+                    populateTrailer1();
+                    populateTrailer2();
+            }
+
+        } */
 
 
 
@@ -158,10 +172,18 @@ public class DetailConstraint extends AppCompatActivity {
                 mMovieTrailerList.clear();
                 mMovieTrailerList.addAll(movieTrailerResult.getResults());
 
-                for (int i = 0; i < mMovieTrailerList.size(); i++) {
-                    MovieTrailers mt = mMovieTrailerList.get(i);
-                    Log.d("Trailer Name..  ",mt.getTrailerName());
+                //test to confirm array size
+                Log.d("Array Size", String.valueOf(mMovieTrailerList.size()));
 
+                int arraySize = mMovieTrailerList.size();
+                if (arraySize > 0) {
+                    switch (arraySize) {
+                        case 1: populateTrailer1(); break;
+                        case 2: populateTrailer1();populateTrailer2(); break;
+                        case 3: populateTrailer1();populateTrailer2();populateTrailer3(); break;
+                        default: populateTrailer1(); populateTrailer2();
+                            populateTrailer3();populateTrailer4();
+                    }
                 }
 
             }
@@ -171,6 +193,85 @@ public class DetailConstraint extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void populateTrailer1 () {
+        MovieTrailers mt = mMovieTrailerList.get(0);
+        Log.d("Trailer Name", mt.getTrailerName());
+        ImageView iVTrailer1 = (ImageView)findViewById(R.id.trailerImageView1);
+        Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
+                + getString(R.string.detail_yt_trailerimage_quality));
+        Picasso.with(this)
+                .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
+                        + getString(R.string.detail_yt_trailerimage_quality))
+                .placeholder(R.drawable.placeholder) //displays temop image while loading
+                .error(error) //displays an error image if the load fails
+                .into(iVTrailer1);
+        TextView tVTrailer1 = (TextView)findViewById(R.id.trailerTextview1);
+        tVTrailer1.setText(mt.getTrailerName());
+        iVTrailer1.setVisibility(View.VISIBLE);
+        tVTrailer1.setVisibility(View.VISIBLE);
+
+    }
+
+    private void populateTrailer2 () {
+
+        MovieTrailers mt = mMovieTrailerList.get(1);
+        Log.d("Trailer Name", mt.getTrailerName());
+        ImageView iVTrailer2 = (ImageView)findViewById(R.id.trailerImageView2);
+        Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
+                + getString(R.string.detail_yt_trailerimage_quality));
+        Picasso.with(this)
+                .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
+                        + getString(R.string.detail_yt_trailerimage_quality))
+                .placeholder(R.drawable.placeholder) //displays temop image while loading
+                .error(error) //displays an error image if the load fails
+                .into(iVTrailer2);
+        TextView tVTrailer2 = (TextView)findViewById(R.id.trailerTextview2);
+        tVTrailer2.setText(mt.getTrailerName());
+        iVTrailer2.setVisibility(View.VISIBLE);
+        tVTrailer2.setVisibility(View.VISIBLE);
+
+    }
+
+    private void populateTrailer3 () {
+
+        MovieTrailers mt = mMovieTrailerList.get(2);
+        Log.d("Trailer Name", mt.getTrailerName());
+        ImageView iVTrailer3 = (ImageView)findViewById(R.id.trailerImageView3);
+        Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
+                + getString(R.string.detail_yt_trailerimage_quality));
+        Picasso.with(this)
+                .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
+                        + getString(R.string.detail_yt_trailerimage_quality))
+                .placeholder(R.drawable.placeholder) //displays temop image while loading
+                .error(error) //displays an error image if the load fails
+                .into(iVTrailer3);
+        TextView tVTrailer3 = (TextView)findViewById(R.id.trailerTextview3);
+        tVTrailer3.setText(mt.getTrailerName());
+        iVTrailer3.setVisibility(View.VISIBLE);
+        tVTrailer3.setVisibility(View.VISIBLE);
+
+    }
+
+    private void populateTrailer4 () {
+
+        MovieTrailers mt = mMovieTrailerList.get(3);
+        Log.d("Trailer Name", mt.getTrailerName());
+        ImageView iVTrailer4 = (ImageView)findViewById(R.id.trailerImageView4);
+        Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
+                + getString(R.string.detail_yt_trailerimage_quality));
+        Picasso.with(this)
+                .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
+                        + getString(R.string.detail_yt_trailerimage_quality))
+                .placeholder(R.drawable.placeholder) //displays temop image while loading
+                .error(error) //displays an error image if the load fails
+                .into(iVTrailer4);
+        TextView tVTrailer4 = (TextView)findViewById(R.id.trailerTextview4);
+        tVTrailer4.setText(mt.getTrailerName());
+        iVTrailer4.setVisibility(View.VISIBLE);
+        tVTrailer4.setVisibility(View.VISIBLE);
 
     }
 
