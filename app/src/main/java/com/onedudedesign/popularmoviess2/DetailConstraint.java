@@ -1,6 +1,8 @@
 package com.onedudedesign.popularmoviess2;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,22 +119,6 @@ public class DetailConstraint extends AppCompatActivity {
         //fetch the trailer data nd put it into an array
         fetchTrailers();
 
-        /*set the two trailer image and text views
-
-        if (mMovieTrailerList.size() > 0) {
-            int size = mMovieTrailerList.size();
-            switch(size) {
-                case 1: populateTrailer1(); break;
-                default:
-                    populateTrailer1();
-                    populateTrailer2();
-            }
-
-        } */
-
-
-
-
 
     }
 
@@ -197,7 +183,7 @@ public class DetailConstraint extends AppCompatActivity {
     }
 
     private void populateTrailer1 () {
-        MovieTrailers mt = mMovieTrailerList.get(0);
+        final MovieTrailers mt = mMovieTrailerList.get(0);
         Log.d("Trailer Name", mt.getTrailerName());
         ImageView iVTrailer1 = (ImageView)findViewById(R.id.trailerImageView1);
         Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
@@ -213,11 +199,24 @@ public class DetailConstraint extends AppCompatActivity {
         iVTrailer1.setVisibility(View.VISIBLE);
         tVTrailer1.setVisibility(View.VISIBLE);
 
+        tVTrailer1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("TrailerClick  ", "Trailer 1 Text was clicked");
+                watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
+        iVTrailer1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("TrailerClick  ", "Trailer 1 Image was clicked");
+                watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
+
     }
 
     private void populateTrailer2 () {
 
-        MovieTrailers mt = mMovieTrailerList.get(1);
+        final MovieTrailers mt = mMovieTrailerList.get(1);
         Log.d("Trailer Name", mt.getTrailerName());
         ImageView iVTrailer2 = (ImageView)findViewById(R.id.trailerImageView2);
         Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
@@ -233,11 +232,24 @@ public class DetailConstraint extends AppCompatActivity {
         iVTrailer2.setVisibility(View.VISIBLE);
         tVTrailer2.setVisibility(View.VISIBLE);
 
+        tVTrailer2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("TrailerClick  ", "Trailer 1 Text was clicked");
+                watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
+        iVTrailer2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("TrailerClick  ", "Trailer 1 Image was clicked");
+                watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
+
     }
 
     private void populateTrailer3 () {
 
-        MovieTrailers mt = mMovieTrailerList.get(2);
+        final MovieTrailers mt = mMovieTrailerList.get(2);
         Log.d("Trailer Name", mt.getTrailerName());
         ImageView iVTrailer3 = (ImageView)findViewById(R.id.trailerImageView3);
         Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
@@ -253,11 +265,24 @@ public class DetailConstraint extends AppCompatActivity {
         iVTrailer3.setVisibility(View.VISIBLE);
         tVTrailer3.setVisibility(View.VISIBLE);
 
+        tVTrailer3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("TrailerClick  ", "Trailer 1 Text was clicked");
+                watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
+        iVTrailer3.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("TrailerClick  ", "Trailer 1 Image was clicked");
+                watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
+
     }
 
     private void populateTrailer4 () {
 
-        MovieTrailers mt = mMovieTrailerList.get(3);
+        final MovieTrailers mt = mMovieTrailerList.get(3);
         Log.d("Trailer Name", mt.getTrailerName());
         ImageView iVTrailer4 = (ImageView)findViewById(R.id.trailerImageView4);
         Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
@@ -272,7 +297,30 @@ public class DetailConstraint extends AppCompatActivity {
         tVTrailer4.setText(mt.getTrailerName());
         iVTrailer4.setVisibility(View.VISIBLE);
         tVTrailer4.setVisibility(View.VISIBLE);
+        tVTrailer4.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("TrailerClick  ", "Trailer 1 Text was clicked");
+                watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
+        iVTrailer4.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Log.d("TrailerClick  ", "Trailer 1 Image was clicked");
+                watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
 
+    }
+
+    public void watchYoutubeVideo(String id){
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent webIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("http://www.youtube.com/watch?v=" + id));
+        try {
+            startActivity(appIntent);
+        } catch (ActivityNotFoundException ex) {
+            startActivity(webIntent);
+        }
     }
 
 
