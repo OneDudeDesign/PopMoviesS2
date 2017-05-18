@@ -103,6 +103,23 @@
             app:layout_constraintTop_toBottomOf="@+id/detailConstraintRunTime"
             tools:text="@string/detail_rating_placeholder" />
 
+        <CheckBox
+            android:id="@+id/favoriteCheckbox"
+            style="@style/CustomCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/checkBoxGold"
+            android:checked="false"
+            android:onClick="updateFavoritesDb"
+            android:padding="8dp"
+            android:text="@string/favorite"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/detailViewTextSize_RunTime"
+            app:layout_constraintLeft_toLeftOf="@id/detailConstraintRating"
+            app:layout_constraintTop_toBottomOf="@id/detailConstraintRating"
+
+            />
+
         <View
             android:id="@+id/dcview1"
             android:layout_width="0dp"

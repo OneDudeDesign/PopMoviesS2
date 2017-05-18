@@ -8,4 +8,21 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <!-- Custom Checkbox theme -->
+    <style name="CustomCheckBox">
+        <item name="android:theme">@style/CheckBoxAppTheme</item>
+    </style>
+
+    <style name="CheckBoxAppTheme">
+        <item name="android:colorAccent">
+            @color/checkBoxGold
+        </item>
+        <item name="android:colorControlNormal">
+            @color/checkBoxGold
+        </item>
+        <item name="android:colorControlHighlight">
+            @color/checkBoxGold
+        </item>
+    </style>
+
 </resources>

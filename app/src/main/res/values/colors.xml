@@ -9,4 +9,5 @@
     <color name="detailTitleBarBackground">#005A66</color>
     <color name="detailTitleTextColor">#ffffff</color>
     <color name="viewLineColor">#FFFFFF</color>
+    <color name="checkBoxGold">#FFFFFF</color>
 </resources>

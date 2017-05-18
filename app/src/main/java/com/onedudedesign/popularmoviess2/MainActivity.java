@@ -4,6 +4,7 @@ package com.onedudedesign.popularmoviess2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
@@ -15,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
 import com.onedudedesign.popularmoviess2.Models.Movie;
 import com.onedudedesign.popularmoviess2.utils.MovieAdapter;
 import com.onedudedesign.popularmoviess2.utils.MovieApiService;

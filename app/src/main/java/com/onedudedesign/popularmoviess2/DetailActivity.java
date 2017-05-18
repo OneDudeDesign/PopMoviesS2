@@ -1,12 +1,18 @@
+
+
 package com.onedudedesign.popularmoviess2;
+/*This is the original movie detail activity it is no longer used but left for reference while
+ * working on the code in the new detailconstraint activity */
+
+import android.support.v7.app.AppCompatActivity;
+
+import com.onedudedesign.popularmoviess2.Models.MovieDetail;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.onedudedesign.popularmoviess2.Models.MovieDetail;
 import com.onedudedesign.popularmoviess2.utils.MovieApiService;
 import com.squareup.picasso.Picasso;
 

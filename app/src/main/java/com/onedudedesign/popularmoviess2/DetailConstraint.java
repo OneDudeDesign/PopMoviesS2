@@ -2,15 +2,19 @@ package com.onedudedesign.popularmoviess2;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.onedudedesign.popularmoviess2.Models.Movie;
+
+import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
+import com.onedudedesign.popularmoviess2.Cupboard.MovieFavorite;
 import com.onedudedesign.popularmoviess2.Models.MovieDetail;
 import com.onedudedesign.popularmoviess2.Models.MovieTrailers;
 import com.onedudedesign.popularmoviess2.utils.MovieApiService;
@@ -25,15 +29,16 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static android.R.attr.key;
-import static android.R.attr.privateImeOptions;
+
 import static com.onedudedesign.popularmoviess2.R.drawable.error;
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class DetailConstraint extends AppCompatActivity {
 
     private MovieDetail mDetail = new MovieDetail();
     private String movieID;
     private List<MovieTrailers> mMovieTrailerList;
+    private SQLiteDatabase mDB;  //open and close the DB in onResume and onPause to free resources
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +85,10 @@ public class DetailConstraint extends AppCompatActivity {
     }
 
     //populate the detail activity screen
-    private void populateData () {
+    private void populateData() {
+
+        //check if the movie is favorite and set the checkbox
+        checkIfFavorite();
 
         ImageView backdrop = (ImageView) findViewById(R.id.detailConstraintImageViewBackdrop);
         //using Picasso to deal with image retrieval and caching in background thread
@@ -96,7 +104,7 @@ public class DetailConstraint extends AppCompatActivity {
 
         TextView year = (TextView) findViewById(R.id.detailConstraintYearReleased);
         String base = mDetail.getMovieReleaseDate();
-        String yearString = base.substring(0,4);
+        String yearString = base.substring(0, 4);
         year.setText(yearString);
 
         TextView runtime = (TextView) findViewById(R.id.detailConstraintRunTime);
@@ -120,9 +128,10 @@ public class DetailConstraint extends AppCompatActivity {
         fetchTrailers();
 
 
+
     }
 
-    private void fetchTrailers () {
+    private void fetchTrailers() {
 
         /* using squareup's retrofit to simplify the fetching and parsing of the JSON
         using the Callback method allows cleaner code as it handles the background threading
@@ -164,11 +173,23 @@ public class DetailConstraint extends AppCompatActivity {
                 int arraySize = mMovieTrailerList.size();
                 if (arraySize > 0) {
                     switch (arraySize) {
-                        case 1: populateTrailer1(); break;
-                        case 2: populateTrailer1();populateTrailer2(); break;
-                        case 3: populateTrailer1();populateTrailer2();populateTrailer3(); break;
-                        default: populateTrailer1(); populateTrailer2();
-                            populateTrailer3();populateTrailer4();
+                        case 1:
+                            populateTrailer1();
+                            break;
+                        case 2:
+                            populateTrailer1();
+                            populateTrailer2();
+                            break;
+                        case 3:
+                            populateTrailer1();
+                            populateTrailer2();
+                            populateTrailer3();
+                            break;
+                        default:
+                            populateTrailer1();
+                            populateTrailer2();
+                            populateTrailer3();
+                            populateTrailer4();
                     }
                 }
 
@@ -182,10 +203,10 @@ public class DetailConstraint extends AppCompatActivity {
 
     }
 
-    private void populateTrailer1 () {
+    private void populateTrailer1() {
         final MovieTrailers mt = mMovieTrailerList.get(0);
         Log.d("Trailer Name", mt.getTrailerName());
-        ImageView iVTrailer1 = (ImageView)findViewById(R.id.trailerImageView1);
+        ImageView iVTrailer1 = (ImageView) findViewById(R.id.trailerImageView1);
         Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                 + getString(R.string.detail_yt_trailerimage_quality));
         Picasso.with(this)
@@ -194,7 +215,7 @@ public class DetailConstraint extends AppCompatActivity {
                 .placeholder(R.drawable.placeholder) //displays temop image while loading
                 .error(error) //displays an error image if the load fails
                 .into(iVTrailer1);
-        TextView tVTrailer1 = (TextView)findViewById(R.id.trailerTextview1);
+        TextView tVTrailer1 = (TextView) findViewById(R.id.trailerTextview1);
         tVTrailer1.setText(mt.getTrailerName());
         iVTrailer1.setVisibility(View.VISIBLE);
         tVTrailer1.setVisibility(View.VISIBLE);
@@ -214,11 +235,11 @@ public class DetailConstraint extends AppCompatActivity {
 
     }
 
-    private void populateTrailer2 () {
+    private void populateTrailer2() {
 
         final MovieTrailers mt = mMovieTrailerList.get(1);
         Log.d("Trailer Name", mt.getTrailerName());
-        ImageView iVTrailer2 = (ImageView)findViewById(R.id.trailerImageView2);
+        ImageView iVTrailer2 = (ImageView) findViewById(R.id.trailerImageView2);
         Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                 + getString(R.string.detail_yt_trailerimage_quality));
         Picasso.with(this)
@@ -227,7 +248,7 @@ public class DetailConstraint extends AppCompatActivity {
                 .placeholder(R.drawable.placeholder) //displays temop image while loading
                 .error(error) //displays an error image if the load fails
                 .into(iVTrailer2);
-        TextView tVTrailer2 = (TextView)findViewById(R.id.trailerTextview2);
+        TextView tVTrailer2 = (TextView) findViewById(R.id.trailerTextview2);
         tVTrailer2.setText(mt.getTrailerName());
         iVTrailer2.setVisibility(View.VISIBLE);
         tVTrailer2.setVisibility(View.VISIBLE);
@@ -247,11 +268,11 @@ public class DetailConstraint extends AppCompatActivity {
 
     }
 
-    private void populateTrailer3 () {
+    private void populateTrailer3() {
 
         final MovieTrailers mt = mMovieTrailerList.get(2);
         Log.d("Trailer Name", mt.getTrailerName());
-        ImageView iVTrailer3 = (ImageView)findViewById(R.id.trailerImageView3);
+        ImageView iVTrailer3 = (ImageView) findViewById(R.id.trailerImageView3);
         Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                 + getString(R.string.detail_yt_trailerimage_quality));
         Picasso.with(this)
@@ -260,7 +281,7 @@ public class DetailConstraint extends AppCompatActivity {
                 .placeholder(R.drawable.placeholder) //displays temop image while loading
                 .error(error) //displays an error image if the load fails
                 .into(iVTrailer3);
-        TextView tVTrailer3 = (TextView)findViewById(R.id.trailerTextview3);
+        TextView tVTrailer3 = (TextView) findViewById(R.id.trailerTextview3);
         tVTrailer3.setText(mt.getTrailerName());
         iVTrailer3.setVisibility(View.VISIBLE);
         tVTrailer3.setVisibility(View.VISIBLE);
@@ -280,11 +301,11 @@ public class DetailConstraint extends AppCompatActivity {
 
     }
 
-    private void populateTrailer4 () {
+    private void populateTrailer4() {
 
         final MovieTrailers mt = mMovieTrailerList.get(3);
         Log.d("Trailer Name", mt.getTrailerName());
-        ImageView iVTrailer4 = (ImageView)findViewById(R.id.trailerImageView4);
+        ImageView iVTrailer4 = (ImageView) findViewById(R.id.trailerImageView4);
         Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                 + getString(R.string.detail_yt_trailerimage_quality));
         Picasso.with(this)
@@ -293,7 +314,7 @@ public class DetailConstraint extends AppCompatActivity {
                 .placeholder(R.drawable.placeholder) //displays temop image while loading
                 .error(error) //displays an error image if the load fails
                 .into(iVTrailer4);
-        TextView tVTrailer4 = (TextView)findViewById(R.id.trailerTextview4);
+        TextView tVTrailer4 = (TextView) findViewById(R.id.trailerTextview4);
         tVTrailer4.setText(mt.getTrailerName());
         iVTrailer4.setVisibility(View.VISIBLE);
         tVTrailer4.setVisibility(View.VISIBLE);
@@ -312,7 +333,7 @@ public class DetailConstraint extends AppCompatActivity {
 
     }
 
-    public void watchYoutubeVideo(String id){
+    public void watchYoutubeVideo(String id) {
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://www.youtube.com/watch?v=" + id));
@@ -323,5 +344,55 @@ public class DetailConstraint extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Instantiate the favorites database
+        CupboardDbHelper dbHelper = new CupboardDbHelper(this);
+        mDB = dbHelper.getWritableDatabase();
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mDB.close();
+    }
+
+    public void updateFavoritesDb(View view) {
+        // Is the view now checked?
+        boolean checked = ((CheckBox) view).isChecked();
+
+        if (checked) {
+            Log.d("Favorite Clicked", "Box is checked we should insert or update the DB");
+
+            //insert the db record using mDetail info
+            MovieFavorite favorite = new MovieFavorite(movieID,
+                    mDetail.getMovieTitle(),
+                    mDetail.getMoviePoster(),
+                    mDetail.getMovieSynopsis(),
+                    mDetail.getMovieTmdbRating(),
+                    mDetail.getMovieReleaseDate(),
+                    mDetail.getMovieBackdrop(),
+                    true);
+
+            long id = cupboard().withDatabase(mDB).put(favorite);
+
+        } else {
+            Log.d("Favorite Clicked", "Box is unchecked we should delete the favorite from the DB");
+            cupboard().withDatabase(mDB).delete(MovieFavorite.class, "movie_id = ?", movieID);
+
+        }
+    }
+
+    //method to check if this movie is in the favorites DB and set the favorite
+    // checkbox when the detail loads
+    private void checkIfFavorite () {
+        MovieFavorite favorite = cupboard().withDatabase(mDB).query(MovieFavorite.class)
+                .withSelection( "movie_id = ?", movieID).get();
+        if (favorite != null) {
+            CheckBox cb = (CheckBox)findViewById(R.id.favoriteCheckbox);
+                    cb.setChecked(true);
+        }
+
+    }
 }
