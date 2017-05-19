@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
 import com.onedudedesign.popularmoviess2.Models.Movie;
+import com.onedudedesign.popularmoviess2.utils.FavoriteMovieCursorAdapterRV;
 import com.onedudedesign.popularmoviess2.utils.MovieAdapter;
 import com.onedudedesign.popularmoviess2.utils.MovieApiService;
 import com.onedudedesign.popularmoviess2.utils.NoNetwork;
@@ -39,8 +40,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
+    private FavoriteMovieCursorAdapterRV mFavoriteAdapter;
     private static final int POPULAR = 0;
     private static final int TOP_RATED = 1;
+    private static final int FAVORITE = 2;
     private int mSortOrder;
     public static final String SORT_ORDER = "SortOrder";
     public static final int sortThrowAway = 0;
@@ -74,7 +77,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         mSortOrder = getSharedPreferenceSortOrder();
 
         if (isNetworkConnected()) {
-            initRetrofit(mSortOrder);
+            if (mSortOrder == FAVORITE) {
+                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this);
+                mRecyclerView.setAdapter(mFavoriteAdapter);
+
+            } else {
+                initRetrofit(mSortOrder);
+            }
         } else {
             noNetwork();
         }
@@ -107,6 +116,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 initRetrofit(mSortOrder);
                 //used to reset the grid back to the top otherwise it loads and displays where
                 //the view was currently scrolled and maybe confusing
+                mRecyclerView.scrollToPosition(0);
+                return true;
+            case R.id.menuFavorites:
+                Toast.makeText(this, "Favorites Loaded", Toast.LENGTH_LONG).show();
+                //set the shared preferences to FAVORITE and refresh the grid
+                setSharedPreferenceSortOrder(FAVORITE);
+                mSortOrder = FAVORITE;
+                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this);
+                mRecyclerView.setAdapter(mFavoriteAdapter);
                 mRecyclerView.scrollToPosition(0);
                 return true;
             default:
@@ -164,6 +182,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             service.getTopRatedMovies(new Callback<Movie.MovieResult>() {
                 @Override
                 public void success(Movie.MovieResult movieResult, Response response) {
+                    //need to change the adptar since we have both the list and cursor for the db
+                    mRecyclerView.setAdapter(mAdapter);
                     mAdapter.setMovieList(movieResult.getResults());
                 }
 
@@ -176,6 +196,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             service.getPopularMovies(new Callback<Movie.MovieResult>() {
                 @Override
                 public void success(Movie.MovieResult movieResult, Response response) {
+                    //need to change the adptar since we have both the list and cursor for the db
+                    mRecyclerView.setAdapter(mAdapter);
                     mAdapter.setMovieList(movieResult.getResults());
                 }
 
@@ -212,19 +234,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     }
 
     //Set shared preferences method to save the sort order
-    public void setSharedPreferenceSortOrder (int sortOrder) {
+    public void setSharedPreferenceSortOrder(int sortOrder) {
         SharedPreferences.Editor editor = getSharedPreferences(SORT_ORDER, MODE_PRIVATE).edit();
         editor.putInt("sortOrder", sortOrder);
         editor.commit();
     }
 
     //getter for the shared preferences for sort order
-    public int getSharedPreferenceSortOrder () {
+    public int getSharedPreferenceSortOrder() {
         SharedPreferences prefs = getSharedPreferences(SORT_ORDER, MODE_PRIVATE);
         int restoredSortOrder = prefs.getInt("sortOrder", sortThrowAway);
         if (restoredSortOrder != sortThrowAway) {
             int sortOrder = prefs.getInt("sortOrder", POPULAR); //POPULAR is the default value.
-            return  sortOrder;
+            return sortOrder;
         } else return POPULAR;
     }
 }
