@@ -8,6 +8,8 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by clucier on 5/17/17.
+ * Using Cupboard instead of a content provider to store the data in SQLLite for the favorites
+ * for simplification it uses a POJO for the model similar to Retrofit for the JSON calls
  */
 
 public class CupboardDbHelper extends SQLiteOpenHelper {
@@ -20,15 +22,14 @@ public class CupboardDbHelper extends SQLiteOpenHelper {
     }
 
     static {
-        // register our models
+        // register the POJO model
         cupboard().register(MovieFavorite.class);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // this will ensure that all tables are created
+        // create the tables
         cupboard().withDatabase(db).createTables();
-        // add indexes and other database tweaks in this method if you want
 
     }
 
@@ -38,7 +39,7 @@ public class CupboardDbHelper extends SQLiteOpenHelper {
         cupboard().withDatabase(db).upgradeTables();
         // this will upgrade tables, adding columns and new tables.
         // Note that existing columns will not be converted
-        // will need to use this are for migration work once released if columns change
+        // any migration work for future state can be done here
 
     }
 

@@ -33,7 +33,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         void onListItemClick(int clickedItemIndex, String movieID);
     }
 
-    public MovieAdapter (Context context, ListItemClickListener listener) {
+    public MovieAdapter(Context context, ListItemClickListener listener) {
         this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         mOnClickListener = listener;
@@ -60,6 +60,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
                 .into(holder.imageView);
 
     }
+
     public class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView imageView;
 
@@ -98,9 +99,4 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         notifyDataSetChanged();
     }
 
-    public int fetchMovieID(int index) {
-        Movie movie = this.mMovieList.get(index);
-        int fetchedID = movie.getMovieID();
-        return fetchedID;
-    }
 }

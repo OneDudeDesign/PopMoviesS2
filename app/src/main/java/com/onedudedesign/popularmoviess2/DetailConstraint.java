@@ -39,6 +39,10 @@ public class DetailConstraint extends AppCompatActivity {
     private String movieID;
     private List<MovieTrailers> mMovieTrailerList;
     private SQLiteDatabase mDB;  //open and close the DB in onResume and onPause to free resources
+    private static final int trailer1 = 0;
+    private static final int trailer2 = 1;
+    private static final int trailer3 = 2;
+    private static final int trailer4 = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,19 +132,12 @@ public class DetailConstraint extends AppCompatActivity {
         fetchTrailers();
 
 
-
     }
 
     private void fetchTrailers() {
 
-        /* using squareup's retrofit to simplify the fetching and parsing of the JSON
-        using the Callback method allows cleaner code as it handles the background threading
-        keeping the networrk calls off the main thread without having to code in Async tasks
-
-        pull the api key from the String resource file keeping it there as it is used in
-        multiple places and needs to be pulled out (legally) when sharing the code and replaced
-        by the reviewers own API key or permission to use a key if the app where to be deployed
-        commercially needs to be obtained */
+        //fetching the trailer info from TMDB this is in a different endpoint
+        // defined in the MovieAPIService
 
         final String api_key = getResources().getString(R.string.TMDB_API_KEY);
 
@@ -161,13 +158,18 @@ public class DetailConstraint extends AppCompatActivity {
 
 
         service.getMovieTrailers(new Callback<MovieTrailers.MovieTrailerResult>() {
+            /* n many cases the movie has a few different trailers, in some cases there were
+            more than 18 attached in order to keep the interface cleaner decided to only use
+            from 1 to 4 trailers instead of a list view otherwise the user has to scroll a
+            long way to get to reviews
+             */
             @Override
             public void success(MovieTrailers.MovieTrailerResult movieTrailerResult, Response response) {
                 mMovieTrailerList = new ArrayList<>();
                 mMovieTrailerList.clear();
                 mMovieTrailerList.addAll(movieTrailerResult.getResults());
 
-                //test to confirm array size
+                //confirm array size
                 Log.d("Array Size", String.valueOf(mMovieTrailerList.size()));
 
                 int arraySize = mMovieTrailerList.size();
@@ -204,11 +206,9 @@ public class DetailConstraint extends AppCompatActivity {
     }
 
     private void populateTrailer1() {
-        final MovieTrailers mt = mMovieTrailerList.get(0);
-        Log.d("Trailer Name", mt.getTrailerName());
+        final MovieTrailers mt = mMovieTrailerList.get(trailer1);
         ImageView iVTrailer1 = (ImageView) findViewById(R.id.trailerImageView1);
-        Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
-                + getString(R.string.detail_yt_trailerimage_quality));
+
         Picasso.with(this)
                 .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                         + getString(R.string.detail_yt_trailerimage_quality))
@@ -222,13 +222,11 @@ public class DetailConstraint extends AppCompatActivity {
 
         tVTrailer1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("TrailerClick  ", "Trailer 1 Text was clicked");
                 watchYoutubeVideo(mt.getYoutubeKey());
             }
         });
         iVTrailer1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("TrailerClick  ", "Trailer 1 Image was clicked");
                 watchYoutubeVideo(mt.getYoutubeKey());
             }
         });
@@ -237,11 +235,9 @@ public class DetailConstraint extends AppCompatActivity {
 
     private void populateTrailer2() {
 
-        final MovieTrailers mt = mMovieTrailerList.get(1);
-        Log.d("Trailer Name", mt.getTrailerName());
+        final MovieTrailers mt = mMovieTrailerList.get(trailer2);
         ImageView iVTrailer2 = (ImageView) findViewById(R.id.trailerImageView2);
-        Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
-                + getString(R.string.detail_yt_trailerimage_quality));
+
         Picasso.with(this)
                 .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                         + getString(R.string.detail_yt_trailerimage_quality))
@@ -255,13 +251,11 @@ public class DetailConstraint extends AppCompatActivity {
 
         tVTrailer2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("TrailerClick  ", "Trailer 1 Text was clicked");
                 watchYoutubeVideo(mt.getYoutubeKey());
             }
         });
         iVTrailer2.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("TrailerClick  ", "Trailer 1 Image was clicked");
                 watchYoutubeVideo(mt.getYoutubeKey());
             }
         });
@@ -270,11 +264,9 @@ public class DetailConstraint extends AppCompatActivity {
 
     private void populateTrailer3() {
 
-        final MovieTrailers mt = mMovieTrailerList.get(2);
-        Log.d("Trailer Name", mt.getTrailerName());
+        final MovieTrailers mt = mMovieTrailerList.get(trailer3);
         ImageView iVTrailer3 = (ImageView) findViewById(R.id.trailerImageView3);
-        Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
-                + getString(R.string.detail_yt_trailerimage_quality));
+
         Picasso.with(this)
                 .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                         + getString(R.string.detail_yt_trailerimage_quality))
@@ -288,13 +280,11 @@ public class DetailConstraint extends AppCompatActivity {
 
         tVTrailer3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("TrailerClick  ", "Trailer 1 Text was clicked");
                 watchYoutubeVideo(mt.getYoutubeKey());
             }
         });
         iVTrailer3.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("TrailerClick  ", "Trailer 1 Image was clicked");
                 watchYoutubeVideo(mt.getYoutubeKey());
             }
         });
@@ -303,11 +293,9 @@ public class DetailConstraint extends AppCompatActivity {
 
     private void populateTrailer4() {
 
-        final MovieTrailers mt = mMovieTrailerList.get(3);
-        Log.d("Trailer Name", mt.getTrailerName());
+        final MovieTrailers mt = mMovieTrailerList.get(trailer4);
         ImageView iVTrailer4 = (ImageView) findViewById(R.id.trailerImageView4);
-        Log.d("Trailer image path: ", getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
-                + getString(R.string.detail_yt_trailerimage_quality));
+
         Picasso.with(this)
                 .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                         + getString(R.string.detail_yt_trailerimage_quality))
@@ -320,13 +308,11 @@ public class DetailConstraint extends AppCompatActivity {
         tVTrailer4.setVisibility(View.VISIBLE);
         tVTrailer4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("TrailerClick  ", "Trailer 1 Text was clicked");
                 watchYoutubeVideo(mt.getYoutubeKey());
             }
         });
         iVTrailer4.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("TrailerClick  ", "Trailer 1 Image was clicked");
                 watchYoutubeVideo(mt.getYoutubeKey());
             }
         });
@@ -334,6 +320,7 @@ public class DetailConstraint extends AppCompatActivity {
     }
 
     public void watchYoutubeVideo(String id) {
+        //try to launch the Youtube app and if not available launch the trailer in web intent
         Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("http://www.youtube.com/watch?v=" + id));
@@ -363,9 +350,8 @@ public class DetailConstraint extends AppCompatActivity {
         boolean checked = ((CheckBox) view).isChecked();
 
         if (checked) {
-            Log.d("Favorite Clicked", "Box is checked we should insert or update the DB");
 
-            //insert the db record using mDetail info
+            //insert the db record using mDetail info if favorite is checked
             MovieFavorite favorite = new MovieFavorite(movieID,
                     mDetail.getMovieTitle(),
                     mDetail.getMoviePoster(),
@@ -378,20 +364,20 @@ public class DetailConstraint extends AppCompatActivity {
             long id = cupboard().withDatabase(mDB).put(favorite);
 
         } else {
-            Log.d("Favorite Clicked", "Box is unchecked we should delete the favorite from the DB");
+            //remove the favorite from the DB if favorite is unchecked
             cupboard().withDatabase(mDB).delete(MovieFavorite.class, "movie_id = ?", movieID);
 
         }
     }
 
     //method to check if this movie is in the favorites DB and set the favorite
-    // checkbox when the detail loads
-    private void checkIfFavorite () {
+    // checkbox when the moviedetail loads
+    private void checkIfFavorite() {
         MovieFavorite favorite = cupboard().withDatabase(mDB).query(MovieFavorite.class)
-                .withSelection( "movie_id = ?", movieID).get();
+                .withSelection("movie_id = ?", movieID).get();
         if (favorite != null) {
-            CheckBox cb = (CheckBox)findViewById(R.id.favoriteCheckbox);
-                    cb.setChecked(true);
+            CheckBox cb = (CheckBox) findViewById(R.id.favoriteCheckbox);
+            cb.setChecked(true);
         }
 
     }

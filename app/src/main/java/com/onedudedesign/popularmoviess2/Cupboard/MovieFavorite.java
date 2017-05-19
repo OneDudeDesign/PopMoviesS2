@@ -1,7 +1,5 @@
 package com.onedudedesign.popularmoviess2.Cupboard;
 
-import static android.R.attr.name;
-
 /**
  * Created by clucier on 5/17/17.
  * This is the POJO for CUpboard to create the database for the Movie Favorites

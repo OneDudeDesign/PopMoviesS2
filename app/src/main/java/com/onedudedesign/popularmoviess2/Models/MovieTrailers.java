@@ -11,7 +11,6 @@ import java.util.List;
 public class MovieTrailers {
 
 
-
     //Setup the data variables
     @SerializedName("name")
     private String trailerName;

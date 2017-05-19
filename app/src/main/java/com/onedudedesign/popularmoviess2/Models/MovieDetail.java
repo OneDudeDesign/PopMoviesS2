@@ -2,6 +2,11 @@ package com.onedudedesign.popularmoviess2.Models;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Created by clucier on 4/4/17.
+ * This is the class to define a Movie Object to be used by the Adapter
+ */
+
 public class MovieDetail {
 
     //Setup the data variables
@@ -29,6 +34,7 @@ public class MovieDetail {
     @SerializedName("runtime")
     private String movieRunTime;
 
+    //getters and setters
     public String getMovieTitle() {
         return movieTitle;
     }

@@ -36,53 +36,53 @@ public class Movie {
     private int movieID;
 
     //method to get the movie title
-    public String getMovieTitle () {
+    public String getMovieTitle() {
         return movieTitle;
     }
 
     //method to set the title of the movie
-    public void setMovieTitle (String title) {
+    public void setMovieTitle(String title) {
         this.movieTitle = title;
     }
 
     //method to get the string location of the movie poster
-    public String getMoviePoster () {
+    public String getMoviePoster() {
         return TMDB_IMAGE_PATH + moviePoster;
 
     }
 
     //method to set the poster string
-    public void setMoviePoster (String poster) {
+    public void setMoviePoster(String poster) {
         this.moviePoster = poster;
     }
 
     //method to get the movie synopsis
-    public String getMovieSynopsis () {
+    public String getMovieSynopsis() {
         return movieSynopsis;
     }
 
     //method to set the movie synopsis
-    public void setMovieSynopsis (String synopsis) {
+    public void setMovieSynopsis(String synopsis) {
         this.movieSynopsis = synopsis;
     }
 
     //method to set the rating from TMDB.org
-    public String getMovieTmdbRating () {
+    public String getMovieTmdbRating() {
         return movieTmdbRating;
     }
 
     //method to get the TMDB.org rating
-    public void setMovieTmdbRating (String rating) {
+    public void setMovieTmdbRating(String rating) {
         this.movieTmdbRating = rating;
     }
 
     //method to get the release date (in string ay need to look at format???
-    public String getMovieReleaseDate () {
+    public String getMovieReleaseDate() {
         return movieReleaseDate;
     }
 
     //method to set the release date from the TMDB.org DB
-    public void setMovieReleaseDate (String releaseDate) {
+    public void setMovieReleaseDate(String releaseDate) {
         this.movieReleaseDate = releaseDate;
     }
 
@@ -96,14 +96,17 @@ public class Movie {
         this.movieBackdrop = movieBackdrop;
     }
 
+    //method to get the movie id
     public int getMovieID() {
         return movieID;
     }
 
+    //method to set the movie id
     public void setMovieID(int movieID) {
         this.movieID = movieID;
     }
 
+    //results set
     public static class MovieResult {
         private List<Movie> results;
 
