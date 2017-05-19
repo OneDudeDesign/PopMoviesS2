@@ -11,12 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
+import com.onedudedesign.popularmoviess2.Cupboard.MovieFavorite;
 import com.onedudedesign.popularmoviess2.Models.Movie;
 import com.onedudedesign.popularmoviess2.utils.FavoriteMovieCursorAdapterRV;
 import com.onedudedesign.popularmoviess2.utils.MovieAdapter;
@@ -33,10 +35,13 @@ import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
-import static android.R.id.message;
+import static android.R.attr.id;
+import static android.os.Build.ID;
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
+
 
 //Extending ListItemClick listener to handle clicks in the Grid for going to movie detail
-public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener {
+public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickListener, FavoriteMovieCursorAdapterRV.ListItemClickListener {
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
@@ -47,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private int mSortOrder;
     public static final String SORT_ORDER = "SortOrder";
     public static final int sortThrowAway = 0;
+    private SQLiteDatabase mDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,9 +82,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
         mSortOrder = getSharedPreferenceSortOrder();
 
+        setActivityTitle();
+
         if (isNetworkConnected()) {
             if (mSortOrder == FAVORITE) {
-                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this);
+                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
 
             } else {
@@ -107,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 mSortOrder = POPULAR;
                 initRetrofit(mSortOrder);
                 mRecyclerView.scrollToPosition(0);
+                setActivityTitle();
                 return true;
             case R.id.menuTopRated:
                 Toast.makeText(this, R.string.top_movies_loaded_toast, Toast.LENGTH_LONG).show();
@@ -117,15 +126,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 //used to reset the grid back to the top otherwise it loads and displays where
                 //the view was currently scrolled and maybe confusing
                 mRecyclerView.scrollToPosition(0);
+                setActivityTitle();
                 return true;
             case R.id.menuFavorites:
                 Toast.makeText(this, "Favorites Loaded", Toast.LENGTH_LONG).show();
                 //set the shared preferences to FAVORITE and refresh the grid
                 setSharedPreferenceSortOrder(FAVORITE);
                 mSortOrder = FAVORITE;
-                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this);
+                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
                 mRecyclerView.scrollToPosition(0);
+                setActivityTitle();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -134,15 +145,26 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     //receive callback from clicks in the Grid
     @Override
-    public void onListItemClick(int clickedItemIndex) {
+    public void onListItemClick(int clickedItemIndex, String movieid) {
+        //TODO SOMETHING HERE IS WRONG WHEN YOU CLICK ON ONE OF THE FIRST TWO MOVIES.....
 
-        //store the TMDB ID of the movie clicked
-        int id = mAdapter.fetchMovieID(clickedItemIndex);
+        /*if (mSortOrder == FAVORITE) {
+            String favMovieID = Integer.toString(clickedItemIndex);
+            Log.d("Favorite Clicked", "Favorite number " + favMovieID);
 
-        //fire the intent to the detailed activity passing the movie ID in EXTRA
-        Intent intent = new Intent(this, DetailConstraint.class);
-        intent.putExtra(getString(R.string.intent_movie_id), String.valueOf(id));
-        startActivity(intent);
+            Log.d("TMDB ID", movieid);
+            return;
+
+        } else { */
+
+            //store the TMDB ID of the movie clicked
+            //int id = mAdapter.fetchMovieID(clickedItemIndex);
+
+            //fire the intent to the detailed activity passing the movie ID in EXTRA
+            Intent intent = new Intent(this, DetailConstraint.class);
+            intent.putExtra(getString(R.string.intent_movie_id), String.valueOf(movieid));
+            startActivity(intent);
+        //}
     }
 
     private void initRetrofit(int key) {
@@ -248,5 +270,21 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             int sortOrder = prefs.getInt("sortOrder", POPULAR); //POPULAR is the default value.
             return sortOrder;
         } else return POPULAR;
+    }
+
+    private void setActivityTitle () {
+        switch (mSortOrder) {
+            case FAVORITE:
+                this.setTitle("Your Favorites");
+                return;
+            case TOP_RATED:
+                this.setTitle("20 Top Rated Movies");
+                return;
+            case POPULAR:
+                this.setTitle("20 Most Popular Movies");
+                return;
+            default:
+                return;
+        }
     }
 }

@@ -30,7 +30,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
      * The interface that receives onClick messages.
      */
     public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+        void onListItemClick(int clickedItemIndex, String movieID);
     }
 
     public MovieAdapter (Context context, ListItemClickListener listener) {
@@ -75,7 +75,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            mOnClickListener.onListItemClick(clickedPosition);
+            Movie movie = mMovieList.get(clickedPosition);
+            String movieId = Integer.toString(movie.getMovieID());
+            mOnClickListener.onListItemClick(clickedPosition, movieId);
         }
 
     }

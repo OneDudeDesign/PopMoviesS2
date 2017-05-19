@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,16 +32,19 @@ public class FavoriteMovieCursorAdapterRV extends RecyclerViewCursorAdapter<Favo
     private static final String TAG = FavoriteMovieCursorAdapterRV.class.getSimpleName();
     private final Context mContext;
     private SQLiteDatabase mDB;
+    private static ListItemClickListener mOnClickListener;
+
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex, String movieID);
+    }
 
 
-    public FavoriteMovieCursorAdapterRV(Context context)
-    {
+    public FavoriteMovieCursorAdapterRV(Context context, ListItemClickListener listener) {
         super(null);
         mContext = context;
+        mOnClickListener = listener;
 
         // Get the cursor from Cupboard
-        //Cursor cursor = mContext.getContentResolver()
-                //.query(productForLocationUri, null, null, null, sortOrder);
 
         CupboardDbHelper dbHelper = new CupboardDbHelper(mContext);
         mDB = dbHelper.getWritableDatabase();
@@ -60,7 +64,13 @@ public class FavoriteMovieCursorAdapterRV extends RecyclerViewCursorAdapter<Favo
     @Override
     protected void onBindViewHolder(ImageViewHolder holder, Cursor cursor)
     {
-        String imagePath = cursor.getString(6);
+        int columnIndexPoster = cursor.getColumnIndex("poster_path");
+        int columnIndexMovieId = cursor.getColumnIndex("movie_id");
+        String imagePath = cursor.getString(columnIndexPoster);
+        String movieId = cursor.getString(columnIndexMovieId);
+
+        holder.moviePoster.setTag(movieId);
+
 
         //Download image using picasso library
         Picasso.with(mContext)
@@ -68,10 +78,11 @@ public class FavoriteMovieCursorAdapterRV extends RecyclerViewCursorAdapter<Favo
                 .error(R.drawable.placeholder)
                 .placeholder(R.drawable.placeholder)
                 .into(holder.moviePoster);
+
     }
 
 
-    public static class ImageViewHolder extends RecyclerView.ViewHolder
+    public static class ImageViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         ImageView moviePoster;
 
@@ -79,6 +90,14 @@ public class FavoriteMovieCursorAdapterRV extends RecyclerViewCursorAdapter<Favo
         {
             super(itemView);
             moviePoster = (ImageView) itemView.findViewById(R.id.moviePosterImageView);
+            itemView.setOnClickListener(this);
+        }
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            String mID = moviePoster.getTag().toString();
+            Log.d("Tag", "MovieID " + mID);
+            mOnClickListener.onListItemClick(clickedPosition, mID);
         }
     }
 }
