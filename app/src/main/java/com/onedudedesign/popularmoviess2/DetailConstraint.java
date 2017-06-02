@@ -181,16 +181,16 @@ public class DetailConstraint extends AppCompatActivity {
                             populateReview1();
                             populateReview2();
                             break;
-                        //case 3:
-                        //    populateTrailer1();
-                          //  populateTrailer2();
-                            //populateTrailer3();
-                            //break;
+                        case 3:
+                            populateReview1();
+                            populateReview2();
+                            populateReview3();
+                            break;
                         default:
-                            populateTrailer1();
-                            populateTrailer2();
-                            //populateTrailer3();
-                            //populateTrailer4();
+                            populateReview1();
+                            populateReview2();
+                            populateReview3();
+                            populateReview4();
                     }
                 }
             }
@@ -301,6 +301,35 @@ public class DetailConstraint extends AppCompatActivity {
         reviewer.setText(mr.getReviewAuthor());
 
         TextView review = (TextView) findViewById(R.id.review2);
+        review.setVisibility(View.VISIBLE);
+        review.setText(mr.getReviewContent());
+
+    }
+
+    private void populateReview3() {
+        final MovieReviews mr = mMovieReviewList.get(2);
+        View v = findViewById(R.id.reviewsep2);
+        v.setVisibility(View.VISIBLE);
+
+        TextView reviewer = (TextView) findViewById(R.id.reviewer3);
+        reviewer.setVisibility(View.VISIBLE);
+        reviewer.setText(mr.getReviewAuthor());
+
+        TextView review = (TextView) findViewById(R.id.review3);
+        review.setVisibility(View.VISIBLE);
+        review.setText(mr.getReviewContent());
+
+    }
+    private void populateReview4() {
+        final MovieReviews mr = mMovieReviewList.get(3);
+        View v = findViewById(R.id.reviewsep3);
+        v.setVisibility(View.VISIBLE);
+
+        TextView reviewer = (TextView) findViewById(R.id.reviewer4);
+        reviewer.setVisibility(View.VISIBLE);
+        reviewer.setText(mr.getReviewAuthor());
+
+        TextView review = (TextView) findViewById(R.id.review4);
         review.setVisibility(View.VISIBLE);
         review.setText(mr.getReviewContent());
 
