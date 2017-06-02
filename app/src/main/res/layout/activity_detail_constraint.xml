@@ -289,14 +289,30 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/movieReviewTV1"
+            android:id="@+id/reviewer1"
             android:padding="8dp"
+            android:textSize="18dp"
             style="@style/TextAppearance.AppCompat.Medium"
             android:textColor="@android:color/white"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@+id/reviewHeader"
-            tools:text="A good or a bad or an indeterminate review"/>
+            tools:text="Reviewer 1"
+            android:layout_marginStart="18dp"/>
+        w
+        <TextView
+            android:layout_width="@dimen/constraintMatchParent0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/review1"
+            android:padding="8dp"
+            android:textSize="16dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/reviewer1"
+            app:layout_constraintTop_toBottomOf="@id/reviewer1"
+            tools:text="What the heck is this thing any good?"
+            android:layout_marginStart="24dp"/>
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

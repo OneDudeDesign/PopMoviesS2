@@ -263,9 +263,9 @@ public class DetailConstraint extends AppCompatActivity {
         v.setVisibility(View.VISIBLE);
         TextView t = (TextView) findViewById(R.id.reviewHeader);
         t.setVisibility(View.VISIBLE);
-        TextView review = (TextView) findViewById(R.id.movieReviewTV1);
+        TextView review = (TextView) findViewById(R.id.reviewer1);
         review.setVisibility(View.VISIBLE);
-        review.setText(mr.getReviewContent());
+        review.setText(mr.getReviewAuthor());
     }
 
     private void populateTrailer1() {
