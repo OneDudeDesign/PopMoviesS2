@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
 import com.onedudedesign.popularmoviess2.Cupboard.MovieFavorite;
 import com.onedudedesign.popularmoviess2.Models.MovieDetail;
+import com.onedudedesign.popularmoviess2.Models.MovieReviews;
 import com.onedudedesign.popularmoviess2.Models.MovieTrailers;
 import com.onedudedesign.popularmoviess2.utils.MovieApiService;
 import com.squareup.picasso.Picasso;
@@ -38,6 +39,7 @@ public class DetailConstraint extends AppCompatActivity {
     private MovieDetail mDetail = new MovieDetail();
     private String movieID;
     private List<MovieTrailers> mMovieTrailerList;
+    private List<MovieReviews> mMovieReviewList;
     private SQLiteDatabase mDB;  //open and close the DB in onResume and onPause to free resources
     private static final int trailer1 = 0;
     private static final int trailer2 = 1;
@@ -131,7 +133,55 @@ public class DetailConstraint extends AppCompatActivity {
         //fetch the trailer data nd put it into an array
         fetchTrailers();
 
+        //fetch the review data and put into Array
+        fetchReviews();
 
+
+    }
+        //TODO:Similar method for doing the reviews do a maximum 4 reviews, trying to keep this clean
+        //TODO: add a link to go to TMDB. org for even more info
+
+    private void fetchReviews () {
+        //fetching the review info for the selected movie id
+
+        final String api_key = getResources().getString(R.string.TMDB_API_KEY);
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(getString(R.string.tmdb_api_endpoint_v3))
+                .setRequestInterceptor(new RequestInterceptor() {
+                    @Override
+                    public void intercept(RequestFacade request) {
+                        request.addPathParam(getString(R.string.tmdb_movie_id_path_param), movieID);
+                        request.addEncodedQueryParam(getString(R.string.tmdb_api_key_query_param), api_key);
+                    }
+                })
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+
+        MovieApiService reviewService = restAdapter.create(MovieApiService.class);
+
+        reviewService.getMovieReviews(new Callback<MovieReviews.MovieReviewsResult>() {
+            @Override
+            public void success(MovieReviews.MovieReviewsResult movieReviewsResult, Response response) {
+                mMovieReviewList = new ArrayList<>();
+                mMovieReviewList.clear();
+                mMovieReviewList.addAll(movieReviewsResult.getResults());
+
+                int reviewArraySize = mMovieReviewList.size();
+
+                //confirm array size
+                Log.d("Review Array Size", Integer.toString(reviewArraySize));
+
+                if (reviewArraySize > 0) {
+                    populateReview1();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        });
     }
 
     private void fetchTrailers() {
@@ -158,7 +208,7 @@ public class DetailConstraint extends AppCompatActivity {
 
 
         service.getMovieTrailers(new Callback<MovieTrailers.MovieTrailerResult>() {
-            /* n many cases the movie has a few different trailers, in some cases there were
+            /* in many cases the movie has a few different trailers, in some cases there were
             more than 18 attached in order to keep the interface cleaner decided to only use
             from 1 to 4 trailers instead of a list view otherwise the user has to scroll a
             long way to get to reviews
@@ -169,10 +219,12 @@ public class DetailConstraint extends AppCompatActivity {
                 mMovieTrailerList.clear();
                 mMovieTrailerList.addAll(movieTrailerResult.getResults());
 
-                //confirm array size
-                Log.d("Array Size", String.valueOf(mMovieTrailerList.size()));
-
                 int arraySize = mMovieTrailerList.size();
+
+                //confirm array size
+                Log.d("Array Size", Integer.toString(arraySize));
+
+
                 if (arraySize > 0) {
                     switch (arraySize) {
                         case 1:
@@ -203,6 +255,17 @@ public class DetailConstraint extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void populateReview1() {
+        final MovieReviews mr = mMovieReviewList.get(0);
+        View v = findViewById(R.id.dcview4);
+        v.setVisibility(View.VISIBLE);
+        TextView t = (TextView) findViewById(R.id.reviewHeader);
+        t.setVisibility(View.VISIBLE);
+        TextView review = (TextView) findViewById(R.id.movieReviewTV1);
+        review.setVisibility(View.VISIBLE);
+        review.setText(mr.getReviewContent());
     }
 
     private void populateTrailer1() {

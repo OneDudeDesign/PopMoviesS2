@@ -253,7 +253,6 @@
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="48dp"
             android:textColor="@android:color/white"
@@ -261,6 +260,43 @@
             app:layout_constraintLeft_toRightOf="@+id/trailerImageView4"
             app:layout_constraintTop_toBottomOf="@+id/trailerImageView3"
             tools:text="Trailer Title4" />
+
+        <View
+            android:id="@+id/dcview4"
+            android:layout_width="0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/viewLineColor"
+            android:visibility="gone"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/trailerImageView4" />
+
+        <TextView
+            android:id="@+id/reviewHeader"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Reviews:"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/dcview4"
+            app:layout_constraintTop_toBottomOf="@+id/dcview4"
+            tools:text="Reviews :"
+            android:textSize="@dimen/detailViewTextSize_Year"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/movieReviewTV1"
+            android:padding="8dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/reviewHeader"
+            app:layout_constraintTop_toBottomOf="@+id/reviewHeader"
+            tools:text="A good or a bad or an indeterminate review"/>
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

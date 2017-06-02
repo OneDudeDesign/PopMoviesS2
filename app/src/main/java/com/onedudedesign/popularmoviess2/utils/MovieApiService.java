@@ -2,6 +2,7 @@ package com.onedudedesign.popularmoviess2.utils;
 
 import com.onedudedesign.popularmoviess2.Models.Movie;
 import com.onedudedesign.popularmoviess2.Models.MovieDetail;
+import com.onedudedesign.popularmoviess2.Models.MovieReviews;
 import com.onedudedesign.popularmoviess2.Models.MovieTrailers;
 
 import retrofit.Callback;
@@ -25,8 +26,12 @@ public interface MovieApiService {
         @GET("/movie/{movie_id}")
         void getMovie(Callback<MovieDetail> cb);
 
-        //GET statement to fetch movie details note use of Path_Param requires its name in braces
+        //GET statement to fetch movie trailers note use of Path_Param requires its name in braces
         @GET("/movie/{movie_id}/videos")
         void getMovieTrailers(Callback<MovieTrailers.MovieTrailerResult> cb);
+
+        //GET statement to fetch movie reviews note use of Path_Param requires its name in braces
+        @GET("/movie/{movie_id}/reviews")
+        void getMovieReviews(Callback<MovieReviews.MovieReviewsResult> cb);
     }
 
