@@ -299,7 +299,7 @@
             app:layout_constraintTop_toBottomOf="@+id/reviewHeader"
             tools:text="Reviewer 1"
             android:layout_marginStart="18dp"/>
-        w
+
         <TextView
             android:layout_width="@dimen/constraintMatchParent0dp"
             android:layout_height="wrap_content"
@@ -311,6 +311,47 @@
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/reviewer1"
             app:layout_constraintTop_toBottomOf="@id/reviewer1"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:text="What the heck is this thing any good?"
+            android:layout_marginStart="24dp"/>
+        <View
+            android:layout_width="@dimen/constraintMatchParent0dp"
+            android:layout_height="2dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/viewLineColor"
+            android:visibility="gone"
+            android:layout_marginStart="18dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/review1"
+            android:id="@+id/reviewsep1"/>
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/reviewer2"
+            android:padding="8dp"
+            android:textSize="18dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/reviewsep1"
+            app:layout_constraintTop_toBottomOf="@+id/reviewsep1"
+            tools:text="Reviewer 2"
+            android:layout_marginStart="18dp"/>
+
+        <TextView
+            android:layout_width="@dimen/constraintMatchParent0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/review2"
+            android:padding="8dp"
+            android:textSize="16dp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="@id/reviewer2"
+            app:layout_constraintTop_toBottomOf="@id/reviewer2"
+            app:layout_constraintRight_toRightOf="parent"
             tools:text="What the heck is this thing any good?"
             android:layout_marginStart="24dp"/>
 
