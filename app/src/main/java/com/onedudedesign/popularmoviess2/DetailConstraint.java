@@ -130,6 +130,8 @@ public class DetailConstraint extends AppCompatActivity {
                 .error(error) //displays an error image if the load fails
                 .into(poster);
 
+        //todo: can we load a different size poster in the 800dp layout?
+
         //fetch the trailer data nd put it into an array
         fetchTrailers();
 
