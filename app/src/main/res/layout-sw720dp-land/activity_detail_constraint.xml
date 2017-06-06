@@ -463,7 +463,9 @@
             android:text="Trailers"
             android:textColor="@android:color/white"
             android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@+id/detailConstraintImageViewBackdrop" />
+            app:layout_constraintLeft_toRightOf="@+id/detailConstraintImageViewBackdrop"
+            app:layout_constraintTop_toTopOf="@+id/detailConstraintImageViewBackdrop"
+            android:layout_marginTop="8dp" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
