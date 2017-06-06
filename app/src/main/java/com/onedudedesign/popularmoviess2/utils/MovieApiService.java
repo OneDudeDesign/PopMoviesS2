@@ -10,6 +10,7 @@ import retrofit.http.GET;
 
 /**
  * Created by clucier on 4/6/17.
+ * This file is to reference the various callbacks used by Retrofit for the different JSON datasets
  */
 
 public interface MovieApiService {

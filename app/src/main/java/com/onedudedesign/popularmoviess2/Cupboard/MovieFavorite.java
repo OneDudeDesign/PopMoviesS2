@@ -2,7 +2,7 @@ package com.onedudedesign.popularmoviess2.Cupboard;
 
 /**
  * Created by clucier on 5/17/17.
- * This is the POJO for CUpboard to create the database for the Movie Favorites
+ * This is the POJO for Cupboard to create the database for the Movie Favorites DB
  */
 
 public class MovieFavorite {
@@ -19,6 +19,7 @@ public class MovieFavorite {
 
 
     public MovieFavorite() {
+        //static test data do not enter in strings resource file
         this.movie_id = "noID";
         this.original_title = "Wassup nada";
         this.poster_path = "path to nowhere";

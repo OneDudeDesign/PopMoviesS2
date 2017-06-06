@@ -8,8 +8,9 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by clucier on 5/17/17.
- * Using Cupboard instead of a content provider to store the data in SQLLite for the favorites
- * for simplification it uses a POJO for the model similar to Retrofit for the JSON calls
+ * Using Cupboard Library instead of a content provider to store the data in SQLLite for the
+ * favorites for simplification it uses a POJO for the model similar to how I am usingRetrofit
+ * for the JSON calls
  */
 
 public class CupboardDbHelper extends SQLiteOpenHelper {

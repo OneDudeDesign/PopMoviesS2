@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
+
 import com.onedudedesign.popularmoviess2.Models.Movie;
 import com.onedudedesign.popularmoviess2.utils.FavoriteMovieCursorAdapterRV;
 import com.onedudedesign.popularmoviess2.utils.MovieAdapter;
@@ -30,7 +31,6 @@ import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-
 
 
 //Extending ListItemClick listener to handle clicks in the Grid for going to movie detail for both
@@ -79,23 +79,27 @@ public class MainActivity extends AppCompatActivity
 
         mSortOrder = getSharedPreferenceSortOrder();
 
-        //setActivityTitle();
-
         if (isNetworkConnected()) {
             if (mSortOrder == FAVORITE) {
-                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
+                //even if network is connectsed if the saved sort order is FAVORITE then set the
+                //correct adapter
+                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
                 setActivityTitle();
 
             } else {
+                //call the data load if the sort order is not FAVORITE
                 setActivityTitle();
                 initRetrofit(mSortOrder);
             }
         } else {
-            //noNetwork();
+            //if the network is off set the sort order to favorite and load the favorites list
+            //the details will still not load but this forces a default to the favorites list
+            // while off network, later feature will be to load the favorite details when clicked
+            //but this is not yet implemented
             mSortOrder = FAVORITE;
             setActivityTitle();
-            mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
+            mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
             mRecyclerView.setAdapter(mFavoriteAdapter);
         }
 
@@ -110,23 +114,26 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        //checking for the network connection in the options menu selection so that the Favorites
+        //show if the network state changed preventing a bad screen with no data
         switch (item.getItemId()) {
             case R.id.menuPopular:
                 if (isNetworkConnected()) {
-                Toast.makeText(this, R.string.pop_movies_loaded_toast, Toast.LENGTH_LONG).show();
-                //set the shared preferences to POPULAR and refresh the grid
-                setSharedPreferenceSortOrder(POPULAR);
-                mSortOrder = POPULAR;
-                initRetrofit(mSortOrder);
-                mRecyclerView.scrollToPosition(rVReset);
-                setActivityTitle();
-                return true;
+                    Toast.makeText(this, R.string.pop_movies_loaded_toast, Toast.LENGTH_LONG).show();
+                    //set the shared preferences to POPULAR and refresh the grid
+                    setSharedPreferenceSortOrder(POPULAR);
+                    mSortOrder = POPULAR;
+                    initRetrofit(mSortOrder);
+                    mRecyclerView.scrollToPosition(rVReset);
+                    setActivityTitle();
+                    return true;
                 } else {
-                    Toast.makeText(this, "Favorites Loaded, no Network Connection", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.favorites_no_network, Toast.LENGTH_LONG).show();
                     //set the shared preferences to FAVORITE and refresh the grid
                     setSharedPreferenceSortOrder(FAVORITE);
                     mSortOrder = FAVORITE;
-                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
+                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                     mRecyclerView.setAdapter(mFavoriteAdapter);
                     mRecyclerView.scrollToPosition(rVReset);
                     setActivityTitle();
@@ -146,11 +153,11 @@ public class MainActivity extends AppCompatActivity
                     setActivityTitle();
                     return true;
                 } else {
-                    Toast.makeText(this, "Favorites Loaded, no Network Connection", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, R.string.favorites_no_network, Toast.LENGTH_LONG).show();
                     //set the shared preferences to FAVORITE and refresh the grid
                     setSharedPreferenceSortOrder(FAVORITE);
                     mSortOrder = FAVORITE;
-                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
+                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                     mRecyclerView.setAdapter(mFavoriteAdapter);
                     mRecyclerView.scrollToPosition(rVReset);
                     setActivityTitle();
@@ -161,7 +168,7 @@ public class MainActivity extends AppCompatActivity
                 //set the shared preferences to FAVORITE and refresh the grid
                 setSharedPreferenceSortOrder(FAVORITE);
                 mSortOrder = FAVORITE;
-                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
+                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
                 mRecyclerView.scrollToPosition(rVReset);
                 setActivityTitle();
@@ -176,10 +183,15 @@ public class MainActivity extends AppCompatActivity
     public void onListItemClick(int clickedItemIndex, String movieid) {
 
 
-            //fire the intent to the detailed activity passing the movie ID in EXTRA
+        //fire the intent to the detailed activity passing the movie ID in EXTRA
+        if (isNetworkConnected()) {
             Intent intent = new Intent(this, DetailConstraint.class);
             intent.putExtra(getString(R.string.intent_movie_id), String.valueOf(movieid));
             startActivity(intent);
+        } else {
+            //if the network is off warn the user need the network to get details
+            noNetwork();
+        }
     }
 
     private void initRetrofit(int key) {
@@ -211,7 +223,7 @@ public class MainActivity extends AppCompatActivity
 
         /* using the passed in key that comes from the static POPULAR and TOPRATED variables to
         select which service call to make depending on the type of movies the user wants to see
-        from the settings menu selection (fovorites goes to local db so no retrofit call) */
+        from the settings menu selection (favorites goes to local db so no retrofit call) */
 
         if (key == TOP_RATED) {
             service.getTopRatedMovies(new Callback<Movie.MovieResult>() {
@@ -231,7 +243,7 @@ public class MainActivity extends AppCompatActivity
             service.getPopularMovies(new Callback<Movie.MovieResult>() {
                 @Override
                 public void success(Movie.MovieResult movieResult, Response response) {
-                    //need to change the adptar since we have both the list and cursor for the db
+                    //need to change the adaptar since we have both the list and cursor for the db
                     mRecyclerView.setAdapter(mAdapter);
                     mAdapter.setMovieList(movieResult.getResults());
                 }
@@ -288,7 +300,7 @@ public class MainActivity extends AppCompatActivity
         } else return POPULAR;
     }
 
-    private void setActivityTitle () {
+    private void setActivityTitle() {
         switch (mSortOrder) {
             case FAVORITE:
                 this.setTitle(getString(R.string.favoritesActivityTitle));
@@ -302,9 +314,7 @@ public class MainActivity extends AppCompatActivity
             default:
                 return;
         }
-    } //TODO 1: clean up dimensions and stuff in XML files
-    //TODO 2: Reviews (4?)
-    //TODO 3: tablet formatting
+    }
 
 
 }

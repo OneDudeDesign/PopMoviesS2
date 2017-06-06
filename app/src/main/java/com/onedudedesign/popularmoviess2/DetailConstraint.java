@@ -45,6 +45,10 @@ public class DetailConstraint extends AppCompatActivity {
     private static final int trailer2 = 1;
     private static final int trailer3 = 2;
     private static final int trailer4 = 3;
+    private static final int review1 = 0;
+    private static final int review2 = 1;
+    private static final int review3 = 2;
+    private static final int review4 = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +79,6 @@ public class DetailConstraint extends AppCompatActivity {
 
         MovieApiService service = restAdapter.create(MovieApiService.class);
         //callback to the MovieDetail model, using a single API Service with the get requests
-        //will look to combine the adapter and service calls into a class
         service.getMovie(new Callback<MovieDetail>() {
             @Override
             public void success(MovieDetail movieDetail, Response response) {
@@ -130,8 +133,6 @@ public class DetailConstraint extends AppCompatActivity {
                 .error(error) //displays an error image if the load fails
                 .into(poster);
 
-        //todo: can we load a different size poster in the 800dp layout?
-
         //fetch the trailer data nd put it into an array
         fetchTrailers();
 
@@ -140,10 +141,8 @@ public class DetailConstraint extends AppCompatActivity {
 
 
     }
-        //TODO:Similar method for doing the reviews do a maximum 4 reviews, trying to keep this clean
-        //TODO: add a link to go to TMDB. org for even more info
 
-    private void fetchReviews () {
+    private void fetchReviews() {
         //fetching the review info for the selected movie id
 
         final String api_key = getResources().getString(R.string.TMDB_API_KEY);
@@ -171,7 +170,7 @@ public class DetailConstraint extends AppCompatActivity {
 
                 int reviewArraySize = mMovieReviewList.size();
 
-                //confirm array size
+                //confirm array size for debugging
                 Log.d("Review Array Size", Integer.toString(reviewArraySize));
 
                 if (reviewArraySize > 0) {
@@ -230,8 +229,13 @@ public class DetailConstraint extends AppCompatActivity {
         service.getMovieTrailers(new Callback<MovieTrailers.MovieTrailerResult>() {
             /* in many cases the movie has a few different trailers, in some cases there were
             more than 18 attached in order to keep the interface cleaner decided to only use
-            from 1 to 4 trailers instead of a list view otherwise the user has to scroll a
-            long way to get to reviews
+            from 1 to 4 trailers.
+
+            NOTE: this method is a bit ugly from a coding perspective but in trying to embed a
+            listview with a new listadapter there were issues with the constraint layout only
+            populating the 1st list item, have shared with Stack Exchange to see if there is a
+            solution but suspect issues with the new layout type as Android Studio throwing an
+            exception in the event log when attempting this.
              */
             @Override
             public void success(MovieTrailers.MovieTrailerResult movieTrailerResult, Response response) {
@@ -277,8 +281,11 @@ public class DetailConstraint extends AppCompatActivity {
 
     }
 
+    //the methods on trailers and reviews populate the first 4 of each see note above in the fetchreviews method
+    // on why a listview was not used.
+
     private void populateReview1() {
-        final MovieReviews mr = mMovieReviewList.get(0);
+        final MovieReviews mr = mMovieReviewList.get(review1);
         View v = findViewById(R.id.dcview4);
         v.setVisibility(View.VISIBLE);
         TextView t = (TextView) findViewById(R.id.reviewHeader);
@@ -294,7 +301,7 @@ public class DetailConstraint extends AppCompatActivity {
     }
 
     private void populateReview2() {
-        final MovieReviews mr = mMovieReviewList.get(1);
+        final MovieReviews mr = mMovieReviewList.get(review2);
         View v = findViewById(R.id.reviewsep1);
         v.setVisibility(View.VISIBLE);
 
@@ -309,7 +316,7 @@ public class DetailConstraint extends AppCompatActivity {
     }
 
     private void populateReview3() {
-        final MovieReviews mr = mMovieReviewList.get(2);
+        final MovieReviews mr = mMovieReviewList.get(review3);
         View v = findViewById(R.id.reviewsep2);
         v.setVisibility(View.VISIBLE);
 
@@ -322,8 +329,9 @@ public class DetailConstraint extends AppCompatActivity {
         review.setText(mr.getReviewContent());
 
     }
+
     private void populateReview4() {
-        final MovieReviews mr = mMovieReviewList.get(3);
+        final MovieReviews mr = mMovieReviewList.get(review4);
         View v = findViewById(R.id.reviewsep3);
         v.setVisibility(View.VISIBLE);
 

@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by clucier on 5/2/17.
+ * POJO for the movie trailers object to be used by the Adapter
  */
 
 public class MovieTrailers {

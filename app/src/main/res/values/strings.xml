@@ -52,6 +52,7 @@
     <string name="topRatedActivityTitle">20 Top Rated Movies</string>
     <string name="popularActivityTitle">20 Most Popular Movies</string>
     <string name="review_header">Reviews (possible spoilers):</string>
+    <string name="favorites_no_network">Favorites Loaded, no Network Connection</string>
 
 </resources>
 

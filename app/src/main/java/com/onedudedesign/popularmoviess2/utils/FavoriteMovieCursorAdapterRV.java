@@ -21,6 +21,7 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
  * Created by clucier on 5/18/17.
  * This adapter was built to connect the cursor adapter to the recyclerview to display
  * the favorites set in the sql db
+ * This is using the Cupboard library for simplification
  */
 
 public class FavoriteMovieCursorAdapterRV
@@ -34,7 +35,7 @@ public class FavoriteMovieCursorAdapterRV
         //passing in the string for the movie id as it becomes important to track the TNDB id of 
         //the movie for proper loading from the network as the DB row ID's can become inconsistent
         //cannot rely on them to match later I will use this string to tag the imageview effectively
-        //making the imageview remember the TNDB movie ID
+        //making the imageview remember the TMDB movie ID
         void onListItemClick(int clickedItemIndex, String movieID);
     }
 
@@ -47,7 +48,7 @@ public class FavoriteMovieCursorAdapterRV
         // Get the cursor from Cupboard
 
         CupboardDbHelper dbHelper = new CupboardDbHelper(mContext);
-        mDB = dbHelper.getWritableDatabase();
+        mDB = dbHelper.getReadableDatabase();
         Cursor cursor = cupboard().withDatabase(mDB).query(MovieFavorite.class).getCursor();
 
         swapCursor(cursor);
@@ -94,7 +95,7 @@ public class FavoriteMovieCursorAdapterRV
         @Override
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
-            //getting the movieID tag back have to convert from objet to string
+            //getting the movieID tag back have to convert from object to string
             String mID = moviePoster.getTag().toString();
             mOnClickListener.onListItemClick(clickedPosition, mID);
         }

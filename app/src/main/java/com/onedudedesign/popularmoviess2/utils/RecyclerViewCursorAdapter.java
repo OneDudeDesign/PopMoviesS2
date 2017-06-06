@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 /**
  * Created by clucier on 5/18/17.
- * <p>
- * cursor adapter to be used by the recyclerview
+ *
+ * cursor adapter to be used by the recyclerview when the favorites DB is used
  */
 
 public abstract class RecyclerViewCursorAdapter<VH extends RecyclerView.ViewHolder> extends

@@ -11,6 +11,7 @@ import java.util.List;
 
 public class Movie {
 
+    //note that if I put this in strings file I get an error. investigate.
     public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
 
     //Setup the data variables

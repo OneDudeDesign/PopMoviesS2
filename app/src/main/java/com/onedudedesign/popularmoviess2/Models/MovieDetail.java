@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by clucier on 4/4/17.
- * This is the class to define a Movie Object to be used by the Adapter
+ * This is the class to define a Movie Detail Object to be used by the Adapter
  */
 
 public class MovieDetail {

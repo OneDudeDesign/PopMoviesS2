@@ -5,6 +5,8 @@ import android.os.Bundle;
 
 import com.onedudedesign.popularmoviess2.R;
 
+//This file is to stop activity and warn the user that the network needs to be connected
+
 public class NoNetwork extends AppCompatActivity {
 
     @Override

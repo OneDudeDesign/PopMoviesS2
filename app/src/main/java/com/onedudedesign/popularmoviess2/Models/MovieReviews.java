@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * Created by clucier on 5/19/17.
+ * POJO for the movie reviews object to be used by the adapter
  */
 
 public class MovieReviews {
