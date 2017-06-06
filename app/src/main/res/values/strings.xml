@@ -51,6 +51,7 @@
     <string name="favoritesActivityTitle">Your Favorites</string>
     <string name="topRatedActivityTitle">20 Top Rated Movies</string>
     <string name="popularActivityTitle">20 Most Popular Movies</string>
+    <string name="review_header">Reviews (possible spoilers):</string>
 
 </resources>
 

@@ -79,18 +79,24 @@ public class MainActivity extends AppCompatActivity
 
         mSortOrder = getSharedPreferenceSortOrder();
 
-        setActivityTitle();
+        //setActivityTitle();
 
         if (isNetworkConnected()) {
             if (mSortOrder == FAVORITE) {
                 mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
+                setActivityTitle();
 
             } else {
+                setActivityTitle();
                 initRetrofit(mSortOrder);
             }
         } else {
-            noNetwork();
+            //noNetwork();
+            mSortOrder = FAVORITE;
+            setActivityTitle();
+            mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
+            mRecyclerView.setAdapter(mFavoriteAdapter);
         }
 
     }
@@ -106,6 +112,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menuPopular:
+                if (isNetworkConnected()) {
                 Toast.makeText(this, R.string.pop_movies_loaded_toast, Toast.LENGTH_LONG).show();
                 //set the shared preferences to POPULAR and refresh the grid
                 setSharedPreferenceSortOrder(POPULAR);
@@ -114,17 +121,41 @@ public class MainActivity extends AppCompatActivity
                 mRecyclerView.scrollToPosition(rVReset);
                 setActivityTitle();
                 return true;
+                } else {
+                    Toast.makeText(this, "Favorites Loaded, no Network Connection", Toast.LENGTH_LONG).show();
+                    //set the shared preferences to FAVORITE and refresh the grid
+                    setSharedPreferenceSortOrder(FAVORITE);
+                    mSortOrder = FAVORITE;
+                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
+                    mRecyclerView.setAdapter(mFavoriteAdapter);
+                    mRecyclerView.scrollToPosition(rVReset);
+                    setActivityTitle();
+                    return true;
+                }
+
             case R.id.menuTopRated:
-                Toast.makeText(this, R.string.top_movies_loaded_toast, Toast.LENGTH_LONG).show();
-                //set the Shared Preferences to TOP_RATED and refresh the grid
-                setSharedPreferenceSortOrder(TOP_RATED);
-                mSortOrder = TOP_RATED;
-                initRetrofit(mSortOrder);
-                //used to reset the grid back to the top otherwise it loads and displays where
-                //the view was currently scrolled and maybe confusing
-                mRecyclerView.scrollToPosition(rVReset);
-                setActivityTitle();
-                return true;
+                if (isNetworkConnected()) {
+                    Toast.makeText(this, R.string.top_movies_loaded_toast, Toast.LENGTH_LONG).show();
+                    //set the Shared Preferences to TOP_RATED and refresh the grid
+                    setSharedPreferenceSortOrder(TOP_RATED);
+                    mSortOrder = TOP_RATED;
+                    initRetrofit(mSortOrder);
+                    //used to reset the grid back to the top otherwise it loads and displays where
+                    //the view was currently scrolled and maybe confusing
+                    mRecyclerView.scrollToPosition(rVReset);
+                    setActivityTitle();
+                    return true;
+                } else {
+                    Toast.makeText(this, "Favorites Loaded, no Network Connection", Toast.LENGTH_LONG).show();
+                    //set the shared preferences to FAVORITE and refresh the grid
+                    setSharedPreferenceSortOrder(FAVORITE);
+                    mSortOrder = FAVORITE;
+                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this,this);
+                    mRecyclerView.setAdapter(mFavoriteAdapter);
+                    mRecyclerView.scrollToPosition(rVReset);
+                    setActivityTitle();
+                    return true;
+                }
             case R.id.menuFavorites:
                 Toast.makeText(this, R.string.favoriteMoviesLoadedToast, Toast.LENGTH_LONG).show();
                 //set the shared preferences to FAVORITE and refresh the grid

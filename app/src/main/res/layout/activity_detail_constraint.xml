@@ -278,7 +278,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:padding="8dp"
-            android:text="Reviews:"
+            android:text="@string/review_header"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detailViewTextSize_Year"
             android:visibility="gone"
