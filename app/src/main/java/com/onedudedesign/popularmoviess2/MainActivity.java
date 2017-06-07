@@ -284,7 +284,7 @@ public class MainActivity extends AppCompatActivity
     public void setSharedPreferenceSortOrder(int sortOrder) {
         SharedPreferences.Editor editor = getSharedPreferences(SORT_ORDER, MODE_PRIVATE).edit();
         editor.putInt("sortOrder", sortOrder);
-        editor.commit();
+        editor.apply();
     }
 
     //getter for the shared preferences for sort order

@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
@@ -21,6 +23,7 @@ import com.onedudedesign.popularmoviess2.Models.MovieTrailers;
 import com.onedudedesign.popularmoviess2.utils.MovieApiService;
 import com.squareup.picasso.Picasso;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -357,6 +360,10 @@ public class DetailConstraint extends AppCompatActivity {
                 .into(iVTrailer1);
         TextView tVTrailer1 = (TextView) findViewById(R.id.trailerTextview1);
         tVTrailer1.setText(mt.getTrailerName());
+
+        ImageButton iBTrailer1 = (ImageButton) findViewById(R.id.imageButton1);
+
+        iBTrailer1.setVisibility(View.VISIBLE);
         iVTrailer1.setVisibility(View.VISIBLE);
         tVTrailer1.setVisibility(View.VISIBLE);
 
@@ -368,6 +375,12 @@ public class DetailConstraint extends AppCompatActivity {
         iVTrailer1.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 watchYoutubeVideo(mt.getYoutubeKey());
+            }
+        });
+
+        iBTrailer1.setOnClickListener(new View.OnClickListener(){
+            public  void onClick(View v) {
+                shareYoutubeVideo(mt.getYoutubeKey());
             }
         });
 
@@ -461,14 +474,26 @@ public class DetailConstraint extends AppCompatActivity {
 
     public void watchYoutubeVideo(String id) {
         //try to launch the Youtube app and if not available launch the trailer in web intent
-        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + id));
+        Intent appIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.youtube_app_intent_header) + id));
         Intent webIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse("http://www.youtube.com/watch?v=" + id));
+                Uri.parse(getString(R.string.youtube_view_header) + id));
         try {
             startActivity(appIntent);
         } catch (ActivityNotFoundException ex) {
             startActivity(webIntent);
         }
+    }
+
+    public void shareYoutubeVideo(String id) {
+        String youTubeUrl = (getString(R.string.youtube_header) + id);
+
+        //share the URL via common sharing apps on the phone. NOTE this won't work well on emulator
+        //unless you have sharing apps installed, suggest testing on a phone.
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType(getString(R.string.text_plain_intent));
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_intent_header) +  mDetail.getMovieTitle());
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, youTubeUrl);
+        startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_intent_title)));
     }
 
     @Override

@@ -65,6 +65,13 @@
     <string name="show_favorites">Show Favorites</string>
     <string name="cd_movie_poster">Poster for the Movie</string>
     <string name="cd_movie_trailer_image">Movie trailer image link</string>
+    <string name="cd_share_button">Share Button</string>
+    <string name="youtube_header">http://www.youtube.com/watch?v=</string>
+    <string name="share_intent_header">Movie Trailer for:</string>
+    <string name="share_intent_title">Share via</string>
+    <string name="youtube_view_header">http://www.youtube.com/watch?v=</string>
+    <string name="youtube_app_intent_header">vnd.youtube:</string>
+    <string name="text_plain_intent">text/plain</string>
 
 </resources>
 
