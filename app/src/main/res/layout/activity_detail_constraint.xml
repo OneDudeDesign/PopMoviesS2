@@ -48,9 +48,9 @@
 
         <ImageView
             android:id="@+id/detailConstraintPosterImage"
-            android:contentDescription="@string/cd_movie_poster"
             android:layout_width="@dimen/detailViewImagePosterWidthFixed"
             android:layout_height="@dimen/detailViewImagePosterHeightFixed"
+            android:contentDescription="@string/cd_movie_poster"
             android:paddingBottom="@dimen/detailViewPosterPadding"
             android:paddingTop="@dimen/detailViewPosterPadding"
             android:scaleType="centerInside"
@@ -107,7 +107,7 @@
             android:textColor="@android:color/white"
             android:textSize="@dimen/detailViewTextSize_RunTime"
             app:layout_constraintLeft_toLeftOf="@id/detailConstraintRating"
-            app:layout_constraintTop_toBottomOf="@id/detailConstraintRating"/>
+            app:layout_constraintTop_toBottomOf="@id/detailConstraintRating" />
 
         <View
             android:id="@+id/dcview1"
@@ -122,12 +122,12 @@
         <TextView
             android:id="@+id/detailConstraintSynopsis"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:textSize="@dimen/synopsis_textsize"
             android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/top_margin"
             android:padding="@dimen/detailViewSynopsisPadding"
             android:textColor="@android:color/white"
+            android:textSize="@dimen/synopsis_textsize"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -146,11 +146,11 @@
 
         <ImageView
             android:id="@+id/trailerImageView1"
-            android:contentDescription="@string/cd_movie_trailer_image"
             android:layout_width="@dimen/trailer_image_width"
             android:layout_height="@dimen/trailer_image_height"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/top_margin"
+            android:contentDescription="@string/cd_movie_trailer_image"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dcview3"
@@ -159,7 +159,7 @@
         <TextView
             android:id="@+id/trailerTextview1"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="@dimen/constraint_layout_width_0"
+            android:layout_width="@dimen/trailer_name_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/trailer_tv_margin_top"
@@ -171,11 +171,11 @@
 
         <ImageView
             android:id="@+id/trailerImageView2"
-            android:contentDescription="@string/cd_movie_trailer_image"
             android:layout_width="@dimen/trailer_image_width"
             android:layout_height="@dimen/trailer_image_height"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/top_margin"
+            android:contentDescription="@string/cd_movie_trailer_image"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/trailerImageView1"
@@ -184,7 +184,7 @@
         <TextView
             android:id="@+id/trailerTextview2"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="@dimen/constraint_layout_width_0"
+            android:layout_width="@dimen/trailer_name_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/trailer_tv_margin_top"
@@ -196,11 +196,11 @@
 
         <ImageView
             android:id="@+id/trailerImageView3"
-            android:contentDescription="@string/cd_movie_trailer_image"
             android:layout_width="@dimen/trailer_image_width"
             android:layout_height="@dimen/trailer_image_height"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/top_margin"
+            android:contentDescription="@string/cd_movie_trailer_image"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/trailerImageView2"
@@ -209,7 +209,7 @@
         <TextView
             android:id="@+id/trailerTextview3"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="@dimen/constraint_layout_width_0"
+            android:layout_width="@dimen/trailer_name_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/trailer_tv_margin_top"
@@ -221,11 +221,11 @@
 
         <ImageView
             android:id="@+id/trailerImageView4"
-            android:contentDescription="@string/cd_movie_trailer_image"
             android:layout_width="@dimen/trailer_image_width"
             android:layout_height="@dimen/trailer_image_height"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:contentDescription="@string/cd_movie_trailer_image"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/trailerImageView3"
@@ -234,7 +234,7 @@
         <TextView
             android:id="@+id/trailerTextview4"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="@dimen/constraint_layout_width_0"
+            android:layout_width="@dimen/trailer_name_width"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/trailer_tv_margin_top"
@@ -420,6 +420,20 @@
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@id/reviewer4"
             tools:text="@string/tools_review" />
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="@dimen/share_button_width"
+            android:layout_height="@dimen/share_button_height"
+            android:layout_marginStart="@dimen/share_button_start_margin"
+            android:contentDescription="@string/cd_share_button"
+            android:scaleType="fitCenter"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/trailerTextview1"
+            app:layout_constraintLeft_toRightOf="@+id/trailerTextview1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/trailerTextview1"
+            app:srcCompat="@drawable/shareandroidcircleblue512" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
