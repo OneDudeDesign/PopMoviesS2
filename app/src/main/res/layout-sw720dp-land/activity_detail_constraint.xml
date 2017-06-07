@@ -160,7 +160,7 @@
             android:layout_height="@dimen/trailer_image_height"
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/top_margin"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintLeft_toLeftOf="@+id/trailerheader"
             app:layout_constraintTop_toBottomOf="@+id/trailerheader"
             app:srcCompat="@drawable/placeholder" />
@@ -174,7 +174,7 @@
             android:layout_marginStart="@dimen/margin_start"
             android:layout_marginTop="@dimen/top_margin"
             android:textColor="@android:color/white"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="@+id/trailerImageView1"
             app:layout_constraintLeft_toRightOf="@+id/trailerImageView1"
             app:layout_constraintTop_toTopOf="@+id/trailerImageView1"
@@ -461,6 +461,22 @@
             android:textStyle="bold"
             app:layout_constraintLeft_toRightOf="@+id/detailConstraintImageViewBackdrop"
             app:layout_constraintTop_toTopOf="@+id/detailConstraintImageViewBackdrop" />
+
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="@dimen/share_button_width"
+            android:layout_height="@dimen/share_button_height"
+            android:layout_marginStart="@dimen/share_button_start_margin"
+            android:contentDescription="@string/cd_share_button"
+            android:scaleType="fitCenter"
+            android:visibility="visible"
+            app:srcCompat="@drawable/shareandroidcircleblue512"
+            app:layout_constraintTop_toTopOf="@+id/trailerTextview1"
+            android:layout_marginTop="0dp"
+            app:layout_constraintBottom_toBottomOf="@+id/trailerTextview1"
+            android:layout_marginBottom="0dp"
+            app:layout_constraintLeft_toRightOf="@+id/trailerTextview1"
+            android:layout_marginLeft="32dp" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
