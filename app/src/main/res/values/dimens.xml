@@ -15,4 +15,26 @@
     <dimen name="text_margin">16dp</dimen>
     <dimen name="constraintMatchParent0dp">0dp</dimen>
     <dimen name="detailConstraintBackdropHeight">220dp</dimen>
+    <dimen name="bottom_margin">8dp</dimen>
+    <dimen name="top_margin">8dp</dimen>
+    <dimen name="constraint_layout_width_0">0dp</dimen>
+    <dimen name="backdrop_height">220dp</dimen>
+    <dimen name="margin_end">8dp</dimen>
+    <dimen name="margin_left">8dp</dimen>
+    <dimen name="margin_right">8dp</dimen>
+    <dimen name="margin_start">8dp</dimen>
+    <dimen name="line_width">2dp</dimen>
+    <dimen name="padding_standard">8dp</dimen>
+    <dimen name="trailer_image_width">160dp</dimen>
+    <dimen name="trailer_image_height">90dp</dimen>
+    <dimen name="trailer_tv_margin_top">48dp</dimen>
+    <dimen name="reviewer_margin_start">18dp</dimen>
+    <dimen name="reviewer_textsize">22sp</dimen>
+    <dimen name="review_margin_start">24dp</dimen>
+    <dimen name="review_textsize">20sp</dimen>
+    <dimen name="synopsis_textsize">22sp</dimen>
+    <dimen name="network_textsize">48sp</dimen>
+    <dimen name="backdrop_width_land">600dp</dimen>
+    <dimen name="backdrop_height_land">220dp</dimen>
+    <dimen name="constraint_backdrop_margin">16dp</dimen>
 </resources>

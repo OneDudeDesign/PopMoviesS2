@@ -53,6 +53,18 @@
     <string name="popularActivityTitle">20 Most Popular Movies</string>
     <string name="review_header">Reviews (possible spoilers):</string>
     <string name="favorites_no_network">Favorites Loaded, no Network Connection</string>
+    <string name="cd_backdrop">Movie Backdrop Image provided by the studio.</string>
+    <string name="tools_movie_title">Movie Title</string>
+    <string name="tools_tt1">Trailer Title1</string>
+    <string name="tools_tt2">Trailer Title2</string>
+    <string name="tools_tt3">Trailer Title3</string>
+    <string name="tools_review_header">Reviews :</string>
+    <string name="tools_reviewer1">Reviewer 1</string>
+    <string name="tools_review">What the heck is this thing any good?</string>
+    <string name="trailers">Trailers</string>
+    <string name="show_favorites">Show Favorites</string>
+    <string name="cd_movie_poster">Poster for the Movie</string>
+    <string name="cd_movie_trailer_image">Movie trailer image link</string>
 
 </resources>
 

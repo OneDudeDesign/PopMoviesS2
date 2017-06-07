@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
-        android:textSize="34sp"
+        android:textSize="@dimen/network_textsize"
         android:textStyle="bold"
         android:text="@string/no_network_message" />
 </LinearLayout>

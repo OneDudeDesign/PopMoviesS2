@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?><!--NOTE on dimensions, cannot put bias into dimens file. Investigate. -->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,18 +8,15 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="@android:color/black"
         tools:context="com.onedudedesign.popularmoviess2.DetailConstraint">
 
         <ImageView
             android:id="@+id/detailConstraintImageViewBackdrop"
-            android:layout_width="0dp"
-            android:layout_height="220dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
+            android:layout_height="@dimen/backdrop_height"
+            android:contentDescription="@string/cd_backdrop"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -31,22 +28,19 @@
             style="@style/TextAppearance.AppCompat.Display1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginStart="@dimen/detailTitleHorizontalPadding"
-            android:layout_marginTop="8dp"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/detailConstraintImageViewBackdrop"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="Movie Title" />
+            tools:text="@string/tools_movie_title" />
 
         <View
             android:id="@+id/dcview2"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="@dimen/constraintMatchParent0dp"
+            android:layout_height="@dimen/line_width"
+            android:layout_marginTop="@dimen/top_margin"
             android:background="@color/viewLineColor"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -54,9 +48,9 @@
 
         <ImageView
             android:id="@+id/detailConstraintPosterImage"
-            android:layout_width="150dp"
-            android:layout_height="200dp"
-            android:layout_marginTop="8dp"
+            android:contentDescription="@string/cd_movie_poster"
+            android:layout_width="@dimen/detailViewImagePosterWidthFixed"
+            android:layout_height="@dimen/detailViewImagePosterHeightFixed"
             android:paddingBottom="@dimen/detailViewPosterPadding"
             android:paddingTop="@dimen/detailViewPosterPadding"
             android:scaleType="centerInside"
@@ -68,7 +62,7 @@
             android:id="@+id/detailConstraintYearReleased"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/top_margin"
             android:padding="@dimen/detailViewYearPadding"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detailViewTextSize_Year"
@@ -82,9 +76,6 @@
             android:id="@+id/detailConstraintRunTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="2dp"
             android:padding="@dimen/detailViewRuntimePadding"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detailViewTextSize_RunTime"
@@ -111,20 +102,18 @@
             android:backgroundTint="@color/checkBoxGold"
             android:checked="false"
             android:onClick="updateFavoritesDb"
-            android:padding="8dp"
+            android:padding="@dimen/padding_standard"
             android:text="@string/favorite"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detailViewTextSize_RunTime"
             app:layout_constraintLeft_toLeftOf="@id/detailConstraintRating"
-            app:layout_constraintTop_toBottomOf="@id/detailConstraintRating"
-
-            />
+            app:layout_constraintTop_toBottomOf="@id/detailConstraintRating"/>
 
         <View
             android:id="@+id/dcview1"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="@dimen/constraintMatchParent0dp"
+            android:layout_height="@dimen/view_line_height"
+            android:layout_marginTop="@dimen/top_margin"
             android:background="@color/viewLineColor"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -133,13 +122,10 @@
         <TextView
             android:id="@+id/detailConstraintSynopsis"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:textSize="@dimen/synopsis_textsize"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_margin="@dimen/top_margin"
             android:padding="@dimen/detailViewSynopsisPadding"
             android:textColor="@android:color/white"
             app:layout_constraintHorizontal_bias="0.0"
@@ -150,9 +136,9 @@
 
         <View
             android:id="@+id/dcview3"
-            android:layout_width="0dp"
-            android:layout_height="2dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
+            android:layout_height="@dimen/view_line_height"
+            android:layout_marginTop="@dimen/top_margin"
             android:background="@color/viewLineColor"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -160,11 +146,11 @@
 
         <ImageView
             android:id="@+id/trailerImageView1"
-            android:layout_width="160dp"
-            android:layout_height="90dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:contentDescription="@string/cd_movie_trailer_image"
+            android:layout_width="@dimen/trailer_image_width"
+            android:layout_height="@dimen/trailer_image_height"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/top_margin"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dcview3"
@@ -173,24 +159,23 @@
         <TextView
             android:id="@+id/trailerTextview1"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/trailer_tv_margin_top"
             android:textColor="@android:color/white"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="@+id/trailerImageView1"
             app:layout_constraintTop_toBottomOf="@+id/detailConstraintSynopsis"
-            tools:text="Trailer Title1" />
+            tools:text="@string/tools_tt1" />
 
         <ImageView
             android:id="@+id/trailerImageView2"
-            android:layout_width="160dp"
-            android:layout_height="90dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:contentDescription="@string/cd_movie_trailer_image"
+            android:layout_width="@dimen/trailer_image_width"
+            android:layout_height="@dimen/trailer_image_height"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/top_margin"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/trailerImageView1"
@@ -199,24 +184,23 @@
         <TextView
             android:id="@+id/trailerTextview2"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/trailer_tv_margin_top"
             android:textColor="@android:color/white"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="@+id/trailerImageView2"
             app:layout_constraintTop_toBottomOf="@+id/trailerImageView1"
-            tools:text="Trailer Title2" />
+            tools:text="@string/tools_tt2" />
 
         <ImageView
             android:id="@+id/trailerImageView3"
-            android:layout_width="160dp"
-            android:layout_height="90dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:contentDescription="@string/cd_movie_trailer_image"
+            android:layout_width="@dimen/trailer_image_width"
+            android:layout_height="@dimen/trailer_image_height"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/top_margin"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/trailerImageView2"
@@ -225,22 +209,21 @@
         <TextView
             android:id="@+id/trailerTextview3"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/trailer_tv_margin_top"
             android:textColor="@android:color/white"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="@+id/trailerImageView3"
             app:layout_constraintTop_toBottomOf="@+id/trailerImageView2"
-            tools:text="Trailer Title3" />
+            tools:text="@string/tools_tt3" />
 
         <ImageView
             android:id="@+id/trailerImageView4"
-            android:layout_width="160dp"
-            android:layout_height="90dp"
-            android:layout_marginLeft="8dp"
+            android:contentDescription="@string/cd_movie_trailer_image"
+            android:layout_width="@dimen/trailer_image_width"
+            android:layout_height="@dimen/trailer_image_height"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:visibility="gone"
@@ -251,10 +234,10 @@
         <TextView
             android:id="@+id/trailerTextview4"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="@dimen/margin_start"
+            android:layout_marginTop="@dimen/trailer_tv_margin_top"
             android:textColor="@android:color/white"
             android:visibility="gone"
             app:layout_constraintLeft_toRightOf="@+id/trailerImageView4"
@@ -275,52 +258,52 @@
         <TextView
             android:id="@+id/reviewHeader"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:padding="8dp"
+            android:padding="@dimen/padding_standard"
             android:text="@string/review_header"
             android:textColor="@android:color/white"
             android:textSize="@dimen/detailViewTextSize_Year"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/dcview4"
             app:layout_constraintTop_toBottomOf="@+id/dcview4"
-            tools:text="Reviews :" />
+            tools:text="@string/tools_review_header" />
 
         <TextView
             android:id="@+id/reviewer1"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/reviewer_margin_start"
+            android:padding="@dimen/padding_standard"
             android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textSize="@dimen/reviewer_textsize"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@+id/reviewHeader"
-            tools:text="Reviewer 1" />
+            tools:text="@string/tools_reviewer1" />
 
         <TextView
             android:id="@+id/review1"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="@dimen/constraintMatchParent0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/review_margin_start"
+            android:padding="@dimen/padding_standard"
             android:textColor="@android:color/white"
-            android:textSize="16dp"
+            android:textSize="@dimen/review_textsize"
             android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@id/reviewer1"
-            tools:text="What the heck is this thing any good?" />
+            tools:text="@string/tools_review" />
 
         <View
             android:id="@+id/reviewsep1"
             android:layout_width="@dimen/constraintMatchParent0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="@dimen/view_line_height"
+            android:layout_marginStart="@dimen/review_margin_start"
+            android:layout_marginTop="@dimen/top_margin"
             android:background="@color/viewLineColor"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -330,38 +313,38 @@
         <TextView
             android:id="@+id/reviewer2"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/reviewer_margin_start"
+            android:padding="@dimen/padding_standard"
             android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textSize="@dimen/reviewer_textsize"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@+id/reviewsep1"
-            tools:text="Reviewer 2" />
+            tools:text="@string/tools_reviewer1" />
 
         <TextView
             android:id="@+id/review2"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="@dimen/constraintMatchParent0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/review_margin_start"
+            android:padding="@dimen/padding_standard"
             android:textColor="@android:color/white"
-            android:textSize="16dp"
+            android:textSize="@dimen/review_textsize"
             android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@id/reviewer2"
-            tools:text="What the heck is this thing any good?" />
+            tools:text="@string/tools_review" />
 
         <View
             android:id="@+id/reviewsep2"
             android:layout_width="@dimen/constraintMatchParent0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="@dimen/view_line_height"
+            android:layout_marginStart="@dimen/review_margin_start"
+            android:layout_marginTop="@dimen/top_margin"
             android:background="@color/viewLineColor"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -371,38 +354,38 @@
         <TextView
             android:id="@+id/reviewer3"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/reviewer_margin_start"
+            android:padding="@dimen/padding_standard"
             android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textSize="@dimen/reviewer_textsize"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@+id/reviewsep2"
-            tools:text="Reviewer 3" />
+            tools:text="@string/tools_reviewer1" />
 
         <TextView
             android:id="@+id/review3"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="@dimen/constraintMatchParent0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_marginStart="@dimen/review_margin_start"
             android:padding="8dp"
             android:textColor="@android:color/white"
-            android:textSize="16dp"
+            android:textSize="@dimen/review_textsize"
             android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@id/reviewer3"
-            tools:text="What the heck is this thing any good?" />
+            tools:text="@string/tools_review" />
 
         <View
             android:id="@+id/reviewsep3"
             android:layout_width="@dimen/constraintMatchParent0dp"
-            android:layout_height="2dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="@dimen/view_line_height"
+            android:layout_marginStart="@dimen/review_margin_start"
+            android:layout_marginTop="@dimen/top_margin"
             android:background="@color/viewLineColor"
             android:visibility="gone"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -412,31 +395,31 @@
         <TextView
             android:id="@+id/reviewer4"
             style="@style/TextAppearance.AppCompat.Medium"
-            android:layout_width="0dp"
+            android:layout_width="@dimen/constraint_layout_width_0"
             android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/reviewer_margin_start"
+            android:padding="@dimen/padding_standard"
             android:textColor="@android:color/white"
-            android:textSize="18dp"
+            android:textSize="@dimen/reviewer_textsize"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@+id/reviewsep3"
-            tools:text="Reviewer 4" />
+            tools:text="@string/tools_reviewer1" />
 
         <TextView
             android:id="@+id/review4"
             style="@style/TextAppearance.AppCompat.Medium"
             android:layout_width="@dimen/constraintMatchParent0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:padding="8dp"
+            android:layout_marginStart="@dimen/review_margin_start"
+            android:padding="@dimen/padding_standard"
             android:textColor="@android:color/white"
-            android:textSize="16dp"
+            android:textSize="@dimen/review_textsize"
             android:visibility="gone"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintStart_toStartOf="@id/reviewHeader"
             app:layout_constraintTop_toBottomOf="@id/reviewer4"
-            tools:text="What the heck is this thing any good?" />
+            tools:text="@string/tools_review" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
