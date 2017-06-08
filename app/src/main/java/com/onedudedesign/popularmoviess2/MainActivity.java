@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
     private FavoriteMovieCursorAdapterRV mFavoriteAdapter;
+    private ArrayList<Movie> mMovieList;
     private static final int POPULAR = 0;
     private static final int TOP_RATED = 1;
     private static final int FAVORITE = 2;
@@ -49,6 +51,9 @@ public class MainActivity extends AppCompatActivity
     private static final int rVReset = 0;
     private int mSortOrder;
     public static final String SORT_ORDER = "SortOrder";
+    public static final String SAVED_RECYCLER_VIEW_STATUS_ID = "recycleViewState";
+    public static final String SAVED_RECYCLER_VIEW_DATASET_ID = "movieArray";
+
     private SQLiteDatabase mDB;
 
     @Override
@@ -68,9 +73,6 @@ public class MainActivity extends AppCompatActivity
 
         //TODO WHEN RESTORING THE STATE< RESTORE THE DATA TOO IE put the Arraylist into the bundle stupid
 
-        //create the Movie list for the main screen and set it on the adapter
-        List<Movie> movies = new ArrayList<>();
-        mAdapter.setMovieList(movies);
 
         /* make the call to retrofit method to get query the TMDB api unless there is no network
         then display a message that the network is disconnected.
@@ -105,6 +107,17 @@ public class MainActivity extends AppCompatActivity
             mRecyclerView.setAdapter(mFavoriteAdapter);
         }
 
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
+        // putting recyclerview position
+        outState.putParcelable(SAVED_RECYCLER_VIEW_STATUS_ID, listState);
+        // putting recyclerview items
+        //outState.putParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID, mMovieList);
+        outState.putSerializable(SAVED_RECYCLER_VIEW_DATASET_ID, mMovieList);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -233,7 +246,8 @@ public class MainActivity extends AppCompatActivity
                 public void success(Movie.MovieResult movieResult, Response response) {
                     //need to change the adptar since we have both the list and cursor for the db
                     mRecyclerView.setAdapter(mAdapter);
-                    mAdapter.setMovieList(movieResult.getResults());
+                    mMovieList = movieResult.getResults();
+                    mAdapter.setMovieList(mMovieList);
                 }
 
                 @Override
@@ -247,7 +261,8 @@ public class MainActivity extends AppCompatActivity
                 public void success(Movie.MovieResult movieResult, Response response) {
                     //need to change the adaptar since we have both the list and cursor for the db
                     mRecyclerView.setAdapter(mAdapter);
-                    mAdapter.setMovieList(movieResult.getResults());
+                    mMovieList = movieResult.getResults();
+                    mAdapter.setMovieList(mMovieList);
                 }
 
                 @Override
@@ -275,12 +290,6 @@ public class MainActivity extends AppCompatActivity
         startActivity(intent);
     }
 
-    //bundle the sort order into the saved instance state
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        //outState.putInt("sortOrder", mSortOrder);
-        super.onSaveInstanceState(outState);
-    }
 
     //Set shared preferences method to save the sort order
     public void setSharedPreferenceSortOrder(int sortOrder) {

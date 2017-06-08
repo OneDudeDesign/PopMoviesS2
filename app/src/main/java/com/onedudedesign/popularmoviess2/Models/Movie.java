@@ -1,7 +1,12 @@
 package com.onedudedesign.popularmoviess2.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +14,7 @@ import java.util.List;
  * This is the class to define a Movie Object to be used by the Adapter
  */
 
-public class Movie {
+public class Movie implements Serializable {
 
     //note that if I put this in strings file I get an error. investigate.
     public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
@@ -107,11 +112,12 @@ public class Movie {
         this.movieID = movieID;
     }
 
+
     //results set
     public static class MovieResult {
-        private List<Movie> results;
+        private ArrayList<Movie> results;
 
-        public List<Movie> getResults() {
+        public ArrayList<Movie> getResults() {
             return results;
         }
     }
