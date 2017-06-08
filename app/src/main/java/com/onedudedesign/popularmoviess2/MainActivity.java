@@ -71,7 +71,8 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new MovieAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        //TODO WHEN RESTORING THE STATE< RESTORE THE DATA TOO IE put the Arraylist into the bundle stupid
+        //TODO WHEN RESTORING THE STATE< RESTORE THE DATA TOO IE put the Arraylist into the bundle
+        //this is why you are seing a blank screen.....
 
 
         /* make the call to retrofit method to get query the TMDB api unless there is no network
@@ -220,7 +221,7 @@ public class MainActivity extends AppCompatActivity
         by the reviewers own API key or permission to use a key if the app where to be deployed
         commercially needs to be obtained */
 
-        final String api_key = getResources().getString(R.string.TMDB_API_KEY);
+        final String api_key = BuildConfig.TMDB_API_KEY;
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getString(R.string.tmdb_api_endpoint_v3))

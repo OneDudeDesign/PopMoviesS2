@@ -12,7 +12,6 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
@@ -23,7 +22,6 @@ import com.onedudedesign.popularmoviess2.Models.MovieTrailers;
 import com.onedudedesign.popularmoviess2.utils.MovieApiService;
 import com.squareup.picasso.Picasso;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +50,7 @@ public class DetailConstraint extends AppCompatActivity {
     private static final int review2 = 1;
     private static final int review3 = 2;
     private static final int review4 = 3;
+    private static final String api_key = BuildConfig.TMDB_API_KEY;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +62,7 @@ public class DetailConstraint extends AppCompatActivity {
         Intent intent = this.getIntent();
         movieID = intent.getStringExtra(getString(R.string.intent_movie_id));
 
-        final String api_key = getResources().getString(R.string.TMDB_API_KEY);
+        //private static final String api_key = BuildConfig.TMDB_API_KEY;
 
          /* we get the movie ID and make the call directly to the movie information in the API
         because we will need additional information not returned in the Popular and Toprated
@@ -148,7 +147,7 @@ public class DetailConstraint extends AppCompatActivity {
     private void fetchReviews() {
         //fetching the review info for the selected movie id
 
-        final String api_key = getResources().getString(R.string.TMDB_API_KEY);
+        //final String api_key = BuildConfig.TMDB_API_KEY;
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getString(R.string.tmdb_api_endpoint_v3))
@@ -211,7 +210,7 @@ public class DetailConstraint extends AppCompatActivity {
         //fetching the trailer info from TMDB this is in a different endpoint
         // defined in the MovieAPIService
 
-        final String api_key = getResources().getString(R.string.TMDB_API_KEY);
+        //final String api_key = BuildConfig.TMDB_API_KEY;
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getString(R.string.tmdb_api_endpoint_v3))
@@ -355,7 +354,7 @@ public class DetailConstraint extends AppCompatActivity {
         Picasso.with(this)
                 .load(getString(R.string.detail_yt_trailerimage_httphead) + mt.getYoutubeKey()
                         + getString(R.string.detail_yt_trailerimage_quality))
-                .placeholder(R.drawable.placeholder) //displays temop image while loading
+                .placeholder(R.drawable.placeholder) //displays temp image while loading
                 .error(error) //displays an error image if the load fails
                 .into(iVTrailer1);
         TextView tVTrailer1 = (TextView) findViewById(R.id.trailerTextview1);
