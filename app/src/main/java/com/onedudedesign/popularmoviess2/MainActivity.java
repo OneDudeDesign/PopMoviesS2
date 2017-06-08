@@ -66,6 +66,8 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new MovieAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
+        //TODO WHEN RESTORING THE STATE< RESTORE THE DATA TOO IE put the Arraylist into the bundle stupid
+
         //create the Movie list for the main screen and set it on the adapter
         List<Movie> movies = new ArrayList<>();
         mAdapter.setMovieList(movies);

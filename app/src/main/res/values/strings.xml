@@ -1,4 +1,6 @@
 <resources>
+    <!--INSERT TMDB.org API Key int String resource TMDB_API_KEY below
+Application will not work without this set -->
     <string name="app_name">Top 20 Movies</string>
     <string name="TMDB_API_KEY" translatable="false">fd66dfefac539c5f745200aadb175e4d</string>
     <string name="TMDB_IMAGE_PATH" translatable="false">http://image.tmdb.org/t/p/w500</string>
@@ -75,5 +77,4 @@
 
 </resources>
 
-    <!--INSERT TMDB.org API Key int String resource TMDB_API_KEY above^^^
-Application will not work without this set -->
+
