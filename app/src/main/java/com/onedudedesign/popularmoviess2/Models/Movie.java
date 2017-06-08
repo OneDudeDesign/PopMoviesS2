@@ -14,7 +14,7 @@ import java.util.List;
  * This is the class to define a Movie Object to be used by the Adapter
  */
 
-public class Movie extends Parcelable {
+public class Movie {
 
     //note that if I put this in strings file I get an error. investigate.
     public static final String TMDB_IMAGE_PATH = "http://image.tmdb.org/t/p/w500";
@@ -113,31 +113,6 @@ public class Movie extends Parcelable {
     public void setMovieID(int movieID) {
         this.movieID = movieID;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeTypedList(movies);
-
-    }
-
-    private Movie (Parcel in) {
-        in.readTypedList(movies, Movie.CREATOR);
-    }
-    public static final Parcelable.Creator<Movie> CREATOR =
-            new Parcelable.Creator<Movie>() {
-                public Movie createFromParcel(Parcel in) {
-                    return new Movie(in);
-                }
-
-                public Movie[] newArray(int size) {
-                    return new Movie[size];
-                }
-            };
 
 
     //results set

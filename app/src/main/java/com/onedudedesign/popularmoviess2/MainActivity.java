@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -73,9 +74,6 @@ public class MainActivity extends AppCompatActivity
         mAdapter = new MovieAdapter(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
-        //TODO WHEN RESTORING THE STATE< RESTORE THE DATA TOO IE put the Arraylist into the bundle
-        //this is why you are seing a blank screen.....
-
 
         /* make the call to retrofit method to get query the TMDB api unless there is no network
         then display a message that the network is disconnected.
@@ -86,60 +84,63 @@ public class MainActivity extends AppCompatActivity
 
         mSortOrder = getSharedPreferenceSortOrder();
 
-        if (savedInstanceState != null){
+        if (savedInstanceState != null) {
             mSavedInstanceState = savedInstanceState;
-            restorePreviousState();
+        }
 
-        } else {
 
-            if (isNetworkConnected()) {
-                if (mSortOrder == FAVORITE) {
-                    //even if network is connectsed if the saved sort order is FAVORITE then set the
-                    //correct adapter
-                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
-                    mRecyclerView.setAdapter(mFavoriteAdapter);
-                    setActivityTitle();
-
-                } else {
-                    //call the data load if the sort order is not FAVORITE
-                    setActivityTitle();
-                    initRetrofit(mSortOrder);
-                }
-            } else {
-                //if the network is off set the sort order to favorite and load the favorites list
-                //the details will still not load but this forces a default to the favorites list
-                // while off network, later feature will be to load the favorite details when clicked
-                //but this is not yet implemented
-                mSortOrder = FAVORITE;
-                setActivityTitle();
+        if (isNetworkConnected()) {
+            if (mSortOrder == FAVORITE) {
+                //even if network is connectsed if the saved sort order is FAVORITE then set the
+                //correct adapter
                 mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
+                if (mSavedInstanceState!=null) {
+                    restorePreviousState();
+                }
+                setActivityTitle();
+
+            } else {
+                //call the data load if the sort order is not FAVORITE
+                setActivityTitle();
+                initRetrofit(mSortOrder);
             }
+        } else {
+            //if the network is off set the sort order to favorite and load the favorites list
+            //the details will still not load but this forces a default to the favorites list
+            // while off network, later feature will be to load the favorite details when clicked
+            //but this is not yet implemented
+            mSortOrder = FAVORITE;
+            setActivityTitle();
+            mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
+            mRecyclerView.setAdapter(mFavoriteAdapter);
         }
+
+        /*if (savedInstanceState != null) {
+            mSavedInstanceState = savedInstanceState;
+            restorePreviousState();
+        } */
 
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
         Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
         // putting recyclerview position
         outState.putParcelable(SAVED_RECYCLER_VIEW_STATUS_ID, listState);
-        // putting recyclerview items
-        //outState.putParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID, mMovieList);
-        outState.putParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID, mMovieList);
+
         super.onSaveInstanceState(outState);
     }
 
 
-    public void restorePreviousState(){
+    public void restorePreviousState() {
         // getting recyclerview position
         mListState = mSavedInstanceState.getParcelable(SAVED_RECYCLER_VIEW_STATUS_ID);
-        // getting recyclerview items
-        mMovieList = mSavedInstanceState.getParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID);
-        // Restoring adapter items
-        mAdapter.setMovieList(mMovieList);
+
         // Restoring recycler view position
         mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
+
     }
 
     @Override
@@ -270,6 +271,11 @@ public class MainActivity extends AppCompatActivity
                     mRecyclerView.setAdapter(mAdapter);
                     mMovieList = movieResult.getResults();
                     mAdapter.setMovieList(mMovieList);
+
+                    if (mSavedInstanceState!=null) {
+                        restorePreviousState();
+                    }
+
                 }
 
                 @Override
@@ -285,6 +291,10 @@ public class MainActivity extends AppCompatActivity
                     mRecyclerView.setAdapter(mAdapter);
                     mMovieList = movieResult.getResults();
                     mAdapter.setMovieList(mMovieList);
+
+                    if (mSavedInstanceState!=null) {
+                        restorePreviousState();
+                    }
                 }
 
                 @Override
@@ -349,5 +359,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onResume() {
+        if (mSavedInstanceState!=null) {
+            restorePreviousState();
+        }
+        super.onResume();
 
+    }
 }
