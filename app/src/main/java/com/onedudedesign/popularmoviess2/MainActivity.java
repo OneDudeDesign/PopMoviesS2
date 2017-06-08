@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity
     private int mSortOrder;
     public static final String SORT_ORDER = "SortOrder";
     public static final String SAVED_RECYCLER_VIEW_STATUS_ID = "recycleViewState";
-    public static final String SAVED_RECYCLER_VIEW_DATASET_ID = "movieArray";
 
     private SQLiteDatabase mDB;
 
@@ -125,14 +124,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-
+        super.onSaveInstanceState(outState);
         Parcelable listState = mRecyclerView.getLayoutManager().onSaveInstanceState();
         // putting recyclerview position
         outState.putParcelable(SAVED_RECYCLER_VIEW_STATUS_ID, listState);
 
-        super.onSaveInstanceState(outState);
+
     }
 
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mSavedInstanceState = savedInstanceState;
+        restorePreviousState();
+    }
 
     public void restorePreviousState() {
         // getting recyclerview position
@@ -359,12 +364,5 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    protected void onResume() {
-        if (mSavedInstanceState!=null) {
-            restorePreviousState();
-        }
-        super.onResume();
 
-    }
 }
