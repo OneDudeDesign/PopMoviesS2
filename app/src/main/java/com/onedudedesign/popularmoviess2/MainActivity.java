@@ -44,6 +44,8 @@ public class MainActivity extends AppCompatActivity
     private MovieAdapter mAdapter;
     private FavoriteMovieCursorAdapterRV mFavoriteAdapter;
     private ArrayList<Movie> mMovieList;
+    private Parcelable mListState;
+    private Bundle mSavedInstanceState;
     private static final int POPULAR = 0;
     private static final int TOP_RATED = 1;
     private static final int FAVORITE = 2;
@@ -84,28 +86,35 @@ public class MainActivity extends AppCompatActivity
 
         mSortOrder = getSharedPreferenceSortOrder();
 
-        if (isNetworkConnected()) {
-            if (mSortOrder == FAVORITE) {
-                //even if network is connectsed if the saved sort order is FAVORITE then set the
-                //correct adapter
+        if (savedInstanceState != null){
+            mSavedInstanceState = savedInstanceState;
+            restorePreviousState();
+
+        } else {
+
+            if (isNetworkConnected()) {
+                if (mSortOrder == FAVORITE) {
+                    //even if network is connectsed if the saved sort order is FAVORITE then set the
+                    //correct adapter
+                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
+                    mRecyclerView.setAdapter(mFavoriteAdapter);
+                    setActivityTitle();
+
+                } else {
+                    //call the data load if the sort order is not FAVORITE
+                    setActivityTitle();
+                    initRetrofit(mSortOrder);
+                }
+            } else {
+                //if the network is off set the sort order to favorite and load the favorites list
+                //the details will still not load but this forces a default to the favorites list
+                // while off network, later feature will be to load the favorite details when clicked
+                //but this is not yet implemented
+                mSortOrder = FAVORITE;
+                setActivityTitle();
                 mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
-                setActivityTitle();
-
-            } else {
-                //call the data load if the sort order is not FAVORITE
-                setActivityTitle();
-                initRetrofit(mSortOrder);
             }
-        } else {
-            //if the network is off set the sort order to favorite and load the favorites list
-            //the details will still not load but this forces a default to the favorites list
-            // while off network, later feature will be to load the favorite details when clicked
-            //but this is not yet implemented
-            mSortOrder = FAVORITE;
-            setActivityTitle();
-            mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
-            mRecyclerView.setAdapter(mFavoriteAdapter);
         }
 
     }
@@ -117,8 +126,20 @@ public class MainActivity extends AppCompatActivity
         outState.putParcelable(SAVED_RECYCLER_VIEW_STATUS_ID, listState);
         // putting recyclerview items
         //outState.putParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID, mMovieList);
-        outState.putSerializable(SAVED_RECYCLER_VIEW_DATASET_ID, mMovieList);
+        outState.putParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID, mMovieList);
         super.onSaveInstanceState(outState);
+    }
+
+
+    public void restorePreviousState(){
+        // getting recyclerview position
+        mListState = mSavedInstanceState.getParcelable(SAVED_RECYCLER_VIEW_STATUS_ID);
+        // getting recyclerview items
+        mMovieList = mSavedInstanceState.getParcelableArrayList(SAVED_RECYCLER_VIEW_DATASET_ID);
+        // Restoring adapter items
+        mAdapter.setMovieList(mMovieList);
+        // Restoring recycler view position
+        mRecyclerView.getLayoutManager().onRestoreInstanceState(mListState);
     }
 
     @Override
