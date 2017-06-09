@@ -1,9 +1,13 @@
 package com.onedudedesign.popularmoviess2;
 
 
+import android.app.LoaderManager;
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Loader;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Parcelable;
@@ -11,11 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.onedudedesign.popularmoviess2.Data.FavMovieContract;
 import com.onedudedesign.popularmoviess2.Models.Movie;
 import com.onedudedesign.popularmoviess2.utils.FavoriteMovieCursorAdapterRV;
 import com.onedudedesign.popularmoviess2.utils.MovieAdapter;
@@ -35,8 +41,8 @@ import retrofit.client.Response;
 //Extending ListItemClick listener to handle clicks in the Grid for going to movie detail for both
 //adapters
 public class MainActivity extends AppCompatActivity
-        implements MovieAdapter.ListItemClickListener,
-        FavoriteMovieCursorAdapterRV.ListItemClickListener {
+        implements LoaderManager.LoaderCallbacks<Cursor>, MovieAdapter.ListItemClickListener,
+        FavoriteMovieCursorAdapterRV.ListItemClickListener{
 
     private RecyclerView mRecyclerView;
     private MovieAdapter mAdapter;
@@ -52,6 +58,8 @@ public class MainActivity extends AppCompatActivity
     private int mSortOrder;
     public static final String SORT_ORDER = "SortOrder";
     public static final String SAVED_RECYCLER_VIEW_STATUS_ID = "recycleViewState";
+    private static final int TASK_LOADER_ID = 0;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
 
     @Override
@@ -115,6 +123,10 @@ public class MainActivity extends AppCompatActivity
             mSavedInstanceState = savedInstanceState;
             restorePreviousState();
         } */
+
+        //CHECK THE CONTEXT THIRD PARAMATER SHOULD BE THIS
+
+        getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
 
     }
 
@@ -369,5 +381,67 @@ public class MainActivity extends AppCompatActivity
             mRecyclerView.setAdapter(mFavoriteAdapter);
 
         }
+
+        getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
+    }
+
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
+
+        return new AsyncTaskLoader<Cursor>(this) {
+
+            // Initialize a Cursor, this will hold all the favorite movie data
+            Cursor mTaskData = null;
+
+            // onStartLoading() is called when a loader first starts loading data
+            @Override
+            protected void onStartLoading() {
+                if (mTaskData != null) {
+                    // Delivers any previously loaded data immediately
+                    deliverResult(mTaskData);
+                } else {
+                    // Force a new load
+                    forceLoad();
+                }
+            }
+
+            // loadInBackground() performs asynchronous loading of data
+            @Override
+            public Cursor loadInBackground() {
+
+                try {
+                    return getContentResolver().query(FavMovieContract.FavMovieEntry.CONTENT_URI,
+                            null,
+                            null,
+                            null,
+                            FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            // deliverResult sends the result of the load, a Cursor, to the registered listener
+            public void deliverResult(Cursor data) {
+                mTaskData = data;
+                super.deliverResult(data);
+            }
+        };
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        // Update the data that the adapter uses to create ViewHolders
+        mFavoriteAdapter.swapCursor(data);
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        mFavoriteAdapter.swapCursor(null);
     }
 }

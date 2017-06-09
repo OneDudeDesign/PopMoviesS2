@@ -48,10 +48,10 @@ public class FavoriteMovieCursorAdapterRV
 
         //get the cursor from the SQLLiteDB
 
-        FavMovieDbHelper favMovieDbHelper = new FavMovieDbHelper(mContext);
+        /*FavMovieDbHelper favMovieDbHelper = new FavMovieDbHelper(mContext);
         mDB = favMovieDbHelper.getReadableDatabase();
         Cursor favMoviesCursor = getAllFavorites();
-        swapCursor(favMoviesCursor);
+        swapCursor(favMoviesCursor); */
     }
 
     @Override
@@ -101,7 +101,7 @@ public class FavoriteMovieCursorAdapterRV
         }
     }
 
-    private Cursor getAllFavorites() {
+    /*private Cursor getAllFavorites() {
 
         return mDB.query(
                 FavMovieContract.FavMovieEntry.TABLE_NAME,
@@ -114,5 +114,5 @@ public class FavoriteMovieCursorAdapterRV
                 null
         );
 
-    }
+    } */
 }

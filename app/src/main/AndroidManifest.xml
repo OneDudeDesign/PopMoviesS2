@@ -29,6 +29,11 @@
             android:parentActivityName=".MainActivity">
 
         </activity>
+        
+        <provider
+            android:authorities="com.onedudedesign.popularmoviess2"
+            android:name="com.onedudedesign.popularmoviess2.Data.FavMovieContentProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>

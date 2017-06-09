@@ -15,6 +15,7 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.onedudedesign.popularmoviess2.Data.FavMovieContract;
@@ -379,8 +380,8 @@ public class DetailConstraint extends AppCompatActivity {
             }
         });
 
-        iBTrailer1.setOnClickListener(new View.OnClickListener(){
-            public  void onClick(View v) {
+        iBTrailer1.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
                 shareYoutubeVideo(mt.getYoutubeKey());
             }
         });
@@ -492,17 +493,17 @@ public class DetailConstraint extends AppCompatActivity {
         //unless you have sharing apps installed, suggest testing on a phone.
         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
         sharingIntent.setType(getString(R.string.text_plain_intent));
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_intent_header) +  mDetail.getMovieTitle());
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, getString(R.string.share_intent_header) + mDetail.getMovieTitle());
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, youTubeUrl);
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_intent_title)));
     }
 
-   @Override
+    @Override
     protected void onResume() {
         super.onResume();
-       //Instantiate the db Helper
-       FavMovieDbHelper favDbHelper = new FavMovieDbHelper(this);
-       mFavDB = favDbHelper.getWritableDatabase();
+        //Instantiate the db Helper
+        FavMovieDbHelper favDbHelper = new FavMovieDbHelper(this);
+        mFavDB = favDbHelper.getWritableDatabase();
     }
 
     @Override
@@ -517,33 +518,21 @@ public class DetailConstraint extends AppCompatActivity {
 
         if (checked) {
 
-           //SQLLite
-
-            if (mFavDB == null) {
-                return;
-            }
+            //create the content values package
 
             ContentValues cv = new ContentValues();
             cv.put(FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID, movieID);
             cv.put(FavMovieContract.FavMovieEntry.COLUMN_ORIGINAL_TITLE, mDetail.getMovieTitle());
             cv.put(FavMovieContract.FavMovieEntry.COLUMN_POSTER_PATH, mDetail.getMoviePoster());
-            cv.put(FavMovieContract.FavMovieEntry.COLUMN_OVERVIEW,mDetail.getMovieSynopsis());
-            cv.put(FavMovieContract.FavMovieEntry.COLUMN_VOTE_AVERAGE,mDetail.getMovieTmdbRating());
-            cv.put(FavMovieContract.FavMovieEntry.COLUMN_RELEASE_DATE,mDetail.getMovieReleaseDate());
-            cv.put(FavMovieContract.FavMovieEntry.COLUMN_BACKDROP_PATH,mDetail.getMovieBackdrop());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_OVERVIEW, mDetail.getMovieSynopsis());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_VOTE_AVERAGE, mDetail.getMovieTmdbRating());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_RELEASE_DATE, mDetail.getMovieReleaseDate());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_BACKDROP_PATH, mDetail.getMovieBackdrop());
 
-            try {
-                mFavDB.beginTransaction();
-                mFavDB.insert(FavMovieContract.FavMovieEntry.TABLE_NAME, null, cv);
-                mFavDB.setTransactionSuccessful();
-            }
-            catch (SQLException e) {
-                //too bad :(
-            }
-            finally
-            {
-                mFavDB.endTransaction();
-            }
+            Uri uri = getContentResolver().insert(FavMovieContract.FavMovieEntry.CONTENT_URI, cv);
+
+            //Log the URI for debugging
+            Log.d("Inserted Uri:", uri.toString());
 
 
         } else {
@@ -551,14 +540,11 @@ public class DetailConstraint extends AppCompatActivity {
             try {
                 mFavDB.beginTransaction();
                 mFavDB.delete(FavMovieContract.FavMovieEntry.TABLE_NAME,
-                        FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID + "=" + movieID,null);
+                        FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID + "=" + movieID, null);
                 mFavDB.setTransactionSuccessful();
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 //too bad :(
-            }
-            finally
-            {
+            } finally {
                 mFavDB.endTransaction();
             }
 

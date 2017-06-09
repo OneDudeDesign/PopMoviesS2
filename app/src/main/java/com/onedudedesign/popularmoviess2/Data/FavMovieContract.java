@@ -1,5 +1,6 @@
 package com.onedudedesign.popularmoviess2.Data;
 
+import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
@@ -8,7 +9,17 @@ import android.provider.BaseColumns;
 
 public class FavMovieContract {
 
+    public static final String AUTHORITY = "com.onedudedesign.popularmoviess2";
+
+    public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + AUTHORITY);
+
+    public static final String PATH_FAVMOVIES = "FavMovies";
+
     public final static class FavMovieEntry implements BaseColumns {
+
+        public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon()
+                .appendPath(PATH_FAVMOVIES).build();
+
         public static final String TABLE_NAME = "FavMovies";
         public static final String COLUMN_MOVIE_ID = "movie_id";
         public static final String COLUMN_ORIGINAL_TITLE = "original_title";
