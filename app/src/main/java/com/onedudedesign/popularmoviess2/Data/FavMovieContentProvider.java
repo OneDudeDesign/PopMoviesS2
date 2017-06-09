@@ -11,6 +11,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import static com.onedudedesign.popularmoviess2.Data.FavMovieContract.FavMovieEntry.TABLE_NAME;
+
 /**
  * Created by clucier on 6/8/17.
  */
@@ -54,7 +56,7 @@ public class FavMovieContentProvider extends ContentProvider {
         switch (match) {
             case FAVMOVIES:
 
-                retCursor = db.query(FavMovieContract.FavMovieEntry.TABLE_NAME,
+                retCursor = db.query(TABLE_NAME,
                         projection,
                         selection,
                         selectionArgs,
@@ -91,7 +93,7 @@ public class FavMovieContentProvider extends ContentProvider {
         switch (match) {
             case FAVMOVIES:
 
-                long id = db.insert(FavMovieContract.FavMovieEntry.TABLE_NAME, null, values);
+                long id = db.insert(TABLE_NAME, null, values);
                 if (id > 0) {
                     returnUri = ContentUris.withAppendedId(FavMovieContract.FavMovieEntry.CONTENT_URI, id);
 
@@ -110,11 +112,34 @@ public class FavMovieContentProvider extends ContentProvider {
 
     @Override
     public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+
+        final SQLiteDatabase db = mFavMovieDbHelper.getWritableDatabase();
+
+        int match = sUriMatcher.match(uri);
+
+        int moviesDeleted = 0;
+
+        switch (match) {
+            // Handle the single item case, recognized by the ID included in the URI path
+            case FAVMOVIES:
+
+                moviesDeleted = db.delete(FavMovieContract.FavMovieEntry.TABLE_NAME,selection,selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
+
+        if (moviesDeleted != 0) {
+            getContext().getContentResolver().notifyChange(uri, null);
+        }
+
+        // Return the number of tasks deleted
+        return moviesDeleted;
     }
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
+        //implement to allow adding of information possibly
         return 0;
     }
 }

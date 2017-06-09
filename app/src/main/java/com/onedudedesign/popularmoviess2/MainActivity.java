@@ -42,9 +42,10 @@ import retrofit.client.Response;
 //adapters
 public class MainActivity extends AppCompatActivity
         implements LoaderManager.LoaderCallbacks<Cursor>, MovieAdapter.ListItemClickListener,
-        FavoriteMovieCursorAdapterRV.ListItemClickListener{
+        FavoriteMovieCursorAdapterRV.ListItemClickListener {
 
     private RecyclerView mRecyclerView;
+    private Cursor mCursor;
     private MovieAdapter mAdapter;
     private FavoriteMovieCursorAdapterRV mFavoriteAdapter;
     private ArrayList<Movie> mMovieList;
@@ -74,7 +75,10 @@ public class MainActivity extends AppCompatActivity
 
         //Set the gridlayout manager and connect it with the adapter
         mRecyclerView.setLayoutManager(gridLayoutManager);
+        //instantiating the MovieAdapter
         mAdapter = new MovieAdapter(this, this);
+        //instantiating the favorites movie cursor adapter
+        mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -86,6 +90,7 @@ public class MainActivity extends AppCompatActivity
          users preferred sort order*/
 
         mSortOrder = getSharedPreferenceSortOrder();
+        getLoaderManager().initLoader(TASK_LOADER_ID, null, this);
 
         if (savedInstanceState != null) {
             mSavedInstanceState = savedInstanceState;
@@ -94,13 +99,13 @@ public class MainActivity extends AppCompatActivity
 
         if (isNetworkConnected()) {
             if (mSortOrder == FAVORITE) {
-                //even if network is connectsed if the saved sort order is FAVORITE then set the
+                //even if network is connected if the saved sort order is FAVORITE then set the
                 //correct adapter
-                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
-                /*if (mSavedInstanceState!=null) {
+                mFavoriteAdapter.swapCursor(mCursor);
+                if (mSavedInstanceState!=null) {
                     restorePreviousState();
-                }*/
+                }
                 setActivityTitle();
 
             } else {
@@ -109,24 +114,19 @@ public class MainActivity extends AppCompatActivity
                 initRetrofit(mSortOrder);
             }
         } else {
-            //if the network is off set the sort order to favorite and load the favorites list
-            //the details will still not load but this forces a default to the favorites list
-            // while off network, later feature will be to load the favorite details when clicked
-            //but this is not yet implemented
-            mSortOrder = FAVORITE;
-            setActivityTitle();
-            mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
-            mRecyclerView.setAdapter(mFavoriteAdapter);
+            //if the network is off let the user know, look to implement the favorites screen and
+                    // store the images in the Database later, not a P2 requirement
+                    //mSortOrder = FAVORITE;
+                    //setActivityTitle();
+                    //mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
+                    //getLoaderManager().initLoader(TASK_LOADER_ID, null, this);
+                    //mRecyclerView.setAdapter(mFavoriteAdapter);
+                    //mFavoriteAdapter.swapCursor(mCursor);
+            noNetwork();
         }
 
-        /*if (savedInstanceState != null) {
-            mSavedInstanceState = savedInstanceState;
-            restorePreviousState();
-        } */
 
-        //CHECK THE CONTEXT THIRD PARAMATER SHOULD BE THIS
 
-        getSupportLoaderManager().initLoader(TASK_LOADER_ID, null, this);
 
     }
 
@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity
                     //set the shared preferences to FAVORITE and refresh the grid
                     setSharedPreferenceSortOrder(FAVORITE);
                     mSortOrder = FAVORITE;
-                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
+                    getLoaderManager().initLoader(TASK_LOADER_ID, null, this);
                     mRecyclerView.setAdapter(mFavoriteAdapter);
                     mRecyclerView.scrollToPosition(rVReset);
                     setActivityTitle();
@@ -198,8 +198,6 @@ public class MainActivity extends AppCompatActivity
                     setSharedPreferenceSortOrder(TOP_RATED);
                     mSortOrder = TOP_RATED;
                     initRetrofit(mSortOrder);
-                    //used to reset the grid back to the top otherwise it loads and displays where
-                    //the view was currently scrolled and maybe confusing
                     mRecyclerView.scrollToPosition(rVReset);
                     setActivityTitle();
                     return true;
@@ -208,7 +206,7 @@ public class MainActivity extends AppCompatActivity
                     //set the shared preferences to FAVORITE and refresh the grid
                     setSharedPreferenceSortOrder(FAVORITE);
                     mSortOrder = FAVORITE;
-                    mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
+                    getLoaderManager().initLoader(TASK_LOADER_ID, null, this);
                     mRecyclerView.setAdapter(mFavoriteAdapter);
                     mRecyclerView.scrollToPosition(rVReset);
                     setActivityTitle();
@@ -219,7 +217,6 @@ public class MainActivity extends AppCompatActivity
                 //set the shared preferences to FAVORITE and refresh the grid
                 setSharedPreferenceSortOrder(FAVORITE);
                 mSortOrder = FAVORITE;
-                mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
                 mRecyclerView.scrollToPosition(rVReset);
                 setActivityTitle();
@@ -280,12 +277,12 @@ public class MainActivity extends AppCompatActivity
             service.getTopRatedMovies(new Callback<Movie.MovieResult>() {
                 @Override
                 public void success(Movie.MovieResult movieResult, Response response) {
-                    //need to change the adptar since we have both the list and cursor for the db
+                    //need to change the adaptar since we have both the list and cursor for the db
                     mRecyclerView.setAdapter(mAdapter);
                     mMovieList = movieResult.getResults();
                     mAdapter.setMovieList(mMovieList);
 
-                    if (mSavedInstanceState!=null) {
+                    if (mSavedInstanceState != null) {
                         restorePreviousState();
                     }
 
@@ -305,7 +302,7 @@ public class MainActivity extends AppCompatActivity
                     mMovieList = movieResult.getResults();
                     mAdapter.setMovieList(mMovieList);
 
-                    if (mSavedInstanceState!=null) {
+                    if (mSavedInstanceState != null) {
                         restorePreviousState();
                     }
                 }
@@ -382,7 +379,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        getSupportLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
+        getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
     }
 
     @Override
@@ -436,12 +433,16 @@ public class MainActivity extends AppCompatActivity
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         // Update the data that the adapter uses to create ViewHolders
-        mFavoriteAdapter.swapCursor(data);
+        if (data != null) {
+            mFavoriteAdapter.swapCursor(data);
+            mCursor = data;
+        }
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mFavoriteAdapter.swapCursor(null);
+        mFavoriteAdapter.swapCursor(mCursor);
+
     }
 }

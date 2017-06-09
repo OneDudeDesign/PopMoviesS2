@@ -10,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 
-import com.onedudedesign.popularmoviess2.Data.FavMovieContract;
-import com.onedudedesign.popularmoviess2.Data.FavMovieDbHelper;
 import com.onedudedesign.popularmoviess2.Models.Movie;
 import com.onedudedesign.popularmoviess2.R;
 import com.squareup.picasso.Picasso;
@@ -28,8 +26,9 @@ public class FavoriteMovieCursorAdapterRV
         extends RecyclerViewCursorAdapter<FavoriteMovieCursorAdapterRV.ImageViewHolder> {
     private static final String TAG = FavoriteMovieCursorAdapterRV.class.getSimpleName();
     private final Context mContext;
-    private SQLiteDatabase mDB;
     private static ListItemClickListener mOnClickListener;
+
+
 
     public interface ListItemClickListener {
         //passing in the string for the movie id as it becomes important to track the TNDB id of 
@@ -45,13 +44,6 @@ public class FavoriteMovieCursorAdapterRV
         mContext = context;
         mOnClickListener = listener;
 
-
-        //get the cursor from the SQLLiteDB
-
-        /*FavMovieDbHelper favMovieDbHelper = new FavMovieDbHelper(mContext);
-        mDB = favMovieDbHelper.getReadableDatabase();
-        Cursor favMoviesCursor = getAllFavorites();
-        swapCursor(favMoviesCursor); */
     }
 
     @Override
@@ -68,11 +60,12 @@ public class FavoriteMovieCursorAdapterRV
         String imagePath = cursor.getString(columnIndexPoster);
         String movieId = cursor.getString(columnIndexMovieId);
 
-        //setting the movieID as a tag Object on the Imageview so it persists in the grid
+        //setting the movieID as a tag OBJECT on the Imageview so it persists in the grid
         //to be used later by the intent
         holder.moviePoster.setTag(movieId);
 
         //Download image using picasso library
+        //Look to store in db for no network not P2 requirement
         Picasso.with(mContext)
                 .load(Movie.TMDB_IMAGE_PATH + imagePath)
                 .error(R.drawable.placeholder)
@@ -101,18 +94,4 @@ public class FavoriteMovieCursorAdapterRV
         }
     }
 
-    /*private Cursor getAllFavorites() {
-
-        return mDB.query(
-                FavMovieContract.FavMovieEntry.TABLE_NAME,
-                null,
-                null,
-                null,
-                null,
-                null,
-                FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID,
-                null
-        );
-
-    } */
 }

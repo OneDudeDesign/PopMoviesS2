@@ -1,11 +1,12 @@
 package com.onedudedesign.popularmoviess2;
 
+import android.app.LoaderManager;
 import android.content.ActivityNotFoundException;
+import android.content.AsyncTaskLoader;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.Loader;
 import android.database.Cursor;
-import android.database.SQLException;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,11 +16,9 @@ import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import com.onedudedesign.popularmoviess2.Data.FavMovieContract;
-import com.onedudedesign.popularmoviess2.Data.FavMovieDbHelper;
 import com.onedudedesign.popularmoviess2.Models.MovieDetail;
 import com.onedudedesign.popularmoviess2.Models.MovieReviews;
 import com.onedudedesign.popularmoviess2.Models.MovieTrailers;
@@ -38,7 +37,8 @@ import retrofit.client.Response;
 
 import static com.onedudedesign.popularmoviess2.R.drawable.error;
 
-public class DetailConstraint extends AppCompatActivity {
+public class DetailConstraint extends AppCompatActivity
+        implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private MovieDetail mDetail = new MovieDetail();
     private String movieID;
@@ -53,7 +53,9 @@ public class DetailConstraint extends AppCompatActivity {
     private static final int review3 = 2;
     private static final int review4 = 3;
     private static final String api_key = BuildConfig.TMDB_API_KEY;
-    private SQLiteDatabase mFavDB;
+    private static final int TASK_LOADER_ID = 1;
+    private static final String TAG = DetailConstraint.class.getSimpleName();
+    private Cursor mCursor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,9 +67,6 @@ public class DetailConstraint extends AppCompatActivity {
         Intent intent = this.getIntent();
         movieID = intent.getStringExtra(getString(R.string.intent_movie_id));
 
-        //Instantiate the db Helper
-        FavMovieDbHelper favDbHelper = new FavMovieDbHelper(this);
-        mFavDB = favDbHelper.getWritableDatabase();
 
          /* we get the movie ID and make the call directly to the movie information in the API
         because we will need additional information not returned in the Popular and Toprated
@@ -98,6 +97,8 @@ public class DetailConstraint extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
+
+        getLoaderManager().initLoader(TASK_LOADER_ID, null, this);
 
 
     }
@@ -142,7 +143,7 @@ public class DetailConstraint extends AppCompatActivity {
                 .error(error) //displays an error image if the load fails
                 .into(poster);
 
-        //fetch the trailer data nd put it into an array
+        //fetch the trailer data and put it into an array
         fetchTrailers();
 
         //fetch the review data and put into Array
@@ -498,20 +499,6 @@ public class DetailConstraint extends AppCompatActivity {
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_intent_title)));
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //Instantiate the db Helper
-        FavMovieDbHelper favDbHelper = new FavMovieDbHelper(this);
-        mFavDB = favDbHelper.getWritableDatabase();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mFavDB.close();
-    }
-
     public void updateFavoritesDb(View view) {
         // Is the view now checked?
         boolean checked = ((CheckBox) view).isChecked();
@@ -537,16 +524,11 @@ public class DetailConstraint extends AppCompatActivity {
 
         } else {
 
-            try {
-                mFavDB.beginTransaction();
-                mFavDB.delete(FavMovieContract.FavMovieEntry.TABLE_NAME,
-                        FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID + "=" + movieID, null);
-                mFavDB.setTransactionSuccessful();
-            } catch (SQLException e) {
-                //too bad :(
-            } finally {
-                mFavDB.endTransaction();
-            }
+            Uri uri = FavMovieContract.FavMovieEntry.CONTENT_URI;
+
+            getContentResolver().delete(uri,
+                    FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID + "=" + movieID, null);
+            getLoaderManager().restartLoader(TASK_LOADER_ID, null, this);
 
 
         }
@@ -557,7 +539,7 @@ public class DetailConstraint extends AppCompatActivity {
     private void checkIfFavorite() {
 
 
-        Cursor movieCursor = getMovieRecord();
+        Cursor movieCursor = mCursor;
         Log.d("Cursor record count", Integer.toString(movieCursor.getCount()));
         if (movieCursor.getCount() != 0) {
             CheckBox cb = (CheckBox) findViewById(R.id.favoriteCheckbox);
@@ -566,16 +548,65 @@ public class DetailConstraint extends AppCompatActivity {
 
     }
 
-    private Cursor getMovieRecord() {
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, final Bundle loaderArgs) {
 
-        return mFavDB.query(FavMovieContract.FavMovieEntry.TABLE_NAME,
-                null,
-                FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID + "=" + movieID,
-                null,
-                null,
-                null,
-                null
-        );
+        return new AsyncTaskLoader<Cursor>(this) {
 
+            // Initialize a Cursor, this will hold all the favorite movie data
+            Cursor mTaskData = null;
+
+            // onStartLoading() is called when a loader first starts loading data
+            @Override
+            protected void onStartLoading() {
+                if (mTaskData != null) {
+                    // Delivers any previously loaded data immediately
+                    deliverResult(mTaskData);
+                } else {
+                    // Force a new load
+                    forceLoad();
+                }
+            }
+
+            // loadInBackground() performs asynchronous loading of data
+            @Override
+            public Cursor loadInBackground() {
+
+                try {
+                    return getContentResolver().query(FavMovieContract.FavMovieEntry.CONTENT_URI,
+                            null,
+                            FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID + "=" + movieID,
+                            null,
+                            FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID);
+
+                } catch (Exception e) {
+                    Log.e(TAG, "Failed to asynchronously load data.");
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            // deliverResult sends the result of the load, a Cursor, to the registered listener
+            public void deliverResult(Cursor data) {
+                mTaskData = data;
+                super.deliverResult(data);
+            }
+        };
+
+    }
+
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        // Update the global cursor
+        if (data != null) {
+            mCursor = data;
+        }
+
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader) {
+        return;
     }
 }
