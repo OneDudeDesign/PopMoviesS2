@@ -4,7 +4,6 @@ package com.onedudedesign.popularmoviess2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Parcelable;
@@ -12,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,7 +24,6 @@ import com.onedudedesign.popularmoviess2.utils.NoNetwork;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -56,7 +53,6 @@ public class MainActivity extends AppCompatActivity
     public static final String SORT_ORDER = "SortOrder";
     public static final String SAVED_RECYCLER_VIEW_STATUS_ID = "recycleViewState";
 
-    private SQLiteDatabase mDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +90,9 @@ public class MainActivity extends AppCompatActivity
                 //correct adapter
                 mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
                 mRecyclerView.setAdapter(mFavoriteAdapter);
-                if (mSavedInstanceState!=null) {
+                /*if (mSavedInstanceState!=null) {
                     restorePreviousState();
-                }
+                }*/
                 setActivityTitle();
 
             } else {
@@ -364,5 +360,14 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        if (mSortOrder == FAVORITE) {
+            mFavoriteAdapter = new FavoriteMovieCursorAdapterRV(this, this);
+            mRecyclerView.setAdapter(mFavoriteAdapter);
+
+        }
+    }
 }

@@ -1,7 +1,10 @@
 package com.onedudedesign.popularmoviess2;
 
 import android.content.ActivityNotFoundException;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
-import com.onedudedesign.popularmoviess2.Cupboard.MovieFavorite;
+import com.onedudedesign.popularmoviess2.Data.FavMovieContract;
+import com.onedudedesign.popularmoviess2.Data.FavMovieDbHelper;
 import com.onedudedesign.popularmoviess2.Models.MovieDetail;
 import com.onedudedesign.popularmoviess2.Models.MovieReviews;
 import com.onedudedesign.popularmoviess2.Models.MovieTrailers;
@@ -33,7 +36,6 @@ import retrofit.client.Response;
 
 
 import static com.onedudedesign.popularmoviess2.R.drawable.error;
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class DetailConstraint extends AppCompatActivity {
 
@@ -41,7 +43,6 @@ public class DetailConstraint extends AppCompatActivity {
     private String movieID;
     private List<MovieTrailers> mMovieTrailerList;
     private List<MovieReviews> mMovieReviewList;
-    private SQLiteDatabase mDB;  //open and close the DB in onResume and onPause to free resources
     private static final int trailer1 = 0;
     private static final int trailer2 = 1;
     private static final int trailer3 = 2;
@@ -51,6 +52,7 @@ public class DetailConstraint extends AppCompatActivity {
     private static final int review3 = 2;
     private static final int review4 = 3;
     private static final String api_key = BuildConfig.TMDB_API_KEY;
+    private SQLiteDatabase mFavDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +64,9 @@ public class DetailConstraint extends AppCompatActivity {
         Intent intent = this.getIntent();
         movieID = intent.getStringExtra(getString(R.string.intent_movie_id));
 
-        //private static final String api_key = BuildConfig.TMDB_API_KEY;
+        //Instantiate the db Helper
+        FavMovieDbHelper favDbHelper = new FavMovieDbHelper(this);
+        mFavDB = favDbHelper.getWritableDatabase();
 
          /* we get the movie ID and make the call directly to the movie information in the API
         because we will need additional information not returned in the Popular and Toprated
@@ -93,6 +97,8 @@ public class DetailConstraint extends AppCompatActivity {
                 error.printStackTrace();
             }
         });
+
+
     }
 
     //populate the detail activity screen
@@ -146,8 +152,6 @@ public class DetailConstraint extends AppCompatActivity {
 
     private void fetchReviews() {
         //fetching the review info for the selected movie id
-
-        //final String api_key = BuildConfig.TMDB_API_KEY;
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getString(R.string.tmdb_api_endpoint_v3))
@@ -209,8 +213,6 @@ public class DetailConstraint extends AppCompatActivity {
 
         //fetching the trailer info from TMDB this is in a different endpoint
         // defined in the MovieAPIService
-
-        //final String api_key = BuildConfig.TMDB_API_KEY;
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getString(R.string.tmdb_api_endpoint_v3))
@@ -495,18 +497,18 @@ public class DetailConstraint extends AppCompatActivity {
         startActivity(Intent.createChooser(sharingIntent, getString(R.string.share_intent_title)));
     }
 
-    @Override
+   @Override
     protected void onResume() {
         super.onResume();
-        //Instantiate the favorites database
-        CupboardDbHelper dbHelper = new CupboardDbHelper(this);
-        mDB = dbHelper.getWritableDatabase();
+       //Instantiate the db Helper
+       FavMovieDbHelper favDbHelper = new FavMovieDbHelper(this);
+       mFavDB = favDbHelper.getWritableDatabase();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        mDB.close();
+        mFavDB.close();
     }
 
     public void updateFavoritesDb(View view) {
@@ -515,21 +517,51 @@ public class DetailConstraint extends AppCompatActivity {
 
         if (checked) {
 
-            //insert the db record using mDetail info if favorite is checked
-            MovieFavorite favorite = new MovieFavorite(movieID,
-                    mDetail.getMovieTitle(),
-                    mDetail.getMoviePoster(),
-                    mDetail.getMovieSynopsis(),
-                    mDetail.getMovieTmdbRating(),
-                    mDetail.getMovieReleaseDate(),
-                    mDetail.getMovieBackdrop(),
-                    true);
+           //SQLLite
 
-            long id = cupboard().withDatabase(mDB).put(favorite);
+            if (mFavDB == null) {
+                return;
+            }
+
+            ContentValues cv = new ContentValues();
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID, movieID);
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_ORIGINAL_TITLE, mDetail.getMovieTitle());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_POSTER_PATH, mDetail.getMoviePoster());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_OVERVIEW,mDetail.getMovieSynopsis());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_VOTE_AVERAGE,mDetail.getMovieTmdbRating());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_RELEASE_DATE,mDetail.getMovieReleaseDate());
+            cv.put(FavMovieContract.FavMovieEntry.COLUMN_BACKDROP_PATH,mDetail.getMovieBackdrop());
+
+            try {
+                mFavDB.beginTransaction();
+                mFavDB.insert(FavMovieContract.FavMovieEntry.TABLE_NAME, null, cv);
+                mFavDB.setTransactionSuccessful();
+            }
+            catch (SQLException e) {
+                //too bad :(
+            }
+            finally
+            {
+                mFavDB.endTransaction();
+            }
+
 
         } else {
-            //remove the favorite from the DB if favorite is unchecked
-            cupboard().withDatabase(mDB).delete(MovieFavorite.class, "movie_id = ?", movieID);
+
+            try {
+                mFavDB.beginTransaction();
+                mFavDB.delete(FavMovieContract.FavMovieEntry.TABLE_NAME,
+                        FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID + "=" + movieID,null);
+                mFavDB.setTransactionSuccessful();
+            }
+            catch (SQLException e) {
+                //too bad :(
+            }
+            finally
+            {
+                mFavDB.endTransaction();
+            }
+
 
         }
     }
@@ -537,12 +569,27 @@ public class DetailConstraint extends AppCompatActivity {
     //method to check if this movie is in the favorites DB and set the favorite
     // checkbox when the moviedetail loads
     private void checkIfFavorite() {
-        MovieFavorite favorite = cupboard().withDatabase(mDB).query(MovieFavorite.class)
-                .withSelection("movie_id = ?", movieID).get();
-        if (favorite != null) {
+
+
+        Cursor movieCursor = getMovieRecord();
+        Log.d("Cursor record count", Integer.toString(movieCursor.getCount()));
+        if (movieCursor.getCount() != 0) {
             CheckBox cb = (CheckBox) findViewById(R.id.favoriteCheckbox);
             cb.setChecked(true);
         }
+
+    }
+
+    private Cursor getMovieRecord() {
+
+        return mFavDB.query(FavMovieContract.FavMovieEntry.TABLE_NAME,
+                null,
+                FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID + "=" + movieID,
+                null,
+                null,
+                null,
+                null
+        );
 
     }
 }

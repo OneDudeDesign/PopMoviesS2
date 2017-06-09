@@ -9,13 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.onedudedesign.popularmoviess2.Cupboard.CupboardDbHelper;
-import com.onedudedesign.popularmoviess2.Cupboard.MovieFavorite;
+
+import com.onedudedesign.popularmoviess2.Data.FavMovieContract;
+import com.onedudedesign.popularmoviess2.Data.FavMovieDbHelper;
 import com.onedudedesign.popularmoviess2.Models.Movie;
 import com.onedudedesign.popularmoviess2.R;
 import com.squareup.picasso.Picasso;
 
-import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 /**
  * Created by clucier on 5/18/17.
@@ -45,13 +45,13 @@ public class FavoriteMovieCursorAdapterRV
         mContext = context;
         mOnClickListener = listener;
 
-        // Get the cursor from Cupboard
 
-        CupboardDbHelper dbHelper = new CupboardDbHelper(mContext);
-        mDB = dbHelper.getReadableDatabase();
-        Cursor cursor = cupboard().withDatabase(mDB).query(MovieFavorite.class).getCursor();
+        //get the cursor from the SQLLiteDB
 
-        swapCursor(cursor);
+        FavMovieDbHelper favMovieDbHelper = new FavMovieDbHelper(mContext);
+        mDB = favMovieDbHelper.getReadableDatabase();
+        Cursor favMoviesCursor = getAllFavorites();
+        swapCursor(favMoviesCursor);
     }
 
     @Override
@@ -99,5 +99,20 @@ public class FavoriteMovieCursorAdapterRV
             String mID = moviePoster.getTag().toString();
             mOnClickListener.onListItemClick(clickedPosition, mID);
         }
+    }
+
+    private Cursor getAllFavorites() {
+
+        return mDB.query(
+                FavMovieContract.FavMovieEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                FavMovieContract.FavMovieEntry.COLUMN_MOVIE_ID,
+                null
+        );
+
     }
 }
